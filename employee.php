@@ -21,11 +21,11 @@
          
         <ul >
             <hr>
-            <li><a href="Dashboard.html"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-            <li><a href="jobp.html"><i class="fas fa-briefcase"></i><span>Job Process</span></a></li>
-            <li><a href="employee.html"><i class="fas fa-users"></i><span>Employee</span></a></li>
-            <li><a href="payroll.html"><i class="fas fa-wallet"></i><span>Payroll</span></a></li>
-            <li><a href="printr.html"><i class="fas fa-receipt"></i><span>Print Receipt</span></a></li>
+            <li><a href="Dashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+            <li><a href="jobp.php"><i class="fas fa-briefcase"></i><span>Job Process</span></a></li>
+            <li><a href="employee.php"><i class="fas fa-users"></i><span>Employee</span></a></li>
+            <li><a href="payroll.php"><i class="fas fa-wallet"></i><span>Payroll</span></a></li>
+            <li><a href="printr.php"><i class="fas fa-receipt"></i><span>Print Receipt</span></a></li>
 
             <div class="bottom-content"><li><a href="login.html"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
         </ul>

@@ -13,12 +13,12 @@
             <h2>HUMAN RESOURCE</h2>
         </div>
         <ul style="list-style-type: none; padding-left: 0;">
-            <li><a href="Dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li><a href="jobp.html" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
-            <li><a href="employee.html"><i class="fas fa-users"></i> Employee</a></li>
-            <li><a href="payroll.html"><i class="fas fa-wallet"></i> Payroll</a></li>
-            <li><a href="printr.html"><i class="fas fa-receipt"></i> Print Receipt</a></li>
-            <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
+            <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
+            <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
+            <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
+            <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
+            <li><a href="index.php"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
         </ul>
 
     </div>

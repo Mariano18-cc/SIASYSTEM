@@ -1,3 +1,58 @@
+<?php
+session_start();
+include "db_connection.php"; // Ensure this file contains the database connection
+
+$searchResults = [];
+$jobApplicationsCount = 0;
+$inProgressCount = 0;
+$teacherCount = 0;
+$excellentCount = 0;
+$guardCount = 0;
+
+// Check if a search has been made
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['searchTerm'])) {
+    $searchTerm = $_POST['searchTerm'];
+    
+    // Prepare and execute the SQL statement to search in the employee table
+    $stmt = $conn->prepare("SELECT * FROM employee WHERE fname LIKE ? OR lname LIKE ?");
+    $likeTerm = '%' . $searchTerm . '%';
+    $stmt->bind_param("ss", $likeTerm, $likeTerm);
+    $stmt->execute();
+    $searchResults = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+}
+
+// Query for job application statistics
+$stmt = $conn->prepare("SELECT COUNT(*) AS total FROM applicant WHERE status = 'new'");
+$stmt->execute();
+$result = $stmt->get_result();
+$jobApplicationsCount = $result->fetch_assoc()['total'];
+
+$stmt = $conn->prepare("SELECT COUNT(*) AS total FROM applicant WHERE status = 'in progress'");
+$stmt->execute();
+$result = $stmt->get_result();
+$inProgressCount = $result->fetch_assoc()['total'];
+
+// Query for employee statistics
+$stmt = $conn->prepare("SELECT COUNT(*) AS total FROM employee WHERE position = 'Teacher'");
+$stmt->execute();
+$result = $stmt->get_result();
+$teacherCount = $result->fetch_assoc()['total'];
+
+$stmt = $conn->prepare("SELECT COUNT(*) AS total FROM employee WHERE position = 'Excellent'");
+$stmt->execute();
+$result = $stmt->get_result();
+$excellentCount = $result->fetch_assoc()['total'];
+
+$stmt = $conn->prepare("SELECT COUNT(*) AS total FROM employee WHERE position = 'Guard'");
+$stmt->execute();
+$result = $stmt->get_result();
+$guardCount = $result->fetch_assoc()['total'];
+
+$stmt->close();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,12 +100,22 @@
             </div>
             <div class="user-info">
                 <img src="picture/ex.pic" alt="User Avatar" class="user-avatar">
-                <span>cakelyn</span>
+                <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
             </div>        
         </div>
 
         <!-- Job Process Panel -->
         <div class="content">
+        <?php if (!empty($searchResults)): ?>
+            <div class="search-results">
+                <h2>Search Results</h2>
+                <ul>
+                    <?php foreach ($searchResults as $result): ?>
+                        <li><?php echo htmlspecialchars($result['fname'] . ' ' . $result['lname']); ?> - <?php echo htmlspecialchars($result['position']); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
 
             <div class="panel">
             <h2>Job Applications</h2>
@@ -58,12 +123,12 @@
                 <div class="job-card">
                     <i class="fas fa-user-tie"></i>
                     <p>CANDIDATES</p>
-                    <h3>10</h3>
+                    <h3><?php echo $jobApplicationsCount; ?></h3>
                 </div>
                 <div class="job-card">
                     <i class="fas fa-tasks"></i>
                     <p>IN-PROGRESS</p>
-                    <h3>10</h3>
+                    <h3><?php echo $inProgressCount; ?></h3>
                 </div>
             </div>
             </div>
@@ -75,17 +140,17 @@
                     <div class="stat-card">
                         <i class="fas fa-chalkboard-teacher"></i>
                         <p>TEACHER</p>
-                        <h3>10</h3>
+                        <h3><?php echo $teacherCount; ?></h3>
                     </div>
                     <div class="stat-card">
                         <i class="fas fa-award"></i>
                         <p>EXCELLENT</p>
-                        <h3>10</h3>
+                        <h3><?php echo $excellentCount; ?></h3>
                     </div>
                     <div class="stat-card">
                         <i class="fas fa-shield-alt"></i>
                         <p>GUARD</p>
-                        <h3>10</h3>
+                        <h3><?php echo $gaurdCount; ?></h3>
                     </div>
                 </div>
             </div>
