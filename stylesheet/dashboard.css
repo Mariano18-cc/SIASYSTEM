@@ -1,0 +1,286 @@
+body {
+    font-family: outfit, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* Sidebar styling */
+.sidebar header {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.sidebar {
+    width: 250px;
+    background: #2C3F6C;
+    color: white;
+    position: fixed;
+    height: 100%;
+    padding: 20px;
+  }
+  
+  .sidebar .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .sidebar .logo img {
+    width: 10px; /* Adjust as needed */
+}
+  
+  .sidebar h1 {
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .sidebar span{
+    padding-left: 10px;
+  }
+  
+  .sidebar ul li {
+    margin: 10px ;
+  }
+  
+  .sidebar ul li a {
+    padding-right: 10px;
+    color: #FEF9FE;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    transition: background 0.3s;
+  }
+  
+  .sidebar ul li a:hover {
+    background: #2e3c44;
+  }
+
+  .sidebar .logo img {
+    width: 80px; /* Adjust as needed */
+  }
+
+  /* log-out */
+    .bottom-content{
+    position: absolute;
+    bottom: 50px;
+    left: 10;
+  }
+  
+
+
+/* Main content styling */
+.main {
+    margin-left: 270px;
+    padding: 20px;
+    width: calc(100% - 270px);
+    color: white;
+}
+
+.header {
+    background-color: #FEF9FE;
+    padding: 10px;
+    display: flex;
+    justify-content:flex-end;
+    color: #000;
+    width: 100%;
+    border-bottom: 2px solid #000;
+}
+
+.header .user-info {
+    display: flex;
+    align-items: center;
+}
+.department {
+    margin: 0; 
+    font-weight: bold; 
+    margin: 0; 
+    color: #555; 
+    gap: 2px;
+}
+.header .user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    width: 300px;
+}
+.search-container .search-button {
+    order: -1;                  
+}
+
+
+/* Content Styling */
+
+.content {
+    padding: 20px;
+    background-color: #FEF9FE;
+    border-radius: 10px;
+    justify-content: space-around;
+    /* flex-direction: row; */
+}
+
+.panel {
+    background-color: #2C3F6C;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 400px;              /* Set width for the panel */  
+}
+
+/* Job process cards */
+.job-process {
+    display: flex;
+    gap: 20px;
+    min-width: 200px;
+
+}
+
+.job-card,
+.stat-card {
+    width: 100px;
+    height: 120px;
+    background-color: white;
+    display: stretch;
+    padding: 20px;
+    color: #2C3F6C;
+    text-align: center;
+    border-radius:10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.job-card i,
+.stat-card i {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+/* Calendar styling */
+.calendar-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #2C3F6C;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-container {
+    background-color: #2C3F6C;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 400px; /* Fixed width for the calendar */
+    bottom: 20px; /* Distance from the bottom */
+    right: 50px; /* Distance from the right */
+    box-sizing: border-box;
+    max-width: 90%; /* Responsive width */
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.calendar-header button {
+    background-color: white;
+    border: none;
+    color: #2C3F6C;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+.calendar-header h2 {
+    margin: 0;
+    margin-right: 3px;
+}
+
+.calendar {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar th, .calendar td {
+    padding: 10px;
+    border: 1px solid #A8D3EB;
+    width: 40px; /* Fixed width for cells */
+    height: 40px; /* Fixed height for cells */
+    text-align: center;
+}
+
+.calendar td {
+    cursor: pointer; /* Pointer cursor on cells */
+}
+
+.calendar td:hover {
+    background-color: gray; 
+}
+
+.current-day {
+    background-color: #ED8B26; /* Highlight today's date */
+    color: white; 
+    border-radius: 40%; /* Rounded corners for today's date */
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+.search-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 10px;
+    color: #333;
+}
+
+.search-button:hover {
+    color: #A8D3EB;
+}
+
+.search-input::placeholder {
+    color: #aaa;
+}
+
+/* Logout button styling */
+.logout {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.logout-btn {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+}
