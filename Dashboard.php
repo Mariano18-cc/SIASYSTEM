@@ -150,7 +150,7 @@ $stmt->close();
                     <div class="stat-card">
                         <i class="fas fa-shield-alt"></i>
                         <p>GUARD</p>
-                        <h3><?php echo $gaurdCount; ?></h3>
+                        <h3><?php echo $guardCount; ?></h3>
                     </div>
                 </div>
             </div>
