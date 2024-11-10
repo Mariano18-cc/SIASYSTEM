@@ -1,3 +1,38 @@
+<?php
+session_start();
+include "db_connection.php"; // Include database connection
+
+// Ensure user is logged in
+if (!isset($_SESSION['username'])) {
+    header('Location: login.html');
+    exit();
+}
+
+// Fetch all applicants from the database
+$results = [];
+$stmt = $conn->prepare("SELECT id, fname, mname, lname, status FROM applicant");
+$stmt->execute();
+$results = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
+// Check if a form to update status has been submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['applicant_id']) && isset($_POST['new_status'])) {
+    $applicant_id = $_POST['applicant_id'];
+    $new_status = $_POST['new_status'];
+
+    // Prepare the update query
+    $update_stmt = $conn->prepare("UPDATE applicant SET status = ? WHERE id = ?");
+    $update_stmt->bind_param("si", $new_status, $applicant_id);
+    $update_stmt->execute();
+    $update_stmt->close();
+
+    // Redirect to refresh the page and show the updated status
+    header("Location: jobp.php");
+    exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +57,7 @@
       <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
       <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
       <li><a href="index.php"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
-  </ul>
+    </ul>
   </div>
 
   <!-- Main content -->
@@ -31,9 +66,9 @@
     <div class="header">
       <div class="user-info">
         <img src="picture/ex.pic" alt="Human Resource">
-        <span>Cakelyn</span><br>
-        <p class="department".> Human Resource Admin</p>
-</div>
+        <span><?php echo htmlspecialchars($_SESSION['username']); ?></span><br>
+        <p class="department">Human Resource Admin</p>
+      </div>
     </div>
 
     <!-- Content -->
@@ -50,39 +85,30 @@
             </tr>
           </thead>
           <tbody>
+            <?php foreach ($results as $applicant): ?>
             <tr>
-              <td>001</td>
-              <td>Jane Doe</td>
-              <td>In Review</td>
+              <td><?php echo htmlspecialchars($applicant['id']); ?></td>
+              <td><?php echo htmlspecialchars($applicant['fname'] . ' ' . $applicant['mname'] . ' ' . $applicant['lname']); ?></td>
+              <td><?php echo htmlspecialchars($applicant['status']); ?></td>
               <td>
                 <div class="action-buttons">
-                  <button class="view-button">View</button>
-                  <button class="edit-button">Edit</button>
+                  <form method="POST" action="jobp.php">
+                    <input type="hidden" name="applicant_id" value="<?php echo htmlspecialchars($applicant['id']); ?>">
+                    <select name="new_status" required>
+                      <option value="new" <?php echo $applicant['status'] == 'new' ? 'selected' : ''; ?>>New</option>
+                      <option value="in progress" <?php echo $applicant['status'] == 'in progress' ? 'selected' : ''; ?>>In Progress</option>
+                      <option value="for initial interview" <?php echo $applicant['status'] == 'for initial interview' ? 'selected' : ''; ?>>For Initial Interview</option>
+                      <option value="validation" <?php echo $applicant['status'] == 'validation' ? 'selected' : ''; ?>>Validation</option>
+                      <option value="final interview" <?php echo $applicant['status'] == 'final interview' ? 'selected' : ''; ?>>Final Interview</option>
+                      <option value="hired" <?php echo $applicant['status'] == 'hired' ? 'selected' : ''; ?>>Hired</option>
+                      <option value="rejected" <?php echo $applicant['status'] == 'rejected' ? 'selected' : ''; ?>>Rejected</option>
+                    </select>
+                    <button type="submit" class="edit-button">Update Status</button>
+                  </form>
                 </div>
               </td>
             </tr>
-            <tr>
-              <td>002</td>
-              <td>John Smith</td>
-              <td>Interview Scheduled</td>
-              <td>
-                <div class="action-buttons">
-                  <button class="view-button">View</button>
-                  <button class="edit-button">Edit</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>003</td>
-              <td>Alice Johnson</td>
-              <td>Rejected</td>
-              <td>
-                <div class="action-buttons">
-                  <button class="view-button">View</button>
-                  <button class="edit-button">Edit</button>
-                </div>
-              </td>
-            </tr>
+            <?php endforeach; ?>
           </tbody>
         </table>
       </div>
@@ -92,6 +118,3 @@
   <script src="javascript/jobp.js"></script>
 </body>
 </html>
-
-
-
