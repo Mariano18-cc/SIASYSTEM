@@ -1,16 +1,10 @@
 <?php
-session_start();
-include "db_connection.php"; // Include database connection
-
-// Ensure user is logged in
-if (!isset($_SESSION['username'])) {
-    header('Location: login.html');
-    exit();
-}
+// Include database connection
+include "db_connection.php";
 
 // Fetch all applicants from the database
 $results = [];
-$stmt = $conn->prepare("SELECT id, fname, mname, lname, status FROM applicant");
+$stmt = $conn->prepare("SELECT applicant_id, fname, mname, lname, status FROM applicant");
 $stmt->execute();
 $results = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
@@ -21,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['applicant_id']) && iss
     $new_status = $_POST['new_status'];
 
     // Prepare the update query
-    $update_stmt = $conn->prepare("UPDATE applicant SET status = ? WHERE id = ?");
-    $update_stmt->bind_param("si", $new_status, $applicant_id);
+    $update_stmt = $conn->prepare("UPDATE applicant SET status = ? WHERE applicant_id = ?");
+    $update_stmt->bind_param("si", $new_status, $applicant_id); // 's' for string, 'i' for integer
     $update_stmt->execute();
     $update_stmt->close();
 
@@ -30,7 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['applicant_id']) && iss
     header("Location: jobp.php");
     exit();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -87,13 +80,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['applicant_id']) && iss
           <tbody>
             <?php foreach ($results as $applicant): ?>
             <tr>
-              <td><?php echo htmlspecialchars($applicant['id']); ?></td>
+              <td><?php echo htmlspecialchars($applicant['applicant_id']); ?></td>
               <td><?php echo htmlspecialchars($applicant['fname'] . ' ' . $applicant['mname'] . ' ' . $applicant['lname']); ?></td>
               <td><?php echo htmlspecialchars($applicant['status']); ?></td>
               <td>
                 <div class="action-buttons">
                   <form method="POST" action="jobp.php">
-                    <input type="hidden" name="applicant_id" value="<?php echo htmlspecialchars($applicant['id']); ?>">
+                    <input type="hidden" name="applicant_id" value="<?php echo htmlspecialchars($applicant['applicant_id']); ?>">
                     <select name="new_status" required>
                       <option value="new" <?php echo $applicant['status'] == 'new' ? 'selected' : ''; ?>>New</option>
                       <option value="in progress" <?php echo $applicant['status'] == 'in progress' ? 'selected' : ''; ?>>In Progress</option>
