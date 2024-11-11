@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Human Resource System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="stylesheet/payroll.css">
+    <link rel="stylesheet" href="../stylesheet/payroll.css">
 </head>
 <body>
     <div class="sidebar">
@@ -94,6 +94,6 @@
         </div>
     </div>
 
-    <script src="javascript/payroll.js"></script>
+    <script src="../javascript/payroll.js"></script>
 </body>
 </html>

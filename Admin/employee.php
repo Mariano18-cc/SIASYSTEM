@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-include "db_connection.php";
+include "../db_connection.php";
 
 // Initialize an array for employees
 $results = [];
@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="stylesheet/employee.css">
+    <link rel="stylesheet" href="../stylesheet/employee.css">
     <style>
         /* Modal Style */
         .modal {
@@ -148,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     <nav class="sidebar"> 
         <header>
             <div class="logo">
-                <img src="picture/logo.png">
+                <img src="../picture/logo.png">
             </div>
             <h1>HUMAN RESOURCE</h1>
         </header>
@@ -168,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     <div class="main">
         <div class="header">
             <div class="user-info">
-                <img src="picture/ex.pic" alt="User Avatar" class="user-avatar">
+                <img src="../picture/ex.pic" alt="User Avatar" class="user-avatar">
                 <span>Cakelyn</span><br>
                 <p class="department">Human Resource Admin</p>
             </div>

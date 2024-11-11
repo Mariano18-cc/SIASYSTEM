@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "db_connection.php"; // Ensure this file contains the database connection
+include "../db_connection.php"; // Ensure this file contains the database connection
 
 // Initialize variables
 $searchResults = [];
@@ -87,13 +87,13 @@ $stmt->close();
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css'>
     <link rel='stylesheet' href='https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css'>
     <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&amp;display=swap'>
-    <link rel="stylesheet" href="stylesheet/dashboard.css">
+    <link rel="stylesheet" href="../stylesheet/dashboard.css">
 </head>
 <body>
 <div class="dashboard">
     <aside class="sidebar">
       <div class="logo">
-        <img src="picture/logow.jpg" alt="user-info">
+        <img src="../picture/logo.png" alt="user-info">
       </div>
       <h2>Human Resources</h2>
       <ul style="list-style-type: none; padding-left: 0;">
@@ -102,7 +102,7 @@ $stmt->close();
         <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
         <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
         <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
-        <div class="bottom-content"><li><a href="login.php"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
+        <div class="bottom-content"><li><a href="../login.php"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
     </ul>
     </aside>
 
@@ -201,7 +201,7 @@ $stmt->close();
     </div>
         
 
-    <script src="javascript/dashboard.js"></script>
+    <script src="../javascript/dashboard.js"></script>
  
 </body>
 </html>

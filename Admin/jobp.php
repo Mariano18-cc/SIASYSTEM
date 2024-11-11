@@ -1,6 +1,6 @@
 <?php
 // Include database connection
-include "db_connection.php";
+include "../db_connection.php";
 
 // Fetch all applicants from the database
 $results = [];
@@ -45,7 +45,7 @@ if (isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HRMS Job Process</title>
-    <link rel="stylesheet" href="stylesheet/jobp.css">
+    <link rel="stylesheet" href="../stylesheet/jobp.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Modal styles */
@@ -83,7 +83,7 @@ if (isset($_GET['id'])) {
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="logo">
-      <img src="picture/logo.png" alt="Human Resource">
+      <img src="../picture/logo.png" alt="Human Resource">
     </div>
     <h2>HUMAN RESOURCE</h2>
     <ul style="list-style-type: none; padding-left: 0;">
@@ -101,7 +101,7 @@ if (isset($_GET['id'])) {
     <!-- Header -->
     <div class="header">
       <div class="user-info">
-        <img src="picture/ex.pic" alt="Human Resource">
+        <img src="../picture/ex.pic" alt="Human Resource">
         <p class="department">Human Resource Admin</p>
       </div>
     </div>

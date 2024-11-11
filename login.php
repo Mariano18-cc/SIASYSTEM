@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // If password matches, set session and redirect to dashboard
             $_SESSION['user'] = $input;  // Store email or username
             $_SESSION['user_id'] = $row['ID'];
-            header("Location: dashboard.php"); // Redirect to your dashboard or home page
+            header("Location: Admin/dashboard.php"); // Redirect to your dashboard or home page
             exit();
         } else {
             // Incorrect password

@@ -1,6 +1,6 @@
 <?php
 // Include database connection
-include "db_connection.php";
+include "../db_connection.php";
 
 require 'vendor/autoload.php'; // Include the library for PDF generation
 use Dompdf\Dompdf;
@@ -57,7 +57,7 @@ if (isset($_GET['generate_pdf'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HRMS Print Employee Salary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="stylesheet/printr.css">
+    <link rel="stylesheet" href="../stylesheet/printr.css">
     <style>
         /* Center the table */
         table {
@@ -160,6 +160,7 @@ if (isset($_GET['generate_pdf'])) {
             </form>
         </div>
     </div>
+
 
 </body>
 </html>
