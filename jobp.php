@@ -4,7 +4,7 @@ include "db_connection.php";
 
 // Fetch all applicants from the database
 $results = [];
-$stmt = $conn->prepare("SELECT applicant_id, fname, mname, lname, status FROM applicant");
+$stmt = $conn->prepare("SELECT applicant_id, fname, mname, lname, email, bday, bplace, applying_position, resume, status FROM applicant");
 $stmt->execute();
 $results = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
@@ -24,6 +24,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['applicant_id']) && iss
     header("Location: jobp.php");
     exit();
 }
+
+// This part will handle the AJAX request for applicant details
+if (isset($_GET['id'])) {
+    $applicant_id = $_GET['id'];
+    $stmt = $conn->prepare("SELECT applicant_id, fname, mname, lname, email, bday, bplace, applying_position, resume, status FROM applicant WHERE applicant_id = ?");
+    $stmt->bind_param("i", $applicant_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    echo json_encode($result);
+    exit(); // Ensure this doesn't execute further PHP code below
+}
 ?>
 
 <!DOCTYPE html>
@@ -34,6 +47,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['applicant_id']) && iss
     <title>HRMS Job Process</title>
     <link rel="stylesheet" href="stylesheet/jobp.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            overflow-y: auto;
+        }
+        .modal-content table {
+            width: 100%;
+        }
+        .modal-content button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
@@ -59,7 +102,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['applicant_id']) && iss
     <div class="header">
       <div class="user-info">
         <img src="picture/ex.pic" alt="Human Resource">
-       <!-- <span><?php echo htmlspecialchars($_SESSION['username']); ?></span><br> -->
         <p class="department">Human Resource Admin</p>
       </div>
     </div>
@@ -98,6 +140,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['applicant_id']) && iss
                     </select>
                     <button type="submit" class="edit-button">Update Status</button>
                   </form>
+                  <!-- View Button -->
+                  <button class="view-button" onclick="openModal(<?php echo $applicant['applicant_id']; ?>)">View</button>
                 </div>
               </td>
             </tr>
@@ -108,6 +152,72 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['applicant_id']) && iss
     </div>
   </div>
 
-  <script src="javascript/jobp.js"></script>
+  <!-- Modal for Applicant Details -->
+  <div id="applicantModal" class="modal">
+    <div class="modal-content">
+      <h3>Applicant Details</h3>
+      <table>
+        <tr>
+          <td>Applicant ID:</td>
+          <td id="modal_applicant_id"></td>
+        </tr>
+        <tr>
+          <td>Full Name:</td>
+          <td id="modal_full_name"></td>
+        </tr>
+        <tr>
+          <td>Email:</td>
+          <td id="modal_email"></td>
+        </tr>
+        <tr>
+          <td>Birthday:</td>
+          <td id="modal_bday"></td>
+        </tr>
+        <tr>
+          <td>Birthplace:</td>
+          <td id="modal_bplace"></td>
+        </tr>
+        <tr>
+          <td>Position:</td>
+          <td id="modal_position"></td>
+        </tr>
+        <tr>
+          <td>Resume:</td>
+          <td><a id="modal_resume_link" href="#" target="_blank">Open Resume</a></td>
+        </tr>
+        <tr>
+          <td>Status:</td>
+          <td id="modal_status"></td>
+        </tr>
+      </table>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    function openModal(applicantId) {
+        // Fetch applicant details from the server
+        fetch(`jobp.php?id=${applicantId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Fill the modal with the applicant's data
+                document.getElementById('modal_applicant_id').innerText = data.applicant_id;
+                document.getElementById('modal_full_name').innerText = `${data.fname} ${data.mname} ${data.lname}`;
+                document.getElementById('modal_email').innerText = data.email;
+                document.getElementById('modal_bday').innerText = data.bday;
+                document.getElementById('modal_bplace').innerText = data.bplace;
+                document.getElementById('modal_position').innerText = data.applying_position;
+                document.getElementById('modal_resume_link').href = `uploads/${data.resume}`; // Adjust the path if needed
+                document.getElementById('modal_status').innerText = data.status;
+
+                // Show the modal
+                document.getElementById('applicantModal').style.display = 'flex';
+            });
+    }
+
+    function closeModal() {
+        document.getElementById('applicantModal').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
