@@ -2,6 +2,7 @@
 session_start();
 include "db_connection.php"; // Ensure this file contains the database connection
 
+// Initialize variables
 $searchResults = [];
 $jobApplicationsCount = 0;
 $inProgressCount = 0;
@@ -9,7 +10,31 @@ $teacherCount = 0;
 $excellentCount = 0;
 $guardCount = 0;
 
-// Check if a search has been made
+// Check if the user is logged in
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php"); // Redirect to login if no user is logged in
+    exit();
+}
+
+// Retrieve user info from session (assuming user data like email or username is stored in the session)
+$user = $_SESSION['user'];
+
+// Query the hradmin table to get the user's full name or any other required info
+$stmt = $conn->prepare("SELECT user, email FROM hradmin WHERE user = ? OR email = ?");
+$stmt->bind_param("ss", $user, $user);
+$stmt->execute();
+$userData = $stmt->get_result()->fetch_assoc();
+
+// Check if user exists
+if ($userData) {
+    $loggedInUser = $userData['user']; // Get the username or email
+    // You can also get the user's email or other data if needed
+} else {
+    echo "User not found!";
+    exit();
+}
+
+// Process search if exists
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['searchTerm'])) {
     $searchTerm = $_POST['searchTerm'];
     
@@ -52,7 +77,6 @@ $guardCount = $result->fetch_assoc()['total'];
 $stmt->close();
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,12 +95,11 @@ $stmt->close();
         <header>
             <div class="logo">
                 <img src="picture/logo.png">
-              </div>
-              <h1>HUMAN RESOURCE</h1>
             </div>
+            <h1>HUMAN RESOURCE</h1>
         </header>
          
-        <ul >
+        <ul>
             <hr>
             <li><a href="Dashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
             <li><a href="jobp.php"><i class="fas fa-briefcase"></i><span>Job Process</span></a></li>
@@ -84,7 +107,7 @@ $stmt->close();
             <li><a href="payroll.php"><i class="fas fa-wallet"></i><span>Payroll</span></a></li>
             <li><a href="printr.php"><i class="fas fa-receipt"></i><span>Print Receipt</span></a></li>
 
-            <div class="bottom-content"><li><a href="login.html"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
+            <div class="bottom-content"><li><a href="login.php"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
         </ul>
     </nav>
 
@@ -94,13 +117,13 @@ $stmt->close();
         <div class="header">
             <div class="search-container">
                 <button class="search-button">
-                    <i class="fas fa-search"></i> <!-- Font Awesome Search Icon -->
+                    <i class="fas fa-search"></i>
                 </button>
                 <input type="text" class="search-input" placeholder="Search...">
             </div>
             <div class="user-info">
                 <img src="picture/ex.pic" alt="User Avatar" class="user-avatar">
-                <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                <span><?php echo htmlspecialchars($loggedInUser); ?></span>
             </div>        
         </div>
 
@@ -154,8 +177,7 @@ $stmt->close();
                     </div>
                 </div>
             </div>
-
-            <!-- Calendar -->
+<!-- Calendar -->
             <!-- <div class="panel"> -->
             <div class="calendar-container">
                 <div class="calendar-header">
@@ -184,7 +206,7 @@ $stmt->close();
         
         </div>
     </div>
-
+        
     <script src="javascript/dashboard.js"></script>
  
 </body>
