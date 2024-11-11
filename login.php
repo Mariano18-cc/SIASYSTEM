@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <img src="picture/logo.png" alt="Logo" class="logo">
          
             <form id="loginForm" method="POST" action="login.php">
-                <input type="text" id="loginEmail" name="email" placeholder="Email or Username" required>
+                <input type="email" id="loginEmail" name="email" placeholder="Email or Username" required>
                 <div class="password-container">
                     <input type="password" id="loginPassword" name="password" placeholder="Password" required>
                     <i class="fa-solid fa-eye"></i>
