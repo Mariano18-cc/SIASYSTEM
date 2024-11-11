@@ -5,11 +5,26 @@ include "db_connection.php";
 // Initialize an array for employees
 $results = [];
 
-// Fetch all employees from the database
-$stmt = $conn->prepare("SELECT ID, employee_id, fname, lname, position, hired_date, status FROM employee");
+// Check if there’s a search query and handle AJAX request
+if (isset($_GET['ajax']) && isset($_GET['search']) && !empty($_GET['search'])) {
+    $search = "%" . $_GET['search'] . "%";
+    // Search by first name, last name, or position
+    $stmt = $conn->prepare("SELECT ID, employee_id, fname, lname, position, hired_date, status FROM employee WHERE fname LIKE ? OR lname LIKE ? OR position LIKE ?");
+    $stmt->bind_param("sss", $search, $search, $search);
+} else {
+    // Fetch all employees if no search query is provided
+    $stmt = $conn->prepare("SELECT ID, employee_id, fname, lname, position, hired_date, status FROM employee");
+}
+
 $stmt->execute();
 $results = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
+
+// If it’s an AJAX request, return the results as JSON
+if (isset($_GET['ajax'])) {
+    echo json_encode($results);
+    exit();
+}
 
 // Handle the employee status update request
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isset($_POST['new_status'])) {
@@ -18,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
 
     // Prepare the update query
     $update_stmt = $conn->prepare("UPDATE employee SET status = ? WHERE employee_id = ?");
-    $update_stmt->bind_param("ss", $new_status, $employee_id); // Correct bind type for employee_id (string)
+    $update_stmt->bind_param("ss", $new_status, $employee_id);
     $update_stmt->execute();
     $update_stmt->close();
 
@@ -31,14 +46,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     // Collect the form data
     $fname = $_POST['fname'];
-    $mname = $_POST['mname']; // Middle name is optional
+    $mname = $_POST['mname'];
     $lname = $_POST['lname'];
     $email = $_POST['email'];
     $position = $_POST['position'];
     $salary = $_POST['salary'];
     $status = $_POST['status'];
 
-    // Generate a unique employee ID (just an example; adjust it based on your needs)
+    // Generate a unique employee ID
     $employee_id = "EMP" . rand(1000, 9999);
 
     // Get today's date for hired_date
@@ -47,10 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     // Insert the new employee into the database
     $insert_stmt = $conn->prepare("INSERT INTO employee (employee_id, fname, mname, lname, email, hired_date, position, salary, status) 
                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    // Bind parameters with correct types:
-    // - 's' for strings (employee_id, fname, mname, lname, email, position, status)
-    // - 'd' for double (salary)
-    // - 's' for date (hired_date)
     $insert_stmt->bind_param("sssssssd", $employee_id, $fname, $mname, $lname, $email, $hired_date, $position, $salary, $status);
     $insert_stmt->execute();
     $insert_stmt->close();
@@ -71,15 +82,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     <style>
         /* Modal Style */
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
+            display: none;
+            position: fixed;
+            z-index: 1;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
         }
 
         .modal-content {
@@ -98,8 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
             font-weight: bold;
         }
 
-        .close:hover,
-        .close:focus {
+        .close:hover, .close:focus {
             color: black;
             text-decoration: none;
             cursor: pointer;
@@ -110,8 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
             margin-bottom: 5px;
         }
 
-        .add-employee-form input,
-        .add-employee-form select {
+        .add-employee-form input, .add-employee-form select {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
@@ -157,7 +166,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
 
     <!-- Main content -->
     <div class="main">
-        <!-- Header -->
         <div class="header">
             <div class="user-info">
                 <img src="picture/ex.pic" alt="User Avatar" class="user-avatar">
@@ -167,7 +175,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
         </div>
 
         <div class="search-container">
-            <input type="text" class="search-input" placeholder="Search Employee...">
+            <input type="text" id="search-input" class="search-input" placeholder="Search Employee...">
             <button class="add-button" id="add-button">Add</button>
         </div>
 
@@ -190,7 +198,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                     <input type="email" name="email" required><br>
 
                     <label for="position">Position:</label>
-                    <input type="text" name="position" required><br>
+                    <select name="position" id="position" required>
+                        <option value="">Select a position</option>
+                        <option value="Teacher">Teacher</option>
+                        <option value="Guard">Guard</option>
+                        <option value="Excellent">Excellent</option>
+                    </select><br>
 
                     <label for="salary">Salary:</label>
                     <input type="number" name="salary" step="0.01" required><br>
@@ -208,7 +221,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
 
         <!-- Employee Info Table -->
         <div class="grid-item employee-table">
-            <table class="employee-info-table">
+            <table class="employee-info-table" id="employee-table">
                 <thead>
                     <tr>
                         <th>Employee ID</th>
@@ -219,7 +232,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="employee-tbody">
                     <?php foreach ($results as $employee): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($employee['employee_id']); ?></td>
@@ -244,29 +257,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
         </div>
     </div>
 
-<script>
-// JavaScript for modal functionality
-var modal = document.getElementById("add-employee-modal");
-var btn = document.getElementById("add-button");
-var closeModal = document.getElementById("close-modal");
+    <!-- JavaScript for Modal and Real-Time Search -->
+    <script>
+        // Modal functionality
+        const addButton = document.getElementById("add-button");
+        const modal = document.getElementById("add-employee-modal");
+        const closeModal = document.getElementById("close-modal");
 
-// When the user clicks the Add button, open the modal
-btn.onclick = function() {
-    modal.style.display = "block";
-}
+        addButton.onclick = function() {
+            modal.style.display = "block";
+        }
 
-// When the user clicks on <span> (x), close the modal
-closeModal.onclick = function() {
-    modal.style.display = "none";
-}
+        closeModal.onclick = function() {
+            modal.style.display = "none";
+        }
 
-// When the user clicks anywhere outside the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-</script>
-<script src="javascript/dashboard.js"></script>
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // JavaScript for real-time search
+        document.getElementById("search-input").addEventListener("keyup", function() {
+            const query = this.value;
+
+            // Make an AJAX request to fetch filtered employees
+            fetch("employee.php?ajax=1&search=" + encodeURIComponent(query))
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById("employee-tbody");
+                    tbody.innerHTML = ""; // Clear existing rows
+
+                    // Populate table with new search results
+                    data.forEach(employee => {
+                        const row = document.createElement("tr");
+
+                        row.innerHTML = `
+                            <td>${employee.employee_id}</td>
+                            <td>${employee.fname} ${employee.lname}</td>
+                            <td>${employee.position}</td>
+                            <td>${employee.hired_date}</td>
+                            <td>${employee.status}</td>
+                            <td>
+                                <form method="POST" action="employee.php">
+                                    <input type="hidden" name="employee_id" value="${employee.employee_id}">
+                                    <select name="new_status" required>
+                                        <option value="Active" ${employee.status === 'Active' ? 'selected' : ''}>Active</option>
+                                        <option value="Inactive" ${employee.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
+                                    </select>
+                                    <button type="submit" class="update-button">Update Status</button>
+                                </form>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                });
+        });
+    </script>
 </body>
 </html>
