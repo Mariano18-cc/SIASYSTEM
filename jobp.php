@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['applicant_id']) && iss
     <div class="header">
       <div class="user-info">
         <img src="picture/ex.pic" alt="Human Resource">
-        <span><?php echo htmlspecialchars($_SESSION['username']); ?></span><br>
+       <!-- <span><?php echo htmlspecialchars($_SESSION['username']); ?></span><br> -->
         <p class="department">Human Resource Admin</p>
       </div>
     </div>
