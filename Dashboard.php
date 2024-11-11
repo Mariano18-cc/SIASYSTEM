@@ -90,42 +90,35 @@ $stmt->close();
     <link rel="stylesheet" href="stylesheet/dashboard.css">
 </head>
 <body>
-    <!-- Sidebar -->
-    <nav class="sidebar"> 
-        <header>
-            <div class="logo">
-                <img src="picture/logo.png">
-            </div>
-            <h1>HUMAN RESOURCE</h1>
-        </header>
-         
-        <ul>
-            <hr>
-            <li><a href="Dashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-            <li><a href="jobp.php"><i class="fas fa-briefcase"></i><span>Job Process</span></a></li>
-            <li><a href="employee.php"><i class="fas fa-users"></i><span>Employee</span></a></li>
-            <li><a href="payroll.php"><i class="fas fa-wallet"></i><span>Payroll</span></a></li>
-            <li><a href="printr.php"><i class="fas fa-receipt"></i><span>Print Receipt</span></a></li>
+<div class="dashboard">
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="picture/logow.jpg" alt="user-info">
+      </div>
+      <h2>Human Resources</h2>
+      <ul style="list-style-type: none; padding-left: 0;">
+        <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
+        <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
+        <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
+        <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
+        <div class="bottom-content"><li><a href="login.php"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
+    </ul>
+    </aside>
 
-            <div class="bottom-content"><li><a href="login.php"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
-        </ul>
-    </nav>
-
-    <!-- Main content -->
-    <div class="main">
-        <!-- Header -->
-        <div class="header">
-            <div class="search-container">
-                <button class="search-button">
-                    <i class="fas fa-search"></i>
-                </button>
-                <input type="text" class="search-input" placeholder="Search...">
-            </div>
-            <div class="user-info">
-                <img src="picture/ex.pic" alt="User Avatar" class="user-avatar">
-                <span><?php echo htmlspecialchars($loggedInUser); ?></span>
-            </div>        
+        <main class="main-content">
+      <header class="header">
+        <div class="search-container">
+            <button class="search-button">
+                <i class="fas fa-search"></i> <!-- Font Awesome Search Icon -->
+            </button>
+            <input type="text" class="search-input" placeholder="Search...">
         </div>
+        <div class="user-info">
+          <img src="picture/ex.pic.jpg" alt="User Avatar">
+          <span><?php echo htmlspecialchars($loggedInUser); ?></span>
+        </div>
+      </header>
 
         <!-- Job Process Panel -->
         <div class="content">
