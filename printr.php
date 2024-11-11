@@ -58,6 +58,43 @@ if (isset($_GET['generate_pdf'])) {
     <title>HRMS Print Employee Salary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="stylesheet/printr.css">
+    <style>
+        /* Center the table */
+        table {
+            width: 80%; /* Adjust table width as needed */
+            margin: 20px auto; /* Center the table horizontally */
+            border-collapse: collapse; /* Optional: for cleaner borders */
+        }
+
+        /* Style for table headers and cells */
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        /* Style for Print PDF button */
+        .pdf-button {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Green color */
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .pdf-button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        /* Adjust layout of the main content and ensure the button stays at the bottom right */
+        #Payslip {
+            position: relative; /* Make the container relative for absolute positioning of the button */
+        }
+    </style>
 </head>
 <body>
 
@@ -92,7 +129,7 @@ if (isset($_GET['generate_pdf'])) {
             <h2>Employee Salary Report</h2>
 
             <!-- Table displaying employee salary information -->
-            <table border="1" cellpadding="10" cellspacing="0">
+            <table>
                 <thead>
                     <tr>
                         <th>Employee ID</th>
@@ -126,3 +163,4 @@ if (isset($_GET['generate_pdf'])) {
 
 </body>
 </html>
+
