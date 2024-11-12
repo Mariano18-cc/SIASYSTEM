@@ -14,15 +14,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['applicant_id']) && iss
     $applicant_id = $_POST['applicant_id'];
     $new_status = $_POST['new_status'];
 
-    // Prepare the update query
-    $update_stmt = $conn->prepare("UPDATE applicant SET status = ? WHERE applicant_id = ?");
-    $update_stmt->bind_param("si", $new_status, $applicant_id); // 's' for string, 'i' for integer
-    $update_stmt->execute();
-    $update_stmt->close();
+    if ($new_status === 'rejected') {
+        // Delete the applicant from the database if rejected
+        $delete_stmt = $conn->prepare("DELETE FROM applicant WHERE applicant_id = ?");
+        $delete_stmt->bind_param("i", $applicant_id);
+        $delete_stmt->execute();
+        $delete_stmt->close();
+        
+        // Show a rejection message
+        echo "<script>alert('Applicant has been rejected and removed from the system.');</script>";
+        
+        // Refresh the page to reflect the removal
+        echo "<script>window.location.href = 'jobp.php';</script>";
+        exit();
+    } else {
+        // Update the status if not rejected
+        $update_stmt = $conn->prepare("UPDATE applicant SET status = ? WHERE applicant_id = ?");
+        $update_stmt->bind_param("si", $new_status, $applicant_id);
+        $update_stmt->execute();
+        $update_stmt->close();
 
-    // Redirect to refresh the page and show the updated status
-    header("Location: jobp.php");
-    exit();
+        // Redirect to refresh the page and show the updated status
+        header("Location: jobp.php");
+        exit();
+    }
 }
 
 // This part will handle the AJAX request for applicant details
@@ -35,9 +50,10 @@ if (isset($_GET['id'])) {
     $stmt->close();
 
     echo json_encode($result);
-    exit(); // Ensure this doesn't execute further PHP code below
+    exit();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
