@@ -31,11 +31,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
     $employee_id = $_POST['employee_id'];
     $new_status = $_POST['new_status'];
 
-    // Prepare the update query
-    $update_stmt = $conn->prepare("UPDATE employee SET status = ? WHERE employee_id = ?");
-    $update_stmt->bind_param("ss", $new_status, $employee_id);
-    $update_stmt->execute();
-    $update_stmt->close();
+    // Check if the action is to delete
+    if ($new_status == "Delete") {
+        // Prepare and execute the delete query
+        $delete_stmt = $conn->prepare("DELETE FROM employee WHERE employee_id = ?");
+        $delete_stmt->bind_param("s", $employee_id);
+        $delete_stmt->execute();
+        $delete_stmt->close();
+    } else {
+        // Update the status if it's not delete
+        $update_stmt = $conn->prepare("UPDATE employee SET status = ? WHERE employee_id = ?");
+        $update_stmt->bind_param("ss", $new_status, $employee_id);
+        $update_stmt->execute();
+        $update_stmt->close();
+    }
 
     // Redirect to the page to show updated data
     header("Location: employee.php");
@@ -71,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,65 +91,95 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     <link rel="stylesheet" href="../stylesheet/employee.css">
     <style>
         /* Modal Style */
+     
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
 
-        .modal-content {
-            background-color: #f9f9f9;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 60%;
-            border-radius: 5px;
-        }
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 40px;
+    border: 1px solid #ddd;
+    width: 50%;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+.modal-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-        .close:hover, .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+.modal-header h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
 
-        .add-employee-form label {
-            display: block;
-            margin-bottom: 5px;
-        }
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-        .add-employee-form input, .add-employee-form select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
 
-        .add-employee-form button {
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+.add-employee-form label {
+    font-size: 16px;
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+}
 
-        .add-employee-form button:hover {
-            background-color: #45a049;
-        }
+.add-employee-form input,
+.add-employee-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+.add-employee-form button {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.add-employee-form button:hover {
+    background-color: #0056b3;
+}
+
+.add-employee-form button:focus {
+    outline: none;
+}
+
+.modal-footer {
+    text-align: right;
+    padding-top: 20px;
+}
+
     </style>
 </head>
 <body>
@@ -160,7 +200,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
             <li><a href="employee.php"><i class="fas fa-users"></i><span>Employee</span></a></li>
             <li><a href="payroll.php"><i class="fas fa-wallet"></i><span>Payroll</span></a></li>
             <li><a href="printr.php"><i class="fas fa-receipt"></i><span>Print Receipt</span></a></li>
-            <div class="bottom-content"><li><a href="login.html"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
+            <div class="bottom-content"><li><a href="login.php"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
         </ul>
     </nav>
 
@@ -180,52 +220,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
         </div>
 
         <!-- Modal for Add Employee Form -->
-        <div id="add-employee-modal" class="modal">
-            <div class="modal-content">
-                <span class="close" id="close-modal">&times;</span>
-                <h3>Add New Employee</h3>
-                <form method="POST" action="employee.php">
-                    <label for="fname">First Name:</label>
-                    <input type="text" name="fname" required><br>
-
-                    <label for="mname">Middle Name:</label> 
-                    <input type="text" name="mname"><br> 
-
-                    <label for="lname">Last Name:</label>
-                    <input type="text" name="lname" required><br>
-
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" required><br>
-
-                    <label for="position">Position:</label>
-                    <select name="position" id="position" required>
-                        <option value="">Select a position</option>
-                        <option value="Teacher">Teacher</option>
-                        <option value="Guard">Guard</option>
-                        <option value="Excellent">Excellent</option>
-                    </select><br>
-
-                    <label for="salary">Salary:</label>
-                    <input type="number" name="salary" step="0.01" required><br>
-
-                    <label for="status">Status:</label>
-                    <select name="status" required>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select><br>
-
-                    <button type="submit" name="add_employee">Add Employee</button>
-                </form>
-            </div>
+<div id="add-employee-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-modal">&times;</span>
+        <div class="modal-header">
+            <h3>Add New Employee</h3>
         </div>
+        <form method="POST" action="employee.php" class="add-employee-form">
+            <label for="fname">First Name:</label>
+            <input type="text" name="fname" required><br>
 
+            <label for="mname">Middle Name:</label> 
+            <input type="text" name="mname"><br> 
+
+            <label for="lname">Last Name:</label>
+            <input type="text" name="lname" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" required><br>
+
+            <label for="position">Position:</label>
+            <select name="position" id="position" required>
+                <option value="">Select a position</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Guard">Guard</option>
+                <option value="Excellent">Excellent</option>
+            </select><br>
+
+            <label for="salary">Salary:</label>
+            <input type="number" name="salary" step="0.01" required><br>
+
+            <label for="status">Status:</label>
+            <select name="status" required>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select><br>
+
+            <div class="modal-footer">
+                <button type="submit" name="add_employee">Add Employee</button>
+            </div>
+        </form>
+    </div>
+</div>
         <!-- Employee Info Table -->
         <div class="grid-item employee-table">
             <table class="employee-info-table" id="employee-table">
                 <thead>
                     <tr>
                         <th>Employee ID</th>
-                        <th>Employee Name</th>
+                        <th>Name</th>
                         <th>Position</th>
                         <th>Hired Date</th>
                         <th>Status</th>
@@ -234,34 +277,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                 </thead>
                 <tbody id="employee-tbody">
                     <?php foreach ($results as $employee): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($employee['employee_id']); ?></td>
-                        <td><?php echo htmlspecialchars($employee['fname'] . ' ' . $employee['lname']); ?></td>
-                        <td><?php echo htmlspecialchars($employee['position']); ?></td>
-                        <td><?php echo htmlspecialchars($employee['hired_date']); ?></td>
-                        <td><?php echo htmlspecialchars($employee['status']); ?></td>
-                        <td>
-                            <form method="POST" action="employee.php">
-                                <input type="hidden" name="employee_id" value="<?php echo htmlspecialchars($employee['employee_id']); ?>">
-                                <select name="new_status" required>
-                                    <option value="Active" <?php echo ($employee['status'] == 'Active') ? 'selected' : ''; ?>>Active</option>
-                                    <option value="Inactive" <?php echo ($employee['status'] == 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
-                                </select>
-                                <button type="submit" class="update-button">Update Status</button>
-                            </form>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td><?php echo $employee['employee_id']; ?></td>
+                            <td><?php echo $employee['fname'] . " " . $employee['lname']; ?></td>
+                            <td><?php echo $employee['position']; ?></td>
+                            <td><?php echo $employee['hired_date']; ?></td>
+                            <td><?php echo $employee['status']; ?></td>
+                            <td>
+                                <form method="POST" action="employee.php">
+                                    <input type="hidden" name="employee_id" value="<?php echo $employee['employee_id']; ?>">
+                                    <select name="new_status" required>
+                                        <option value="Active" <?php echo ($employee['status'] == 'Active') ? 'selected' : ''; ?>>Active</option>
+                                        <option value="Inactive" <?php echo ($employee['status'] == 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
+                                        <option value="Delete">Delete</option>
+                                    </select>
+                                    <button type="submit" class="update-button">&nbsp; Update&nbsp; </button>
+                                </form>
+                            </td>
+                        </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- JavaScript for Modal and Real-Time Search -->
     <script>
-        // Modal functionality
-        const addButton = document.getElementById("add-button");
+        // Modal handling for add employee
         const modal = document.getElementById("add-employee-modal");
+        const addButton = document.getElementById("add-button");
         const closeModal = document.getElementById("close-modal");
 
         addButton.onclick = function() {
@@ -272,13 +315,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
             modal.style.display = "none";
         }
 
+        // Close modal if user clicks outside of it
         window.onclick = function(event) {
-            if (event.target == modal) {
+            if (event.target === modal) {
                 modal.style.display = "none";
             }
         }
 
-        // JavaScript for real-time search
+        // Handle search filtering
         document.getElementById("search-input").addEventListener("keyup", function() {
             const query = this.value;
 
@@ -305,6 +349,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                                     <select name="new_status" required>
                                         <option value="Active" ${employee.status === 'Active' ? 'selected' : ''}>Active</option>
                                         <option value="Inactive" ${employee.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
+                                        <option value="Delete">Delete</option>
                                     </select>
                                     <button type="submit" class="update-button">Update Status</button>
                                 </form>

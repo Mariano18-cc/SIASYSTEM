@@ -2,7 +2,7 @@
 // Include database connection
 include "../db_connection.php";
 
-require 'vendor/autoload.php'; // Include the library for PDF generation
+require '../vendor/autoload.php';
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
