@@ -1,6 +1,6 @@
 <?php
 // Include database connection
-include "db_connection.php";
+include "../db_connection.php";
 
 // Fetch all applicants from the database
 $results = [];
@@ -14,15 +14,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['applicant_id']) && iss
     $applicant_id = $_POST['applicant_id'];
     $new_status = $_POST['new_status'];
 
-    // Prepare the update query
-    $update_stmt = $conn->prepare("UPDATE applicant SET status = ? WHERE applicant_id = ?");
-    $update_stmt->bind_param("si", $new_status, $applicant_id); // 's' for string, 'i' for integer
-    $update_stmt->execute();
-    $update_stmt->close();
+    if ($new_status === 'rejected') {
+        // Delete the applicant from the database if rejected
+        $delete_stmt = $conn->prepare("DELETE FROM applicant WHERE applicant_id = ?");
+        $delete_stmt->bind_param("i", $applicant_id);
+        $delete_stmt->execute();
+        $delete_stmt->close();
+        
+        // Show a rejection message
+        echo "<script>alert('Applicant has been rejected and removed from the system.');</script>";
+        
+        // Refresh the page to reflect the removal
+        echo "<script>window.location.href = 'jobp.php';</script>";
+        exit();
+    } else {
+        // Update the status if not rejected
+        $update_stmt = $conn->prepare("UPDATE applicant SET status = ? WHERE applicant_id = ?");
+        $update_stmt->bind_param("si", $new_status, $applicant_id);
+        $update_stmt->execute();
+        $update_stmt->close();
 
-    // Redirect to refresh the page and show the updated status
-    header("Location: jobp.php");
-    exit();
+        // Redirect to refresh the page and show the updated status
+        header("Location: jobp.php");
+        exit();
+    }
 }
 
 // This part will handle the AJAX request for applicant details
@@ -35,9 +50,10 @@ if (isset($_GET['id'])) {
     $stmt->close();
 
     echo json_encode($result);
-    exit(); // Ensure this doesn't execute further PHP code below
+    exit();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +61,7 @@ if (isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HRMS Job Process</title>
-    <link rel="stylesheet" href="stylesheet/Jobp.css">
+    <link rel="stylesheet" href="../stylesheet/jobp.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Modal styles */
@@ -83,7 +99,7 @@ if (isset($_GET['id'])) {
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="logo">
-      <img src="picture/logo.png" alt="Human Resource">
+      <img src="../picture/logo.png" alt="Human Resource">
     </div>
     <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
     <ul style="list-style-type: none; padding-left: 0;">
@@ -100,8 +116,8 @@ if (isset($_GET['id'])) {
   <main class="main-content">
     <div class="header">
       <div class="user-info">
-        <img src="picture/ex.pic.jpg" alt="Human Resource">
-        <span><?php echo htmlspecialchars($loggedInUser); ?></span>
+        <img src="../picture/ex.pic" alt="Human Resource">
+        <p class="department">Human Resource Admin</p>
       </div>
     </div>
 

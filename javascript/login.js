@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var errorMessage = document.getElementById('errorMessage');
         
         if (email === 'admin@gmail.com' && password === 'admin123') {
-            window.location.href = 'dashboard.html';
+            window.location.href = 'Admin/dashboard.php';
         } else {
             errorMessage.style.display = 'block'; 
             document.getElementById('loginEmail').value = '';
