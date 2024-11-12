@@ -20,31 +20,37 @@
   /* Sidebar */
   .sidebar {
     width: 250px;
-    background-color: #2e3a59;
+    background-color: #082C66;
     color: white;
     padding: 20px;
     position: fixed;
     height: 100%;
   }
   
-  .sidebar .logo img {
-    width: 100%;
-    height: auto;
+  h2{
+    text-align: center;
+  }
+  .sidebar .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
-  .sidebar h2 {
-    color: #ecf0f1;
-    margin-top: 20px;
-    font-size: 24px;
+  .sidebar .logo img {
+    width: 250px;
+    height: 100px;
+    object-fit: contain; 
   }
   
   .sidebar ul {
     list-style-type: none;
     padding-left: 0;
+  
   }
   
   .sidebar ul li {
     margin: 20px 0;
+    
   }
   
   .sidebar ul li a {
@@ -84,15 +90,6 @@
   align-items: center;
 }
 
-.search-button {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  margin-right: 10px;
-  cursor: pointer;
-}
-
 .search-input {
   padding: 8px;
   font-size: 16px;
@@ -101,9 +98,6 @@
   border-radius: 4px;
 }
 
-.search-button:hover {
-  background-color: #2980b9;
-}
 
   .header h1 {
     font-size: 1.5em;
