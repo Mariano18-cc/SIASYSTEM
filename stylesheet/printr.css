@@ -143,7 +143,7 @@ tr:nth-child(even) {
 
 #Payslip {
   position: relative;
-  max-width: 100%;
+  max-width: 50%;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ddd;
