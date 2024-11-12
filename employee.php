@@ -80,105 +80,128 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="stylesheet/employee.css">
     <style>
-        /* Modal Style */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
+    /* Modal Background */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed position to stay on screen */
+    z-index: 9999; /* Ensure it's on top of other content */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    overflow: auto; /* Allows scrolling if content is long */
+}
 
-        .modal-content {
-            background-color: #f9f9f9;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 60%;
-            border-radius: 5px;
-        }
+/* Modal Content Box */
+.modal-content {
+    background-color: #082C66; 
+    color: white; 
+    margin: 10% auto; /* Center modal */
+    padding: 20px;
+    border-radius: 8px;
+    width: 600px;
+    max-width: 90%; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative; 
+    top: 50%;
+    transform: translateY(-50%);
+    overflow-y: auto; /* Allows vertical scrolling if content is too tall */
+    max-height: 80%; 
+}
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+/* Close Button */
+.modal-content .close {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute; 
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
 
-        .close:hover, .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+.modal-content .close:hover {
+    color: #ddd; /* Change color on hover */
+}
 
-        .add-employee-form label {
-            display: block;
-            margin-bottom: 5px;
-        }
+/* Form Styling */
+.modal-content h3 {
+    margin-top: 0;
+    text-align: center;
+    font-size: 24px;
+}
 
-        .add-employee-form input, .add-employee-form select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
+.modal-content label {
+    display: block;
+    margin: 15px 0 5px;
+    font-weight: bold;
+}
 
-        .add-employee-form button {
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+.modal-content input[type="text"],
+.modal-content input[type="email"],
+.modal-content input[type="number"],
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
 
-        .add-employee-form button:hover {
-            background-color: #45a049;
-        }
-    </style>
+.modal-content button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0B3C7E; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.modal-content button:hover {
+    background-color: #0A326A; 
+}
+
+</style>
 </head>
 <body>
 
-    <!-- Sidebar -->
-    <nav class="sidebar"> 
-        <header>
-            <div class="logo">
-                <img src="picture/logo.png">
-            </div>
-            <h1>HUMAN RESOURCE</h1>
-        </header>
-         
-        <ul>
-            <hr>
-            <li><a href="Dashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-            <li><a href="jobp.php"><i class="fas fa-briefcase"></i><span>Job Process</span></a></li>
-            <li><a href="employee.php"><i class="fas fa-users"></i><span>Employee</span></a></li>
-            <li><a href="payroll.php"><i class="fas fa-wallet"></i><span>Payroll</span></a></li>
-            <li><a href="printr.php"><i class="fas fa-receipt"></i><span>Print Receipt</span></a></li>
-            <div class="bottom-content"><li><a href="login.html"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
-        </ul>
-    </nav>
+<div class="dashboard">
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="picture/logo.png" alt="user-info">
+      </div>
+      <h2>Human Resources</h2>
+      <ul style="list-style-type: none; padding-left: 0;">
+        <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
+        <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
+        <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
+        <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
+        <div class="bottom-content"><li><a href="login.php"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
+
+    </ul>
+    </aside>
 
     <!-- Main content -->
-    <div class="main">
+    <main class="main-content">
         <div class="header">
             <div class="user-info">
-                <img src="picture/ex.pic" alt="User Avatar" class="user-avatar">
-                <span>Cakelyn</span><br>
-                <p class="department">Human Resource Admin</p>
+                <img src="picture/ex.pic.jpg" alt="User Avatar" class="user-avatar">
+                <p>Cakelyn<br><small>Human Resources</small></p>
             </div>
         </div>
 
         <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="Search Employee...">
-            <button class="add-button" id="add-button">Add</button>
+                        
+            <input type="text" id="search-input" class="search-input" placeholder="Search Employee..." > 
+            <button class="add-button" id="add-button">
+            <i class="fas fa-plus"></i> Add
         </div>
-
+        <h1 style="font-size: 24px; font-weight: bold; color: #082C66; margin-bottom: 10px; text-align: left;">Employee</h1>
         <!-- Modal for Add Employee Form -->
         <div id="add-employee-modal" class="modal">
             <div class="modal-content">
@@ -255,7 +278,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                 </tbody>
             </table>
         </div>
-    </div>
+    </main>
 
     <!-- JavaScript for Modal and Real-Time Search -->
     <script>

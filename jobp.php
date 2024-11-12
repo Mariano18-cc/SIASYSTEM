@@ -45,7 +45,7 @@ if (isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HRMS Job Process</title>
-    <link rel="stylesheet" href="stylesheet/jobp.css">
+    <link rel="stylesheet" href="stylesheet/Jobp.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Modal styles */
@@ -85,24 +85,23 @@ if (isset($_GET['id'])) {
     <div class="logo">
       <img src="picture/logo.png" alt="Human Resource">
     </div>
-    <h2>HUMAN RESOURCE</h2>
+    <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
     <ul style="list-style-type: none; padding-left: 0;">
       <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
       <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
       <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
       <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
       <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
-      <li><a href="index.php"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
+      <div class="bottom-content"><li><a href="login.php"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
     </ul>
   </div>
 
   <!-- Main content -->
-  <div class="main">
-    <!-- Header -->
+  <main class="main-content">
     <div class="header">
       <div class="user-info">
-        <img src="picture/ex.pic" alt="Human Resource">
-        <p class="department">Human Resource Admin</p>
+        <img src="picture/ex.pic.jpg" alt="Human Resource">
+        <span><?php echo htmlspecialchars($loggedInUser); ?></span>
       </div>
     </div>
 
@@ -150,7 +149,7 @@ if (isset($_GET['id'])) {
         </table>
       </div>
     </div>
-  </div>
+  </main=>
 
   <!-- Modal for Applicant Details -->
   <div id="applicantModal" class="modal">

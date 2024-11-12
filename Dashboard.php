@@ -87,13 +87,15 @@ $stmt->close();
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css'>
     <link rel='stylesheet' href='https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css'>
     <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&amp;display=swap'>
-    <link rel="stylesheet" href="stylesheet/dashboard.css">
+    <link rel="stylesheet" href="stylesheet/Dashboard.css">
+
+
 </head>
 <body>
 <div class="dashboard">
     <aside class="sidebar">
       <div class="logo">
-        <img src="picture/logow.jpg" alt="user-info">
+        <img src="picture/logo.png" alt="user-info">
       </div>
       <h2>Human Resources</h2>
       <ul style="list-style-type: none; padding-left: 0;">
@@ -110,7 +112,6 @@ $stmt->close();
       <header class="header">
         <div class="search-container">
             <button class="search-button">
-                <i class="fas fa-search"></i> <!-- Font Awesome Search Icon -->
             </button>
             <input type="text" class="search-input" placeholder="Search...">
         </div>
@@ -200,7 +201,6 @@ $stmt->close();
         </div>
     </div>
         
-
     <script src="javascript/dashboard.js"></script>
  
 </body>
