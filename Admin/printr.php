@@ -101,7 +101,7 @@ if (isset($_GET['generate_pdf'])) {
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="logo">
-            <img src="picture/logow.jpg" alt="Human Resource">
+            <img src="picture/logo.png" alt="Human Resource">
         </div>
         <h2>HUMAN RESOURCE</h2>
         <ul style="list-style-type: none; padding-left: 0;">
@@ -110,7 +110,7 @@ if (isset($_GET['generate_pdf'])) {
             <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
             <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
             <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
-            <li><a href="index.php"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
+            <li><a href="../login.php"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
         </ul>
     </div>
 
