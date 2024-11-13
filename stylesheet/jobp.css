@@ -25,6 +25,7 @@
   padding: 20px;
   position: fixed;
   height: 100%;
+  font-size: 20px;
 }
 
 h2{
@@ -165,11 +166,11 @@ table {
 
 table th, table td {
   padding: 12px 15px;
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
 }
 
 table th {
-  background-color: #3498db;
+  background-color: #2C3F6C;
   color: white;
   font-weight: bold;
 }
