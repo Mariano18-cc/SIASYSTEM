@@ -92,7 +92,7 @@
 
     <div class="role-container">
         <!-- Admin Role -->
-        <div class="role-box" onclick="window.location.href='admin-login.html'">
+        <div class="role-box" onclick="window.location.href='login.php'">
             
             <h2>Admin</h2>
             <p>Access the HR management features</p>
@@ -100,19 +100,19 @@
         </div>
 
         <!-- Employee Role -->
-        <div class="role-box" onclick="window.location.href='employee-login.html'">
+        <div class="role-box" onclick="window.location.href='login_emp.php'">
             
             <h2>Employee</h2>
             <p>Access employee-specific resources</p>
-            <a href="employee-login.html">Login as Employee</a>
+            <a href="login_emp.php">Login as Employee</a>
         </div>
 
         <!-- Portal Role -->
-        <div class="role-box" onclick="window.location.href='portal-login.html'">
+        <div class="role-box" onclick="window.location.href='login_portal.php'">
             
             <h2>Teachers Portal</h2>
             <p>Access the Teachers portal</p>
-            <a href="portal-login.html">Go to Portal</a>
+            <a href="login_portal.php">Go to Portal</a>
         </div>
     </div>
 
