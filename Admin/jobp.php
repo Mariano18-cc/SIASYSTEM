@@ -102,7 +102,6 @@ if (isset($_GET['id'])) {
         <img src="../picture/logo.png" alt="Human Resource">
     </div>
     <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
-
     <ul>
         <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
         <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>

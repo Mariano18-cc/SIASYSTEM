@@ -53,14 +53,21 @@
 }
 
 .sidebar ul li i{
-  padding-right: 10px;
-  padding-top: 10px;
+  margin-right: 10px; 
 }
 
 .sidebar ul li a {
   color: #ecf0f1;
   text-decoration: none;
   font-size: 20px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.sidebar ul li:hover {
+  background: #2e3c44;
+  border-radius: 10px;
 }
 
 .bottom-content {
@@ -71,10 +78,18 @@
 .bottom-content a {
   color: #ecf0f1;
   text-decoration: none;
-  font-size: 18px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
 }
 .bottom-content i{
   padding-right: 20px;
+}
+
+.bottom-content :hover{
+  background: #2e3c44;
 }
 
 /* Main Content Area */
