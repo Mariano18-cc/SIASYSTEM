@@ -99,19 +99,22 @@ if (isset($_GET['id'])) {
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="logo">
-      <img src="../picture/logo.png" alt="Human Resource">
+        <img src="../picture/logo.png" alt="Human Resource">
     </div>
     <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
 
-    <ul style="list-style-type: none; padding-left: 0;">
-      <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
-      <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
-      <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
-      <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
-      <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
-      <div class="bottom-content"><li><a href="login.php"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
+    <ul>
+        <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
+        <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
+        <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
+        <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
     </ul>
-  </div>
+    <div class="bottom-content">
+        <a href="login.php"><i class="fas fa-sign-out-alt"></i>Log Out</a>
+    </div>
+</div>
+
 
   <!-- Main content -->
   <main class="main-content">
