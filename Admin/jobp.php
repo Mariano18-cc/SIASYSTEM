@@ -110,7 +110,7 @@ if (isset($_GET['id'])) {
         <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
     </ul>
     <div class="bottom-content">
-        <a href="login.php"><i class="fas fa-sign-out-alt"></i>Log Out</a>
+        <a href="../login.php"><i class="fas fa-sign-out-alt"></i>Log Out</a>
     </div>
 </div>
 
