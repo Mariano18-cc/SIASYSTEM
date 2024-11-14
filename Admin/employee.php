@@ -89,98 +89,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     <title>Employee Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../stylesheet/employee.css">
-    <style>
-        /* Modal Style */
-     
-        .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 10% auto;
-    padding: 40px;
-    border: 1px solid #ddd;
-    width: 50%;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.modal-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.modal-header h3 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-}
-
-.add-employee-form label {
-    font-size: 16px;
-    display: block;
-    margin-bottom: 8px;
-    color: #555;
-}
-
-.add-employee-form input,
-.add-employee-form select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #333;
-}
-
-.add-employee-form button {
-    padding: 12px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.add-employee-form button:hover {
-    background-color: #0056b3;
-}
-
-.add-employee-form button:focus {
-    outline: none;
-}
-
-.modal-footer {
-    text-align: right;
-    padding-top: 20px;
-}
-
-    </style>
 </head>
 <body>
 
@@ -218,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                         
             <input type="text" id="search-input" class="search-input" placeholder="Search Employee..." > 
             <button class="add-button" id="add-button">
-            <i class="fas fa-plus"></i> Add
+            <i class="fas fa-plus"></i> Add</button>
         </div>
         <h1 style="font-size: 24px; font-weight: bold; color: #082C66; margin-bottom: 10px; text-align: left;">Employee</h1>
         <!-- Modal for Add Employee Form -->
@@ -303,64 +211,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
         </div>
     </main>
 
-    <script>
-        // Modal handling for add employee
-        const modal = document.getElementById("add-employee-modal");
-        const addButton = document.getElementById("add-button");
-        const closeModal = document.getElementById("close-modal");
-
-        addButton.onclick = function() {
-            modal.style.display = "block";
-        }
-
-        closeModal.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        // Close modal if user clicks outside of it
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        // Handle search filtering
-        document.getElementById("search-input").addEventListener("keyup", function() {
-            const query = this.value;
-
-            // Make an AJAX request to fetch filtered employees
-            fetch("employee.php?ajax=1&search=" + encodeURIComponent(query))
-                .then(response => response.json())
-                .then(data => {
-                    const tbody = document.getElementById("employee-tbody");
-                    tbody.innerHTML = ""; // Clear existing rows
-
-                    // Populate table with new search results
-                    data.forEach(employee => {
-                        const row = document.createElement("tr");
-
-                        row.innerHTML = `
-                            <td>${employee.employee_id}</td>
-                            <td>${employee.fname} ${employee.lname}</td>
-                            <td>${employee.position}</td>
-                            <td>${employee.hired_date}</td>
-                            <td>${employee.status}</td>
-                            <td>
-                                <form method="POST" action="employee.php">
-                                    <input type="hidden" name="employee_id" value="${employee.employee_id}">
-                                    <select name="new_status" required>
-                                        <option value="Active" ${employee.status === 'Active' ? 'selected' : ''}>Active</option>
-                                        <option value="Inactive" ${employee.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
-                                        <option value="Delete">Delete</option>
-                                    </select>
-                                    <button type="submit" class="update-button">Update Status</button>
-                                </form>
-                            </td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                });
-        });
-    </script>
+    <script src="../javascript/employee.js"></script>
 </body>
 </html>
