@@ -119,7 +119,7 @@ if (isset($_GET['id'])) {
   <main class="main-content">
     <div class="header">
       <div class="user-info">
-        <img src="../picture/ex.pic" alt="Human Resource">
+        <img src="../picture/ex.pic.jpg" alt="Human Resource">
         <p class="department">Human Resource Admin</p>
       </div>
     </div>

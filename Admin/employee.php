@@ -115,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     <main class="main-content">
         <div class="header">
             <div class="user-info">
-                <img src="../picture/ex.pic" alt="User Avatar" class="user-avatar">
+                <img src="../picture/ex.pic.jpg" alt="User Avatar" class="user-avatar">
                 <span>Cakelyn</span><br>
                 <p class="department">Human Resource Admin</p>
             </div>

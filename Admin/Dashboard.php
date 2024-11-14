@@ -118,7 +118,7 @@ $stmt->close();
             <input type="text" class="search-input" placeholder="Search...">
         </div>
         <div class="user-info">
-          <img src="picture/ex.pic.jpg" alt="User Avatar">
+          <img src="../picture/ex.pic.jpg" alt="User Avatar">
           <span><?php echo htmlspecialchars($loggedInUser); ?></span>
         </div>
       </header>

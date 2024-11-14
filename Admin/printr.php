@@ -121,7 +121,7 @@ if (isset($_GET['generate_pdf'])) {
         <!-- Header -->
         <div class="header">
             <div class="user-info">
-                <img src="picture/ex.pic" alt="User Avatar" class="user-avatar">
+                <img src="../picture/ex.pic.jpg" alt="User Avatar" class="user-avatar">
                 <span>cakelyn</span>
             </div>
         </div>
