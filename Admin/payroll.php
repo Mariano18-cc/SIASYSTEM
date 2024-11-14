@@ -74,7 +74,7 @@
                         <td>P200</td>
                         <td>P1,200.00</td>
                         <td>P36,000.00</td>
-                        <td><button class="view-button">View</button></td>
+                        <td><button class="openModalBtn view-button">View</button></td>
                     </tr>
                     <tr>
                         <td><div class="circle orange">JP</div></td>
@@ -83,7 +83,7 @@
                         <td>P200</td>
                         <td>P1,200.00</td>
                         <td>P36,000.00</td>
-                        <td><button class="view-button">View</button></td>
+                        <td><button class="openModalBtn view-button">View</button></td>
                     </tr>
                     <tr>
                         <td><div class="circle green">JS</div></td>
@@ -92,12 +92,55 @@
                         <td>P200</td>
                         <td>P1,200.00</td>
                         <td>P36,000.00</td>
-                        <td><button class="view-button">View</button></td>
+                        <td><button class="openModalBtn view-button">View</button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="modal-header">
+                    <div class="header-content">
+                        <h3>MANGMANG, JAY PRINCE T.</h3>
+                        <p>mangmangjayprince@gmail.com</p>
+                    </div>
+                    <div class="header-buttons">
+                        <button class="send-btn">Send</button>
+                        <button class="print-btn">Print</button>
+                    </div>
+                    <div class="balance-date">
+                        <h2 class="balance">₱ 36,000.00</h2>
+                        <p class="date">OCTOBER 15, 2024</p>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <table class="details-table">
+                        <tr>
+                            <td class="label">Earnings</td>
+                            <td class="value">₱ 10,000.00</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Deduction</td>
+                            <td class="value">₱ 2,000.00</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Tax</td>
+                            <td class="value">₱ 1,500.00</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Others</td>
+                            <td class="value">₱ 500.00</td>
+                        </tr>
+                    </table>
+                    <div class="total">
+                        <p>Total:₱ 7,000.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div id="Attendance" class="tabcontent">
             <h2>Attendance Section</h2>
             <!-- You can add the attendance section here -->

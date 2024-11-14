@@ -18,3 +18,20 @@ function openTab(evt, tabName) {
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
 }
+
+// for modal display
+document.querySelectorAll(".openModalBtn").forEach(function(button) {
+    button.onclick = function() {
+        document.getElementById("modal").style.display = "flex";
+    };
+});
+
+document.querySelector(".close").onclick = function() {
+    document.getElementById("modal").style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == document.getElementById("modal")) {
+        document.getElementById("modal").style.display = "none";
+    }
+}
