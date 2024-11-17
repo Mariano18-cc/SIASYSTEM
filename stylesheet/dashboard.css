@@ -11,62 +11,80 @@
     height: 100%;
   }
   
-  /* Container for the Dashboard */
-  .dashboard {
-    display: flex;
-    height: 100%;
-    flex-direction: column;
-  }
   /* Sidebar */
-  .sidebar {
-    width: 250px;
-    background-color: #082C66;
-    color: white;
-    padding: 20px;
-    position: fixed;
-    height: 100%;
-  }
-  
-  h2{
-    text-align: center;
-  }
-  .sidebar .logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .sidebar .logo img {
-    width: 250px;
-    height: 100px;
-    object-fit: contain; 
-  }
-  
-  .sidebar ul {
-    list-style-type: none;
-    padding-left: 0;
-  
-  }
-  
-  .sidebar ul li {
-    margin: 20px 0;
-    
-  }
-  
-  .sidebar ul li a {
-    color: #ecf0f1;
-    text-decoration: none;
-    font-size: 18px;
-  }
-  
-  .bottom-content {
-    margin-top: auto;
-  }
-  
-  .sidebar ul li a span {
-    margin-left: 10px;
-  }
-  
+.sidebar {
+  width: 250px;
+  background-color: #082C66;
+  color: white;
+  padding: 20px;
+  position: fixed;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pushes bottom content to the bottom */
+  font-size: 20px;
+}
+
+.sidebar .logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar .logo img {
+  width: 250px;
+  height: 100px;
+  object-fit: contain; 
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.sidebar ul li {
+  margin: 20px 0;
+}
+
+.sidebar ul li i{
+  margin-right: 10px; 
+}
+
+.sidebar ul li a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.sidebar ul li:hover {
+  background: #2e3c44;
+  border-radius: 10px;
+}
+
+.bottom-content {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.bottom-content a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+}
+.bottom-content i{
+  padding-right: 20px;
+}
+
+.bottom-content :hover{
+  background: #2e3c44;
+}
 
 /* Main Content Area */
 .main-content {
@@ -97,11 +115,6 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
-
-  .header h1 {
-    font-size: 1.5em;
-  }
   
   .user-info {
     text-align: right;
@@ -126,15 +139,6 @@
     background-color: #f1f1f1;
     padding: 20px;
     border-radius: 8px;
-  }
-  
-
-  
-  /* log-out */
-    .bottom-content{
-    position: absolute;
-    bottom: 50px;
-    left: 10;
   }
   
   .header .user-info {

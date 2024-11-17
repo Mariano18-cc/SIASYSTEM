@@ -1,5 +1,5 @@
- // Function to switch between tabs
- function openTab(evt, tabName) {
+// Function to switch between tabs
+function openTab(evt, tabName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
@@ -28,9 +28,8 @@ function updateDate() {
 
 // Update the date immediately on page load
 updateDate();
- // for attendance
 
- // Update date and time every second
+// Update date and time every second
 function updateDateTime() {
     const now = new Date();
     const date = now.toLocaleDateString();
@@ -83,3 +82,22 @@ function showAttendanceHistory(employeeName) {
 function closeHistoryModal() {
     document.getElementById("attendanceHistoryModal").style.display = "none";
 }
+
+// Ensure modal button event handlers are set up once the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".openModalBtn").forEach(function(button) {
+        button.onclick = function() {
+            document.getElementById("modal").style.display = "flex";
+        };
+    });
+
+    document.querySelector(".close").onclick = function() {
+        document.getElementById("modal").style.display = "none";
+    };
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById("modal")) {
+            document.getElementById("modal").style.display = "none";
+        }
+    };
+});

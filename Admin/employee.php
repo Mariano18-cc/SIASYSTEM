@@ -89,147 +89,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     <title>Employee Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../stylesheet/employee.css">
-    <style> 
-       /* Modal Container */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-/* Modal Content */
-.modal-content {
-    background-color: #082C66;
-    color: white;
-    margin: 10% auto;
-    padding: 20px;
-    border-radius: 16px;
-    width: 50%;
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
-    max-width: 600px;
-    position: relative;
-}
-
-/* Modal Header */
-.modal-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.modal-header h3 {
-    font-size: 24px;
-    color: #f5f5f5;
-    font-weight: bold;
-    margin: 0;
-}
-
-/* Close Button */
-.close {
-    color: #ddd;
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: #ff6b6b;
-    text-decoration: none;
-}
-
-/* Form Styling */
-.add-employee-form {
-    background-color: #f5f5f5;
-    padding: 20px;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 500px;
-    margin: auto;
-}
-
-/* Label Styling */
-.add-employee-form label {
-    color: #082C66;
-    font-weight: bold;
-    font-size: 16px;
-    display: block;
-    margin-bottom: 8px;
-}
-
-/* Input and Select Styling */
-.add-employee-form input,
-.add-employee-form select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-}
-
-/* Button Styling */
-.add-employee-form button {
-    padding: 12px 20px;
-    background-color: #FF7F50; 
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-.add-employee-form button:hover {
-    background-color: #FF6347; 
-}
-
-.add-employee-form button:focus {
-    outline: none;
-}
-
-/* Footer Styling */
-.modal-footer {
-    text-align: right;
-    padding-top: 20px;
-}
-    </style>
 </head>
 <body>
 
     <!-- Sidebar -->
-    <nav class="sidebar"> 
-        <header>
-            <div class="logo">
-                <img src="../picture/logo.png">
-            </div>
-            <h1>HUMAN RESOURCE</h1>
-        </header>
-         
-        <ul>
-            <hr>
-            <li><a href="Dashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-            <li><a href="jobp.php"><i class="fas fa-briefcase"></i><span>Job Process</span></a></li>
-            <li><a href="employee.php"><i class="fas fa-users"></i><span>Employee</span></a></li>
-            <li><a href="payroll.php"><i class="fas fa-wallet"></i><span>Payroll</span></a></li>
-            <li><a href="printr.php"><i class="fas fa-receipt"></i><span>Print Receipt</span></a></li>
-            <div class="bottom-content"><li><a href="login.php"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
-        </ul>
-    </nav>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+        <img src="../picture/logo.png" alt="Human Resource">
+    </div>
+    <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
+    <ul>
+        <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
+        <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
+        <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
+        <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
+    </ul>
+    <div class="bottom-content">
+        <a href="../login.php"><i class="fas fa-sign-out-alt"></i>Log Out</a>
+    </div>
+</div>
 
     <!-- Main content -->
     <main class="main-content">
         <div class="header">
             <div class="user-info">
-                <img src="../picture/ex.pic" alt="User Avatar" class="user-avatar">
+                <img src="../picture/ex.pic.jpg" alt="User Avatar" class="user-avatar">
                 <span>Cakelyn</span><br>
                 <p class="department">Human Resource Admin</p>
             </div>
@@ -239,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                         
             <input type="text" id="search-input" class="search-input" placeholder="Search Employee..." > 
             <button class="add-button" id="add-button">
-            <i class="fas fa-plus"></i> Add
+            <i class="fas fa-plus"></i> Add</button>
         </div>
         <h1 style="font-size: 24px; font-weight: bold; color: #082C66; margin-bottom: 10px; text-align: left;">Employee</h1>
         <!-- Modal for Add Employee Form -->
@@ -324,64 +210,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
         </div>
     </main>
 
-    <script>
-        // Modal handling for add employee
-        const modal = document.getElementById("add-employee-modal");
-        const addButton = document.getElementById("add-button");
-        const closeModal = document.getElementById("close-modal");
-
-        addButton.onclick = function() {
-            modal.style.display = "block";
-        }
-
-        closeModal.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        // Close modal if user clicks outside of it
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        // Handle search filtering
-        document.getElementById("search-input").addEventListener("keyup", function() {
-            const query = this.value;
-
-            // Make an AJAX request to fetch filtered employees
-            fetch("employee.php?ajax=1&search=" + encodeURIComponent(query))
-                .then(response => response.json())
-                .then(data => {
-                    const tbody = document.getElementById("employee-tbody");
-                    tbody.innerHTML = ""; // Clear existing rows
-
-                    // Populate table with new search results
-                    data.forEach(employee => {
-                        const row = document.createElement("tr");
-
-                        row.innerHTML = `
-                            <td>${employee.employee_id}</td>
-                            <td>${employee.fname} ${employee.lname}</td>
-                            <td>${employee.position}</td>
-                            <td>${employee.hired_date}</td>
-                            <td>${employee.status}</td>
-                            <td>
-                                <form method="POST" action="employee.php">
-                                    <input type="hidden" name="employee_id" value="${employee.employee_id}">
-                                    <select name="new_status" required>
-                                        <option value="Active" ${employee.status === 'Active' ? 'selected' : ''}>Active</option>
-                                        <option value="Inactive" ${employee.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
-                                        <option value="Delete">Delete</option>
-                                    </select>
-                                    <button type="submit" class="update-button">Update Status</button>
-                                </form>
-                            </td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                });
-        });
-    </script>
+    <script src="../javascript/employee.js"></script>
 </body>
 </html>

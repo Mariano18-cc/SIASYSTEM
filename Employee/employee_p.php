@@ -17,7 +17,7 @@
     <h2>HUMAN RESOURCE</h2>
     <ul style="list-style-type: none; padding-left: 0;">
         <li><a href="employee_p.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-        <li><a href="t_leave.html"><i class="fas fa-envelope-open-text"></i> Leave Request</a></li>
+        <li><a href="leave.php"><i class="fas fa-envelope-open-text"></i> Leave Request</a></li>
         <li><a href="t_attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
         <li><a href="t_payroll.html"><i class="fas fa-money-check-alt"></i> Payroll</a></li>
       <li><a href="../login.php"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>

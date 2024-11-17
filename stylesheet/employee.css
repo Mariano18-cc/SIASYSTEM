@@ -5,6 +5,7 @@
   font-family:Helvetica, sans-serif;
   overflow: hidden;
 }
+
 .html, body {
   height: 100%;
 }
@@ -14,6 +15,7 @@
   height: 100%;
   flex-direction: column;
 }
+
 /* Sidebar */
 .sidebar {
   width: 250px;
@@ -22,11 +24,12 @@
   padding: 20px;
   position: fixed;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pushes bottom content to the bottom */
+  font-size: 20px;
 }
 
-h2{
-  text-align: center;
-}
 .sidebar .logo {
   display: flex;
   justify-content: center;
@@ -42,33 +45,50 @@ h2{
 .sidebar ul {
   list-style-type: none;
   padding-left: 0;
-
 }
 
 .sidebar ul li {
   margin: 20px 0;
-  
+}
+
+.sidebar ul li i{
+  margin-right: 10px; 
 }
 
 .sidebar ul li a {
   color: #ecf0f1;
   text-decoration: none;
   font-size: 18px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.sidebar ul li:hover {
+  background: #2e3c44;
+  border-radius: 10px;
 }
 
 .bottom-content {
   margin-top: auto;
+  padding-top: 20px;
 }
 
-.sidebar ul li a span {
-  margin-left: 10px;
+.bottom-content a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+}
+.bottom-content i{
+  padding-right: 20px;
 }
 
- /* log-out */
-.bottom-content{
-  position: absolute;
-  bottom: 50px;
-  left: 10;
+.bottom-content :hover{
+  background: #2e3c44;
 }
 
 /* Main Content Area */
@@ -141,12 +161,11 @@ h2{
 .employee-info-table th, 
 .employee-info-table td {
   padding: 12px;
-  border: 1px solid #ccc;
   text-align: left;
 }
 
 .employee-info-table th {
-  background-color: #3498db;
+  background-color: #2C3F6C;
   color: white;
 }
 
@@ -175,6 +194,88 @@ h2{
   overflow-y: auto;
 }
 
+/* Modal Style */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+  
+  .modal-content {
+      background-color: #1A3C67;
+      color: white;
+      margin: 10% auto;
+      padding: 20px 40px;
+      width: 40%;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  
+  .modal-header h3 {
+      font-size: 20px;
+      color: white;
+      text-align: center;
+      margin-bottom: 20px;
+  }
+  
+  .add-employee-form label {
+      font-size: 14px;
+      color: white;
+      margin-bottom: 5px;
+  }
+  
+  .add-employee-form input,
+  .add-employee-form select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #333;
+  }
+  
+  .add-employee-form input[type="text"],
+  .add-employee-form input[type="email"],
+  .add-employee-form input[type="number"],
+  .add-employee-form select {
+      background-color: white;
+  }
+  
+  .add-employee-form button {
+      width: 30%;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #2691D9;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto;
+  }
+  
+  .add-employee-form button:hover {
+      background-color: #1A70AD;
+  }
+  
+  .close {
+      color: white;
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+  }
+  
+  .close:hover {
+      color: #ddd;
+  }
 
 /* Style for the button for modal */
 .btn {
@@ -234,3 +335,4 @@ h2{
   background-color: #082C66; 
   color: white;/
 }
+

@@ -8,21 +8,24 @@
     <link rel="stylesheet" href="../stylesheet/payroll.css">
 </head>
 <body>
-<div class="dashboard">
-    <aside class="sidebar">
-      <div class="logo">
-        <img src="picture/logo.png" alt="user-info">
-      </div>
-      <h2>Human Resources</h2>
-      <ul style="list-style-type: none; padding-left: 0;">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+        <img src="../picture/logo.png" alt="Human Resource">
+    </div>
+    <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
+    <ul>
         <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
         <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
         <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
         <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
         <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
-        <div class="bottom-content"><li><a href="login.php"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
     </ul>
-    </aside>
+    <div class="bottom-content">
+        <a href="../login.php"><i class="fas fa-sign-out-alt"></i>Log Out</a>
+    </div>
+</div>
 
         <main class="main-content">
       <header class="header">
@@ -32,7 +35,7 @@
             <input type="text" class="search-input" placeholder="Search...">
         </div>
         <div class="user-info">
-          <img src="picture/ex.pic.jpg" alt="User Avatar">
+          <img src="../picture/ex.pic.jpg" alt="User Avatar">
 
          
         </div>
@@ -74,7 +77,7 @@
                         <td>P200</td>
                         <td>P1,200.00</td>
                         <td>P36,000.00</td>
-                        <td><button class="view-button">View</button></td>
+                        <td><button class="openModalBtn view-button">View</button></td>
                     </tr>
                     <tr>
                         <td><div class="circle orange">JP</div></td>
@@ -83,7 +86,7 @@
                         <td>P200</td>
                         <td>P1,200.00</td>
                         <td>P36,000.00</td>
-                        <td><button class="view-button">View</button></td>
+                        <td><button class="openModalBtn view-button">View</button></td>
                     </tr>
                     <tr>
                         <td><div class="circle green">JS</div></td>
@@ -92,7 +95,7 @@
                         <td>P200</td>
                         <td>P1,200.00</td>
                         <td>P36,000.00</td>
-                        <td><button class="view-button">View</button></td>
+                        <td><button class="openModalBtn view-button">View</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -146,6 +149,53 @@
     </div>
 </div>
 </div>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="modal-header">
+                    <div class="header-content">
+                        <h3>MANGMANG, JAY PRINCE T.</h3>
+                        <p>mangmangjayprince@gmail.com</p>
+                    </div>
+                    <div class="header-buttons">
+                        <button class="send-btn">Send</button>
+                        <button class="print-btn">Print</button>
+                    </div>
+                    <div class="balance-date">
+                        <h2 class="balance">₱ 36,000.00</h2>
+                        <p class="date">OCTOBER 15, 2024</p>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <table class="details-table">
+                        <tr>
+                            <td class="label">Earnings</td>
+                            <td class="value">₱ 10,000.00</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Deduction</td>
+                            <td class="value">₱ 2,000.00</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Tax</td>
+                            <td class="value">₱ 1,500.00</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Others</td>
+                            <td class="value">₱ 500.00</td>
+                        </tr>
+                    </table>
+                    <div class="total">
+                        <p>Total:₱ 7,000.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="Attendance" class="tabcontent">
+            <h2>Attendance Section</h2>
+            <!-- You can add the attendance section here -->
+        </div>
 
     <script src="../javascript/payroll.js"></script>
 </body>
