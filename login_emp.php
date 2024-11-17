@@ -1,3 +1,66 @@
+<?php
+// Include the database connection
+require_once('db_connection.php');
+
+// Initialize error message variable
+$error = "";
+
+// Start session at the top of the file
+session_start();
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
+
+    // Validate email and password
+    if (!empty($email) && !empty($password)) {
+        try {
+            // Query to check if the user exists using the email
+            $sql = "SELECT `ID`, `employee_id`, `fname`, `mname`, `lname`, `email`, `password`, `hired_date`, `position`, `salary`, `status` FROM `employee` WHERE `email` = :email";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $stmt->execute();
+
+            // Fetch the user
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user) {
+                // Compare the provided password with the stored password (no hashing)
+                if ($password == $user['password']) {
+                    // Store user data in session
+                    $_SESSION['user_id'] = $user['ID'];
+                    $_SESSION['employee_id'] = $user['employee_id'];
+                    $_SESSION['fname'] = $user['fname'];
+                    $_SESSION['mname'] = $user['mname'];
+                    $_SESSION['lname'] = $user['lname'];
+                    $_SESSION['email'] = $user['email'];
+                    $_SESSION['hired_date'] = $user['hired_date'];
+                    $_SESSION['position'] = $user['position'];
+                    $_SESSION['salary'] = $user['salary'];
+                    $_SESSION['status'] = $user['status'];
+
+                    // Redirect to the employee dashboard
+                    header("Location: http://localhost/SIASYSTEM/Employee/employee_p.php");
+                    exit();
+                } else {
+                    // Invalid password
+                    $error = "Invalid email or password.";
+                }
+            } else {
+                // No user found
+                $error = "Invalid email or password.";
+            }
+        } catch (PDOException $e) {
+            // Database query error
+            $error = "An error occurred. Please try again later.";
+        }
+    } else {
+        $error = "Please fill in all fields.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,6 +177,12 @@
             text-align: center;
             margin-top: 25px;
         }
+
+        /* Error Message */
+        .error-message {
+            color: red;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -128,19 +197,21 @@
         <div class="login-box">
             <!-- Logo Image -->
             <img src="picture/logo.png" alt="Logo" class="logo">
-            
+
             <!-- Login Form -->
-            <form id="loginForm" method="POST" action="login.php">
-                <input type="text" id="loginEmail" name="email" placeholder="Email or Username" required>
+            <form id="loginForm" method="POST" action="">
+                <!-- Display Error Message -->
+                <?php if (!empty($error)): ?>
+                    <p class="error-message"><?php echo htmlspecialchars($error); ?></p>
+                <?php endif; ?>
+
+                <input type="text" id="loginEmail" name="email" placeholder="Email" required>
                 
                 <!-- Password Field with Eye Icon -->
                 <div class="password-container" style="position: relative;">
                     <input type="password" id="loginPassword" name="password" placeholder="Password" required>
                     <i class="fa-solid fa-eye eye-icon" onclick="togglePasswordVisibility()"></i>
                 </div>
-
-                <!-- Error Message (hidden by default) -->
-                <p id="errorMessage" style="color:red; display:none;">Invalid email or password</p>
 
                 <!-- Log In Button -->
                 <button type="submit">Log In</button>

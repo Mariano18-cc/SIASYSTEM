@@ -14,3 +14,15 @@ if ($conn->connect_error) {
     die("Connection failed: ". $conn->connect_error);
 
 }
+
+try {
+    // Create a new PDO instance for database connection
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    
+    // Set PDO error mode to exception
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    // Handle any connection errors
+    die("Connection failed: " . $e->getMessage());
+}
+?>
