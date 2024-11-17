@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("SELECT `ID`, `user`, `pass`, `email` FROM `hradmin` WHERE `user` = ?");
     }
 
-    if ($stmt === false) {
+    if ($stmt === false) {  
         // Output error if SQL preparation fails
         echo "Error preparing the query: " . $conn->error;
         exit();
