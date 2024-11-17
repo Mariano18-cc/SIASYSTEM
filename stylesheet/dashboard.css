@@ -166,23 +166,40 @@
 
 }
 
+.job-process {
+  display: flex;
+  gap: 20px;
+  min-width: 200px;
+}
+
 .job-card,
 .stat-card {
-    width: 100px;
-    height: 120px;
-    background-color: white;
-    display: stretch;
-    padding: 20px;
-    color: #2C3F6C;
-    text-align: center;
-    border-radius:10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100px;
+  height: 120px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px; /* Adjusted for more space */
+  color: #2C3F6C;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 14px; /* Adjust font size if needed */
 }
 
 .job-card i,
 .stat-card i {
-    font-size: 30px;
-    margin-bottom: 5px;
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+
+.job-card p,
+.stat-card p {
+  margin: 0;
+  font-size: 14px; /* Adjusted font size to fit text */
+  word-wrap: break-word; /* Ensures text wraps if it’s too long */
 }
 
 /* Calendar styling */

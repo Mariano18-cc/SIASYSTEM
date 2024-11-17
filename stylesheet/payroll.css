@@ -241,3 +241,110 @@
   font-size: 18px; /* Smaller font size for the date text */
 }
 
+/* style sa attendance*/
+
+* Date and Time Styling */
+#datetime {
+    font-size: 18px;
+    color: #333;
+    background-color: #e0e0e0;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Header Styling */
+table thead {
+    background-color: #4CAF50;
+    color: white;
+}
+
+table th {
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Table Body Styling */
+table tbody {
+    font-size: 14px;
+}
+
+table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Alternate row background color */
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Table Row Hover Effect */
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Status Styling */
+.ontime {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.late {
+    color: #F44336;
+    font-weight: bold;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 600px;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    float: right;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
