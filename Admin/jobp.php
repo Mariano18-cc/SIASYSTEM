@@ -92,6 +92,7 @@ if (isset($_GET['id'])) {
             padding: 10px 20px;
             cursor: pointer;
         }
+        
     </style>
 </head>
 <body>

@@ -57,7 +57,7 @@ if (isset($_GET['generate_pdf'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HRMS Print Employee Salary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="../stylesheet/printr.css">
+  <link rel="stylesheet" href="../stylesheet/print.css">
     <style>
         /* Center the table */
         table {
@@ -110,8 +110,8 @@ if (isset($_GET['generate_pdf'])) {
             <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
             <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
             <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
-            <li><a href="index.php"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
-        </ul>
+            <div class="bottom-content"><li><a href="login.php"><i class="fas fa-sign-out-alt"></i><span>Log Out</span></a></li></div>
+</ul>
     </div>
 
     <!-- Main content -->

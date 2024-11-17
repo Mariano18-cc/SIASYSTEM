@@ -98,11 +98,54 @@
             </table>
         </div>
 
-        <div id="Attendance" class="tabcontent">
-            <h2>Attendance Section</h2>
-            <!-- You can add the attendance section here -->
+        <div id="datetime"></div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Time of Arrival</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="attendanceRecords">
+            <tr onclick="showAttendanceHistory('John Doe')">
+                <td class="employee-name">John Doe</td>
+                <td>08:55:00 AM</td>
+                <td class="ontime">On Time</td>
+            </tr>
+            <tr onclick="showAttendanceHistory('Jane Smith')">
+                <td class="employee-name">Jane Smith</td>
+                <td>09:05:00 AM</td>
+                <td class="late">Late</td>
+            </tr>
+            <tr onclick="showAttendanceHistory('Alex Brown')">
+                <td class="employee-name">Alex Brown</td>
+                <td>08:45:00 AM</td>
+                <td class="ontime">On Time</td>
+            </tr>
+        </tbody>
+     <!-- Modal to display attendance history -->
+     <div id="attendanceHistoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeHistoryModal()">&times;</span>
+            <h3>Attendance History for <span id="employeeName"></span></h3>
+            <table id="historyTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time of Arrival</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Attendance history will appear here -->
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
+</div>
 
     <script src="../javascript/payroll.js"></script>
 </body>

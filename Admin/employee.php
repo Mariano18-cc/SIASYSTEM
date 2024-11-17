@@ -89,10 +89,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     <title>Employee Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../stylesheet/employee.css">
-    <style>
-        /* Modal Style */
-     
-        .modal {
+    <style> 
+       /* Modal Container */
+.modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -104,16 +103,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
+/* Modal Content */
 .modal-content {
-    background-color: #fff;
+    background-color: #082C66;
+    color: white;
     margin: 10% auto;
-    padding: 40px;
-    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 16px;
     width: 50%;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    position: relative;
 }
 
+/* Modal Header */
 .modal-header {
     text-align: center;
     margin-bottom: 20px;
@@ -121,13 +124,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
 
 .modal-header h3 {
     font-size: 24px;
+    color: #f5f5f5;
     font-weight: bold;
-    color: #333;
+    margin: 0;
 }
 
+/* Close Button */
 .close {
-    color: #aaa;
-    float: right;
+    color: #ddd;
+    position: absolute;
+    right: 20px;
+    top: 20px;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
@@ -135,51 +142,65 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: #ff6b6b;
     text-decoration: none;
 }
 
+/* Form Styling */
+.add-employee-form {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+}
+
+/* Label Styling */
 .add-employee-form label {
+    color: #082C66;
+    font-weight: bold;
     font-size: 16px;
     display: block;
     margin-bottom: 8px;
-    color: #555;
 }
 
+/* Input and Select Styling */
 .add-employee-form input,
 .add-employee-form select {
     width: 100%;
     padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
     font-size: 14px;
-    color: #333;
 }
 
+/* Button Styling */
 .add-employee-form button {
     padding: 12px 20px;
-    background-color: #007bff;
+    background-color: #FF7F50; 
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
 .add-employee-form button:hover {
-    background-color: #0056b3;
+    background-color: #FF6347; 
 }
 
 .add-employee-form button:focus {
     outline: none;
 }
 
+/* Footer Styling */
 .modal-footer {
     text-align: right;
     padding-top: 20px;
 }
-
     </style>
 </head>
 <body>
