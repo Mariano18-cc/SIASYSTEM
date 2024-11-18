@@ -58,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     $mname = $_POST['mname'];
     $lname = $_POST['lname'];
     $email = $_POST['email'];
+    $password = $_POST['password'];
     $position = $_POST['position'];
     $salary = $_POST['salary'];
     $status = $_POST['status'];
@@ -69,18 +70,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     $hired_date = date("Y-m-d");
 
     // Insert the new employee into the database
-    $insert_stmt = $conn->prepare("INSERT INTO employee (employee_id, fname, mname, lname, email, hired_date, position, salary, status) 
-                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $insert_stmt->bind_param("sssssssd", $employee_id, $fname, $mname, $lname, $email, $hired_date, $position, $salary, $status);
-    $insert_stmt->execute();
+    $insert_stmt = $conn->prepare("INSERT INTO employee (employee_id, fname, mname, lname, email, password, hired_date, position, salary, status) 
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $insert_stmt->bind_param("sssssssssd", $employee_id, $fname, $mname, $lname, $email, $password, $hired_date, $position, $salary, $status);
+    
+    if ($insert_stmt->execute()) {
+        // Redirect or display a success message
+        $_SESSION['message'] = "Employee added successfully!";
+    } else {
+        // Handle the error
+        $_SESSION['message'] = "Failed to add employee. Please try again.";
+    }
+
     $insert_stmt->close();
 
     // Redirect to refresh the page and show the new employee
     header("Location: employee.php");
     exit();
 }
-?>
 
+
+
+// Handle the schedule form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isset($_POST['employee_name']) && isset($_POST['time_in']) && isset($_POST['time_out']) && isset($_POST['workday'])) {
+    $employee_id = $_POST['employee_id'];
+    $employee_name = $_POST['employee_name'];
+    $time_in = $_POST['time_in'];
+    $time_out = $_POST['time_out'];
+    $workday = $_POST['workday'];
+
+    // Insert the schedule data into the attendance_emp table
+    $insert_stmt = $conn->prepare("INSERT INTO attendance_emp (employee_id, employee_name, time_in, time_out, workday) VALUES (?, ?, ?, ?, ?)");
+    $insert_stmt->bind_param("sssss", $employee_id, $employee_name, $time_in, $time_out, $workday);
+    if ($insert_stmt->execute())
+
+    {
+        // Redirect or display a success message
+        $_SESSION['message'] = "Schedule saved successfully!";
+    } else {
+        // Handle the error
+        $_SESSION['message'] = "Failed to save schedule. Please try again.";
+    }
+    $insert_stmt->close();
+
+    // Redirect to refresh the page and show the new schedule
+    header("Location: employee.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -178,9 +215,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     background-color: #0A1E50;
 }
 
+.alert {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
+
 
 </style>
 <body>
+
+<?php if (isset($_SESSION['message'])): ?>
+        <div class="alert">
+            <?php echo $_SESSION['message']; ?>
+            <?php unset($_SESSION['message']); ?>
+        </div>
+    <?php endif; ?>
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -238,6 +291,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
 
                     <label for="email">Email:</label>
                     <input type="email" name="email" required><br>
+
+                    <label for="password">Password:</label>
+                    <input type="text" name="password" required><br>
 
                     <label for="position">Position:</label>
                     <select name="position" id="position" required>
@@ -311,7 +367,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
         <div class="modal-content">
             <span class="close" id="close-schedule-modal">&times;</span>
             <h3>Schedule Employee</h3>
-            <form method="POST" action="schedule_employee.php" id="schedule-form">
+        <form method="POST" action="employee.php" id="schedule-form">
                 <label for="schedule-employee-id">Employee ID:</label>
                 <input type="text" id="schedule-employee-id" name="employee_id" readonly><br>
 
