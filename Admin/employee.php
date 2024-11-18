@@ -362,39 +362,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
         </div>
     </main>
 
-    <!-- Modal for Scheduling Employee -->
-    <div id="schedule-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="close-schedule-modal">&times;</span>
-            <h3>Schedule Employee</h3>
+   <!-- Modal for Scheduling Employee -->
+<div id="schedule-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-schedule-modal">&times;</span>
+        <h3>Schedule Employee</h3>
         <form method="POST" action="employee.php" id="schedule-form">
-                <label for="schedule-employee-id">Employee ID:</label>
-                <input type="text" id="schedule-employee-id" name="employee_id" readonly><br>
+            <label for="schedule-employee-id">Employee ID:</label>
+            <input type="text" id="schedule-employee-id" name="employee_id" readonly><br>
 
-                <label for="schedule-employee-name">Employee Name:</label>
-                <input type="text" id="schedule-employee-name" name="employee_name" readonly><br>
+            <label for="schedule-employee-name">Employee Name:</label>
+            <input type="text" id="schedule-employee-name" name="employee_name" readonly><br>
 
-                <label for="time-in">Time In:</label>
-                <input type="time" id="time-in" name="time_in" required><br>
+            <label for="time-in">Time In:</label>
+            <input type="time" id="time-in" name="time_in" required><br>
 
-                <label for="time-out">Time Out:</label>
-                <input type="time" id="time-out" name="time_out" required><br>
+            <label for="time-out">Time Out:</label>
+            <input type="time" id="time-out" name="time_out" required><br>
 
-                <label for="workday">Workday:</label>
-                <select name="workday" id="workday" required>
-                    <option value="Monday">Monday</option>
-                    <option value="Tuesday">Tuesday</option>
-                    <option value="Wednesday">Wednesday</option>
-                    <option value="Thursday">Thursday</option>
-                    <option value="Friday">Friday</option>
-                    <option value="Saturday">Saturday</option>
-                    <option value="Sunday">Sunday</option>
-                </select><br>
+            <label for="workday">Workday:</label>
+            <select name="workday" id="workday" required>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+            </select><br>
 
-                <button type="submit" class="submit-button">Save Schedule</button>
-            </form>
-        </div>
+            <button type="submit" class="submit-button">Save Schedule</button>
+        </form>
     </div>
+</div>
 
     <script>
 document.addEventListener("DOMContentLoaded", function () {

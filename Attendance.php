@@ -10,102 +10,76 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $time_out = '00:00:00'; // Default time-out value, as NULL is not allowed
     $workday = date("l");
 
-    // Check if employee has already clocked in for today
-    if (isset($_POST['mark_in'])) {
-        // Marking time-in
-        if (!empty($employeeInput)) {
-            try {
-                // Check if the input is an employee_id or name
-                if (strlen($employeeInput) > 4 && preg_match('/^[A-Za-z]+\d+$/', $employeeInput)) {
-                    // Treat it as an employee_id (alphanumeric, e.g., EMP4176)
-                    $sql = "SELECT `employee_id`, CONCAT(`fname`, ' ', `lname`) AS employee_name FROM `employee` WHERE `employee_id` = :employeeInput";
-                } else {
-                    // Treat it as an employee Name (first and last name)
-                    $sql = "SELECT `employee_id`, CONCAT(`fname`, ' ', `lname`) AS employee_name FROM `employee` WHERE CONCAT(LOWER(`fname`), ' ', LOWER(`lname`)) = LOWER(:employeeInput)";
-                }
-
-                $stmt = $pdo->prepare($sql);
-                $stmt->bindParam(':employeeInput', $employeeInput, PDO::PARAM_STR);
-                $stmt->execute();
-                $employee = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                if ($employee) {
-                    $employee_id = $employee['employee_id'];
-                    $employee_name = $employee['employee_name'];
-
-                    // Check if the employee has already clocked in today
-                    $sql_check_in = "SELECT * FROM `attendance` WHERE `employee_id` = :employee_id AND `date` = CURDATE() AND `time_out` = '00:00:00'";
-                    $stmt_check_in = $pdo->prepare($sql_check_in);
-                    $stmt_check_in->bindParam(':employee_id', $employee_id, PDO::PARAM_STR);
-                    $stmt_check_in->execute();
-                    $existing_attendance = $stmt_check_in->fetch(PDO::FETCH_ASSOC);
-
-                    if ($existing_attendance) {
-                        $error = "You have already clocked in today.";
-                    } else {
-                        $sql_insert = "INSERT INTO `attendance` (`employee_id`, `workday`, `date`, `time_in`, `time_out`)
-                                       VALUES (:employee_id, :workday, :date, :time_in, :time_out)";
-                        $stmt_insert = $pdo->prepare($sql_insert);
-                        $stmt_insert->bindParam(':employee_id', $employee_id, PDO::PARAM_STR);
-                        $stmt_insert->bindParam(':workday', $workday, PDO::PARAM_STR);
-                        $stmt_insert->bindParam(':date', date("Y-m-d"), PDO::PARAM_STR);
-                        $stmt_insert->bindParam(':time_in', $time_in, PDO::PARAM_STR);
-                        $stmt_insert->bindParam(':time_out', $time_out, PDO::PARAM_STR);
-
-                        $stmt_insert->execute();
-
-                        if ($stmt_insert->rowCount() > 0) {
-                            header("Location: attendance.php?success=true");
-                            exit();
-                        } else {
-                            $error = "Failed to insert time-in record.";
-                        }
-                    }
-                } else {
-                    $error = "Employee not found.";
-                }
-            } catch (PDOException $e) {
-                $error = "An error occurred: " . $e->getMessage();
-            }
+    // Fetch employee's time_in and time_out from attendance_emp
+    try {
+        // Check if input is employee_id or employee_name
+        if (strlen($employeeInput) > 4 && preg_match('/^[A-Za-z]+\d+$/', $employeeInput)) {
+            // It's employee_id
+            $sql = "SELECT `employee_id`, `employee_name`, `time_in`, `time_out`, `workday` FROM `attendance_emp` WHERE `employee_id` = :employeeInput";
         } else {
-            $error = "Please enter the employee's name or employee ID.";
+            // It's employee name (first last)
+            $sql = "SELECT `employee_id`, `employee_name`, `time_in`, `time_out`, `workday` FROM `attendance_emp` WHERE CONCAT(LOWER(`employee_name`)) = LOWER(:employeeInput)";
         }
-    }
 
-    if (isset($_POST['mark_out'])) {
-        // Marking time-out
-        $attendance_id = $_POST['attendance_id'];
-        $time_out = date("Y-m-d H:i:s");
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':employeeInput', $employeeInput, PDO::PARAM_STR);
+        $stmt->execute();
+        $employee = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        try {
-            // Ensure that employee has not already clocked out
-            $sql_check_out = "SELECT * FROM `attendance` WHERE `attendance_id` = :attendance_id AND `time_out` = '00:00:00'";
-            $stmt_check_out = $pdo->prepare($sql_check_out);
-            $stmt_check_out->bindParam(':attendance_id', $attendance_id, PDO::PARAM_INT);
-            $stmt_check_out->execute();
-            $attendance = $stmt_check_out->fetch(PDO::FETCH_ASSOC);
+        if ($employee) {
+            $employee_id = $employee['employee_id'];
+            $employee_name = $employee['employee_name'];
+            $time_in = $employee['time_in'];
+            $time_out = $employee['time_out'];
 
-            if ($attendance) {
-                // Update the attendance record with the time-out
-                $sql_update = "UPDATE `attendance` SET `time_out` = :time_out WHERE `attendance_id` = :attendance_id";
-                $stmt_update = $pdo->prepare($sql_update);
-                $stmt_update->bindParam(':time_out', $time_out, PDO::PARAM_STR);
-                $stmt_update->bindParam(':attendance_id', $attendance_id, PDO::PARAM_INT);
+            // Check if employee has already logged in today
+            $check_attendance = "SELECT * FROM `attendance` WHERE `employee_id` = :employee_id AND `date` = CURDATE()";
+            $stmt_check = $pdo->prepare($check_attendance);
+            $stmt_check->bindParam(':employee_id', $employee_id, PDO::PARAM_STR);
+            $stmt_check->execute();
+            $attendance_today = $stmt_check->fetch(PDO::FETCH_ASSOC);
 
-                $stmt_update->execute();
+            if ($attendance_today) {
+                // If already logged in today, don't allow time-in again
+                $error = "You have already marked your time-in today.";
+            } else {
+                // Insert attendance data into the attendance table
+                $remarks = "";
+                $workday = $employee['workday'];
 
-                if ($stmt_update->rowCount() > 0) {
+                // Check if employee is late or absent
+                $current_time = date("H:i:s");
+                if ($time_in > $current_time) {
+                    $remarks = "Late";
+                } elseif ($time_in <= $current_time) {
+                    $remarks = "Present";
+                } else {
+                    $remarks = "Absent";
+                }
+
+                $sql_insert = "INSERT INTO `attendance`(`employee_id`, `workday`, `date`, `time_in`, `time_out`, `remarks`) 
+                               VALUES (:employee_id, :workday, :date, :time_in, :time_out, :remarks)";
+                $stmt_insert = $pdo->prepare($sql_insert);
+                $stmt_insert->bindParam(':employee_id', $employee_id, PDO::PARAM_STR);
+                $stmt_insert->bindParam(':workday', $workday, PDO::PARAM_STR);
+                $stmt_insert->bindParam(':date', date("Y-m-d"), PDO::PARAM_STR);
+                $stmt_insert->bindParam(':time_in', $time_in, PDO::PARAM_STR);
+                $stmt_insert->bindParam(':time_out', $time_out, PDO::PARAM_STR);
+                $stmt_insert->bindParam(':remarks', $remarks, PDO::PARAM_STR);
+
+                $stmt_insert->execute();
+                if ($stmt_insert->rowCount() > 0) {
                     header("Location: attendance.php?success=true");
                     exit();
                 } else {
-                    $error = "Failed to update time-out record.";
+                    $error = "Failed to insert attendance record.";
                 }
-            } else {
-                $error = "You have already clocked out or invalid record.";
             }
-        } catch (PDOException $e) {
-            $error = "An error occurred: " . $e->getMessage();
+        } else {
+            $error = "Employee not found.";
         }
+    } catch (PDOException $e) {
+        $error = "An error occurred: " . $e->getMessage();
     }
 }
 ?>
@@ -204,24 +178,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <input type="submit" name="mark_in" value="Mark Time-In">
         </form>
 
-        <?php if ($error): ?>
-            <p class="error"><?php echo $error; ?></p>
-        <?php endif; ?>
-
         <table>
             <thead>
                 <tr>
                     <th>Employee Id</th>
-                    <th>Employee Name</th> <!-- Added column for Employee Name -->
+                    <th>Employee Name</th>
                     <th>Date</th>
                     <th>Time-In</th>
                     <th>Time-Out</th>
+                    <th>Remarks</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                // Fetch attendance records to allow time-out marking
+                // Fetch attendance records from the attendance table
                 $sql_select = "SELECT * FROM `attendance` WHERE `date` = CURDATE()";
                 $stmt_select = $pdo->prepare($sql_select);
                 $stmt_select->execute();
@@ -237,22 +208,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ?>
                     <tr>
                         <td><?php echo $record['employee_id']; ?></td>
-                        <td><?php echo $employee_name; ?></td> <!-- Display employee name -->
+                        <td><?php echo $employee_name; ?></td>
                         <td><?php echo $record['date']; ?></td>
                         <td><?php echo $record['time_in']; ?></td>
                         <td><?php echo $record['time_out']; ?></td>
+                        <td><?php echo $record['remarks']; ?></td>
                         <td>
-                            <?php if ($record['time_out'] === '00:00:00'): ?>
+                            <?php if ($record['time_out'] == '00:00:00') { ?>
                                 <form method="POST" action="">
                                     <input type="hidden" name="attendance_id" value="<?php echo $record['attendance_id']; ?>">
                                     <input type="submit" name="mark_out" value="Mark Time-Out">
                                 </form>
-                            <?php endif; ?>
+                            <?php } else { ?>
+                                <button disabled>Already Time Out</button>
+                            <?php } ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
-        </table> 
+        </table>
     </div>
 
     <script>
