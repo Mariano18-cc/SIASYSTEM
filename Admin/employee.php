@@ -90,26 +90,114 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../stylesheet/employee.css">
 </head>
+<style>
+    .schedule-button {
+  background-color:transparent;
+  color:  #082C66;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 5px;
+}
+.schedule-button:hover {
+  background-color: transparent;
+}
+/* Modal background overlay */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+/* Modal content */
+.modal-content {
+    position: relative;
+    background-color:#082C66;
+    margin: auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 500px;
+    top: 20%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Close button styling */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color:FEF9FE ;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #082C66;
+    text-decoration: none;
+}
+
+/* Label and input styling */
+.modal-content label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="time"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Submit button styling */
+.modal-content .modal-footer button {
+    background-color: #082C66;
+    color: transparent;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.modal-content .modal-footer button:hover {
+    background-color: #0A1E50;
+}
+
+</style>
 <body>
 
     <!-- Sidebar -->
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="logo">
-        <img src="../picture/logo.png" alt="Human Resource">
+    <div class="sidebar">
+        <div class="logo">
+            <img src="../picture/logo.png" alt="Human Resource">
+        </div>
+        <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
+        <ul>
+            <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
+            <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
+            <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
+            <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
+        </ul>
+        <div class="bottom-content">
+            <a href="../login.php"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+        </div>
     </div>
-    <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
-    <ul>
-        <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
-        <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
-        <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
-        <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
-        <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
-    </ul>
-    <div class="bottom-content">
-        <a href="../login.php"><i class="fas fa-sign-out-alt"></i>Log Out</a>
-    </div>
-</div>
 
     <!-- Main content -->
     <main class="main-content">
@@ -122,55 +210,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
         </div>
 
         <div class="search-container">
-                        
-            <input type="text" id="search-input" class="search-input" placeholder="Search Employee..." > 
+            <input type="text" id="search-input" class="search-input" placeholder="Search Employee...">
             <button class="add-button" id="add-button">
-            <i class="fas fa-plus"></i> Add</button>
+                <i class="fas fa-plus"></i> Add
+            </button>
         </div>
+
         <h1 style="font-size: 24px; font-weight: bold; color: #082C66; margin-bottom: 10px; text-align: left;">Employee</h1>
+
         <!-- Modal for Add Employee Form -->
-<div id="add-employee-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="close-modal">&times;</span>
-        <div class="modal-header">
-            <h3>Add New Employee</h3>
-        </div>
-        <form method="POST" action="employee.php" class="add-employee-form">
-            <label for="fname">First Name:</label>
-            <input type="text" name="fname" required><br>
+        <div id="add-employee-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="close-modal">&times;</span>
+                <div class="modal-header">
+                    <h3>Add New Employee</h3>
+                </div>
+                <form method="POST" action="employee.php" class="add-employee-form">
+                    <label for="fname">First Name:</label>
+                    <input type="text" name="fname" required><br>
 
-            <label for="mname">Middle Name:</label> 
-            <input type="text" name="mname"><br> 
+                    <label for="mname">Middle Name:</label>
+                    <input type="text" name="mname"><br>
 
-            <label for="lname">Last Name:</label>
-            <input type="text" name="lname" required><br>
+                    <label for="lname">Last Name:</label>
+                    <input type="text" name="lname" required><br>
 
-            <label for="email">Email:</label>
-            <input type="email" name="email" required><br>
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" required><br>
 
-            <label for="position">Position:</label>
-            <select name="position" id="position" required>
-                <option value="">Select a position</option>
-                <option value="Teacher">Teacher</option>
-                <option value="Guard">Guard</option>
-                <option value="Excellent">Excellent</option>
-            </select><br>
+                    <label for="position">Position:</label>
+                    <select name="position" id="position" required>
+                        <option value="">Select a position</option>
+                        <option value="Teacher">Teacher</option>
+                        <option value="Guard">Guard</option>
+                        <option value="Excellent">Excellent</option>
+                    </select><br>
 
-            <label for="salary">Salary:</label>
-            <input type="number" name="salary" step="0.01" required><br>
+                    <label for="salary">Salary:</label>
+                    <input type="number" name="salary" step="0.01" required><br>
 
-            <label for="status">Status:</label>
-            <select name="status" required>
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-            </select><br>
+                    <label for="status">Status:</label>
+                    <select name="status" required>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select><br>
 
-            <div class="modal-footer">
-                <button type="submit" name="add_employee">Add Employee</button>
+                    <div class="modal-footer">
+                        <button type="submit" name="add_employee">Add Employee</button>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
-</div>
+        </div>
+
         <!-- Employee Info Table -->
         <div class="grid-item employee-table">
             <table class="employee-info-table" id="employee-table">
@@ -193,7 +284,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                             <td><?php echo $employee['hired_date']; ?></td>
                             <td><?php echo $employee['status']; ?></td>
                             <td>
-                                <form method="POST" action="employee.php">
+                                <form method="POST" action="employee.php" style="display:inline-block;">
                                     <input type="hidden" name="employee_id" value="<?php echo $employee['employee_id']; ?>">
                                     <select name="new_status" required>
                                         <option value="Active" <?php echo ($employee['status'] == 'Active') ? 'selected' : ''; ?>>Active</option>
@@ -202,6 +293,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
                                     </select>
                                     <button type="submit" class="update-button">&nbsp; Update&nbsp; </button>
                                 </form>
+                                <button type="button" class="schedule-button" 
+                                    onclick="openScheduleModal('<?php echo $employee['employee_id']; ?>', '<?php echo $employee['fname'] . ' ' . $employee['lname']; ?>')">
+                                    &nbsp; Schedule&nbsp;
+                                </button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -210,6 +305,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_employee'])) {
         </div>
     </main>
 
+    <!-- Modal for Scheduling Employee -->
+    <div id="schedule-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-schedule-modal">&times;</span>
+            <h3>Schedule Employee</h3>
+            <form method="POST" action="schedule_employee.php" id="schedule-form">
+                <label for="schedule-employee-id">Employee ID:</label>
+                <input type="text" id="schedule-employee-id" name="employee_id" readonly><br>
+
+                <label for="schedule-employee-name">Employee Name:</label>
+                <input type="text" id="schedule-employee-name" name="employee_name" readonly><br>
+
+                <label for="time-in">Time In:</label>
+                <input type="time" id="time-in" name="time_in" required><br>
+
+                <label for="time-out">Time Out:</label>
+                <input type="time" id="time-out" name="time_out" required><br>
+
+                <label for="workday">Workday:</label>
+                <select name="workday" id="workday" required>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select><br>
+
+                <button type="submit" class="submit-button">Save Schedule</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Get modal and close button elements
+        const scheduleModal = document.getElementById("schedule-modal");
+        const closeScheduleModal = document.getElementById("close-schedule-modal");
+
+        // Function to open the modal and populate with employee details
+        function openScheduleModal(employeeId, employeeName) {
+            document.getElementById("schedule-employee-id").value = employeeId;
+            document.getElementById("schedule-employee-name").value = employeeName;
+            scheduleModal.style.display = "block";
+        }
+
+        // Close the modal when the close button is clicked
+        closeScheduleModal.onclick = function() {
+            scheduleModal.style.display = "none";
+        }
+
+        // Close the modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target == scheduleModal) {
+                scheduleModal.style.display = "none";
+            }
+        }
+    </script>
+    
     <script src="../javascript/employee.js"></script>
 </body>
 </html>
+

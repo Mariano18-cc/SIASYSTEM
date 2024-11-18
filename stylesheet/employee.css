@@ -314,11 +314,11 @@
 }
 
 .search-input:focus {
-  border-color: #0A3B76; /* Darker border color when focused */
+  border-color:  #082C66; /* Darker border color when focused */
 }
 
 /* Style for the Add button */
-.add-button {
+.add-button,.schedule-button {
   position: relative;
   background-color: transparent; /* Transparent background */
   color: #082C66; /* Text color */
@@ -331,8 +331,9 @@
   transition: background-color 0.3s, color 0.3s; 
 }
 
-.add-button:hover {
+.add-button,.schedule-button:hover {
   background-color: #082C66; 
   color: white;/
 }
+
 

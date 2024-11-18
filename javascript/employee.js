@@ -57,3 +57,28 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
     });
+
+    
+        // Get modal and close button elements for schedule button
+        const scheduleModal = document.getElementById("schedule-modal");
+        const closeScheduleModal = document.getElementById("close-schedule-modal");
+
+        // Function to open the modal and populate with employee details
+        function openScheduleModal(employeeId, employeeName) {
+            document.getElementById("schedule-employee-id").value = employeeId;
+            document.getElementById("schedule-employee-name").value = employeeName;
+            scheduleModal.style.display = "block";
+        }
+
+        // Close the modal when the close button is clicked
+        closeScheduleModal.onclick = function() {
+            scheduleModal.style.display = "none";
+        }
+
+        // Close the modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target == scheduleModal) {
+                scheduleModal.style.display = "none";
+            }
+        }
+   

@@ -50,7 +50,6 @@
             <div class="payslip-header">
                 <button class="print-button">PRINT</button>
                 <button class="service-button">CONTACT OF SERVICE</button>
-                <button class="plantilla-button">PLANTILLA</button>
     </div>
      <!-- Date Container -->
      <div class="date-container">
