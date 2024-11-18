@@ -1,3 +1,66 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Include the database connection
+    if (!@include('../db_connection.php')) {
+        die("Database connection file not found.");
+    }
+
+    // Collect form data
+    $fname = $_POST['first_name'];
+    $mname = $_POST['middle_name'];
+    $lname = $_POST['last_name'];
+    $email = $_POST['email'];
+    $bday = $_POST['date_of_birth'];
+    $applying_position = $_POST['position_applied'];
+    $status = "New";
+
+    // File upload handling
+    $resume_dir = $_SERVER['DOCUMENT_ROOT'] . "/SIASYSTEM/applicant_resume/"; // Absolute path to the directory
+    $resume_file = $resume_dir . basename($_FILES["resume"]["name"]);
+    $uploadOk = 1;
+    $fileType = strtolower(pathinfo($resume_file, PATHINFO_EXTENSION));
+
+    // Ensure the directory exists
+    if (!is_dir($resume_dir)) {
+        mkdir($resume_dir, 0777, true); // Create the directory if it doesn't exist
+    }
+
+    // Check if the file is a PDF
+    if ($fileType != "pdf") {
+        echo "Sorry, only PDF files are allowed.";
+        $uploadOk = 0;
+    }
+
+    // Handle the file upload
+    if ($uploadOk && move_uploaded_file($_FILES["resume"]["tmp_name"], $resume_file)) {
+        // Insert data into the database
+        $sql = "INSERT INTO applicant (fname, mname, lname, email, bday, applying_position, status)
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        // Prepare statement
+        $stmt = $conn->prepare($sql);
+        if ($stmt) {
+            $stmt->bind_param("sssssss", $fname, $mname, $lname, $email, $bday, $applying_position, $status);
+
+            if ($stmt->execute()) {
+               
+            } else {
+                echo "Error: " . $stmt->error;
+            }
+
+            $stmt->close();
+        } else {
+            echo "Error preparing statement: " . $conn->error;
+        }
+    } else {
+        echo "Sorry, your file was not uploaded.";
+    }
+
+    $conn->close();
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +72,7 @@
 </head>
 <body>
 
-    <div class="form-container">
+    <form class="form-container" method="POST" action="" enctype="multipart/form-data">
         <h1>Application Form</h1>
         
         <div class="form-section">Personal Information</div>
@@ -26,13 +89,11 @@
             <label>Last Name:</label>
             <input type="text" name="last_name">
             
-            <label>Phone Number:</label>
-            <input type="email" name="phone" required>
         </div>
 
         <div class="form-group">
             <label>Email Address:</label>
-            <input type="text" name="email" required>
+            <input type="email" name="email" required>
             
             <label>Date of Birth:</label>
             <input type="date" name="date_of_birth" required>
@@ -48,14 +109,8 @@
         </div>
 
         <div class="form-group">
-            <label>Documents:</label>
-            <div class="document-buttons">
-                
-                <div class="document-button">
-                    Attach Resume <i class="fas fa-download"></i>
-                </div>
-                
-            </div>
+            <label>Attach Resume:</label>
+            <input type="file" name="resume" accept=".pdf" required>
         </div>
 
         <div class="form-check">
@@ -64,7 +119,8 @@
         </div>
 
         <button type="submit" class="submit-button">SUBMIT</button>
-    </div>
+    </form>
 
 </body>
 </html>
+
