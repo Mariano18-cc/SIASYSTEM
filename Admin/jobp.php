@@ -4,7 +4,7 @@ include "../db_connection.php";
 
 // Fetch all applicants from the database
 $results = [];
-$stmt = $conn->prepare("SELECT applicant_id, fname, mname, lname, email, bday, bplace, applying_position, resume, status FROM applicant");
+$stmt = $conn->prepare("SELECT applicant_id, fname, mname, lname, email, bday, applying_position, status FROM applicant");
 $stmt->execute();
 $results = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
@@ -43,17 +43,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['applicant_id']) && iss
 // This part will handle the AJAX request for applicant details
 if (isset($_GET['id'])) {
     $applicant_id = $_GET['id'];
-    $stmt = $conn->prepare("SELECT applicant_id, fname, mname, lname, email, bday, bplace, applying_position, resume, status FROM applicant WHERE applicant_id = ?");
+    $stmt = $conn->prepare("SELECT applicant_id, fname, mname, lname, email, bday, applying_position, status FROM applicant WHERE applicant_id = ?");
     $stmt->bind_param("i", $applicant_id);
     $stmt->execute();
     $result = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 
-    echo json_encode($result);
-    exit();
+   // Construct the full name based on fname, mname, and lname
+$fullName = strtoupper($result['fname']) . " " . strtoupper($result['mname']) . " " . strtoupper($result['lname']);
+
+// Replace spaces with underscores to ensure valid filename format (optional)
+$formattedName = str_replace(' ', '_', $fullName);
+
+// Construct the file path for the resume based on the formatted full name
+$resumePath = "C:/xampp/htdocs/SIASYSTEM/applicant_resume/" . $formattedName . "_ Resume (1).pdf";
+
+// Check if the resume exists on the server file system
+if (file_exists($resumePath)) {
+    // Set the relative URL path for the resume (the path accessible via the browser)
+    $result['resume'] = "/SIASYSTEM/applicant_resume/" . $formattedName . "_ Resume (1).pdf";
+} else {
+    $result['resume'] = null;  // Handle the case where the resume is not found
+}
+
+echo json_encode($result);
+exit();
+
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -92,7 +109,6 @@ if (isset($_GET['id'])) {
             padding: 10px 20px;
             cursor: pointer;
         }
-        
     </style>
 </head>
 <body>
@@ -114,7 +130,6 @@ if (isset($_GET['id'])) {
         <a href="../login.php"><i class="fas fa-sign-out-alt"></i>Log Out</a>
     </div>
 </div>
-
 
   <!-- Main content -->
   <main class="main-content">
@@ -169,7 +184,7 @@ if (isset($_GET['id'])) {
         </table>
       </div>
     </div>
-  </main=>
+  </main>
 
   <!-- Modal for Applicant Details -->
   <div id="applicantModal" class="modal">
@@ -193,16 +208,12 @@ if (isset($_GET['id'])) {
           <td id="modal_bday"></td>
         </tr>
         <tr>
-          <td>Birthplace:</td>
-          <td id="modal_bplace"></td>
-        </tr>
-        <tr>
           <td>Position:</td>
           <td id="modal_position"></td>
         </tr>
         <tr>
           <td>Resume:</td>
-          <td><a id="modal_resume_link" href="#" target="_blank">Open Resume</a></td>
+          <td><a id="modal_resume_link" href="" target="_blank">Open Resume</a></td>
         </tr>
         <tr>
           <td>Status:</td>
@@ -213,30 +224,36 @@ if (isset($_GET['id'])) {
     </div>
   </div>
 
-  <script>
-    function openModal(applicantId) {
-        // Fetch applicant details from the server
-        fetch(`jobp.php?id=${applicantId}`)
-            .then(response => response.json())
-            .then(data => {
-                // Fill the modal with the applicant's data
-                document.getElementById('modal_applicant_id').innerText = data.applicant_id;
-                document.getElementById('modal_full_name').innerText = `${data.fname} ${data.mname} ${data.lname}`;
-                document.getElementById('modal_email').innerText = data.email;
-                document.getElementById('modal_bday').innerText = data.bday;
-                document.getElementById('modal_bplace').innerText = data.bplace;
-                document.getElementById('modal_position').innerText = data.applying_position;
-                document.getElementById('modal_resume_link').href = `uploads/${data.resume}`; // Adjust the path if needed
-                document.getElementById('modal_status').innerText = data.status;
+<script>
+  function openModal(applicantId) {
+      // Fetch applicant details from the server
+      fetch(`jobp.php?id=${applicantId}`)
+          .then(response => response.json())
+          .then(data => {
+              // Fill the modal with the applicant's data
+              document.getElementById('modal_applicant_id').innerText = data.applicant_id;
+              document.getElementById('modal_full_name').innerText = `${data.fname} ${data.mname} ${data.lname}`;
+              document.getElementById('modal_email').innerText = data.email;
+              document.getElementById('modal_bday').innerText = data.bday;
+              document.getElementById('modal_position').innerText = data.applying_position;
+              document.getElementById('modal_status').innerText = data.status;
 
-                // Show the modal
-                document.getElementById('applicantModal').style.display = 'flex';
-            });
-    }
+              // If resume exists, set the link; otherwise, provide a fallback message
+              if (data.resume) {
+                  document.getElementById('modal_resume_link').href = data.resume;
+              } else {
+                  document.getElementById('modal_resume_link').innerText = "Resume not available";
+                  document.getElementById('modal_resume_link').href = "#";
+              }
 
-    function closeModal() {
-        document.getElementById('applicantModal').style.display = 'none';
-    }
-  </script>
+              // Show the modal
+              document.getElementById('applicantModal').style.display = 'flex';
+          });
+  }
+
+  function closeModal() {
+      document.getElementById('applicantModal').style.display = 'none';
+  }
+</script>
 </body>
 </html>
