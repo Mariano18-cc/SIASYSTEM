@@ -96,7 +96,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../job_hiring/ApplicationForm.html">Apply</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../job_hiring/ApplicationForm.php">Apply</a></li>
                 </ul>
             </div>
         </div>
