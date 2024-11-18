@@ -102,9 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label>Position Applied:</label>
             <select name="position_applied" required>
-                <option value="Elementary Teacher">Teacher</option>
-                <option value="Assistant Teacher">Guard</option>
-                <option value="Assistant Teacher">Excellent</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Guard">Guard</option>
+                <option value="Excellent">Excellent</option>
             </select>
         </div>
 
