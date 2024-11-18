@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url('');
+            background-image: url('picture/logo.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -200,7 +200,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
 
         <form method="POST" action="">
-            <label for="employeeInput">Employee Name or ID:</label>
             <input type="text" id="employeeInput" name="employeeInput" placeholder="Enter employee's name or employee ID" required>
             <input type="submit" name="mark_in" value="Mark Time-In">
         </form>
