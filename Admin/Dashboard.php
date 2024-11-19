@@ -87,7 +87,7 @@ $stmt->close();
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css'>
     <link rel='stylesheet' href='https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css'>
     <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&amp;display=swap'>
-    <link rel="stylesheet" href="../stylesheet/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
 
@@ -98,14 +98,14 @@ $stmt->close();
     </div>
     <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
     <ul>
-        <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
         <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
         <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
         <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
         <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
     </ul>
     <div class="bottom-content">
-        <a href="../login.php"><i class="fas fa-sign-out-alt"></i>Log Out</a>
+        <a href="../index.php"><i class="fas fa-sign-out-alt"></i>Log Out</a>
     </div>
 </div>
 
@@ -203,7 +203,7 @@ $stmt->close();
         </div>
         
 
-    <script src="../javascript/dashboard.js"></script>
+    <script src="js/dashboard.js"></script>
  
 </body>
 </html>

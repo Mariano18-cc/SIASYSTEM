@@ -78,38 +78,9 @@ exit();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HRMS Job Process</title>
-    <link rel="stylesheet" href="../stylesheet/jobp.css">
+    <link rel="stylesheet" href="css/jobp.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 600px;
-            overflow-y: auto;
-        }
-        .modal-content table {
-            width: 100%;
-        }
-        .modal-content button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-    </style>
+
 </head>
 <body>
 
@@ -224,36 +195,6 @@ exit();
     </div>
   </div>
 
-<script>
-  function openModal(applicantId) {
-      // Fetch applicant details from the server
-      fetch(`jobp.php?id=${applicantId}`)
-          .then(response => response.json())
-          .then(data => {
-              // Fill the modal with the applicant's data
-              document.getElementById('modal_applicant_id').innerText = data.applicant_id;
-              document.getElementById('modal_full_name').innerText = `${data.fname} ${data.mname} ${data.lname}`;
-              document.getElementById('modal_email').innerText = data.email;
-              document.getElementById('modal_bday').innerText = data.bday;
-              document.getElementById('modal_position').innerText = data.applying_position;
-              document.getElementById('modal_status').innerText = data.status;
-
-              // If resume exists, set the link; otherwise, provide a fallback message
-              if (data.resume) {
-                  document.getElementById('modal_resume_link').href = data.resume;
-              } else {
-                  document.getElementById('modal_resume_link').innerText = "Resume not available";
-                  document.getElementById('modal_resume_link').href = "#";
-              }
-
-              // Show the modal
-              document.getElementById('applicantModal').style.display = 'flex';
-          });
-  }
-
-  function closeModal() {
-      document.getElementById('applicantModal').style.display = 'none';
-  }
-</script>
+<script src="js/jobp.js"></script>
 </body>
 </html>

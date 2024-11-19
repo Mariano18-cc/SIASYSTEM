@@ -68,80 +68,8 @@ if (isset($_GET['generate_pdf'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HRMS Print Employee Salary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <link rel="stylesheet" href="../stylesheet/printr.css">
-    <style>
-        /* Center the table */
-        table {
-            width: 80%; /* Adjust table width as needed */
-            margin: 20px auto; /* Center the table horizontally */
-            border-collapse: collapse; /* Optional: for cleaner borders */
-        }
+  <link rel="stylesheet" href="css/printr.css">
 
-        /* Style for table headers and cells */
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-
-        /* Style for Print PDF button */
-        .pdf-button {
-            position: absolute;
-            right: 10px;
-            bottom: 10px;
-            padding: 10px 20px;
-            background-color: #4CAF50; /* Green color */
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .pdf-button:hover {
-            background-color: #45a049; /* Darker green on hover */
-        }
-
-        /* Adjust layout of the main content and ensure the button stays at the bottom right */
-        #Payslip {
-            position: relative; /* Make the container relative for absolute positioning of the button */
-        }
-
-        .filter-section {
-            width: 80%;
-            margin: 20px auto;
-        }
-        
-        .date-filter {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .date-inputs {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        
-        .date-inputs input[type="date"] {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .filter-button {
-            padding: 8px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .filter-button:hover {
-            background-color: #45a049;
-        }
-    </style>
 </head>
 <body>
     <!-- Sidebar -->
@@ -160,7 +88,7 @@ if (isset($_GET['generate_pdf'])) {
             <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
         </ul>
         <div class="bottom-content">
-            <a href="../login.php"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+            <a href="../index.php"><i class="fas fa-sign-out-alt"></i> Log Out</a>
         </div>
 </div>
 
