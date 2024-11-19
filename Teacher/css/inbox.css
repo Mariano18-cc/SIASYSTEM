@@ -1,0 +1,313 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:Helvetica, sans-serif;
+    overflow: hidden;
+  }
+  
+.html, body {
+    height: 100%;
+  }
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #082C66;
+  color: white;
+  padding: 20px;
+  position: fixed;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 20px;
+}
+
+.sidebar .logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar .logo img {
+  width: 250px;
+  height: 100px;
+  object-fit: contain; 
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.sidebar ul li {
+  margin: 20px 0;
+}
+
+.sidebar ul li i{
+  margin-right: 10px; 
+}
+
+.sidebar ul li a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.sidebar ul li:hover {
+  background: #2e3c44;
+  border-radius: 10px;
+}
+
+.bottom-content {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.bottom-content a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+}
+.bottom-content i{
+  padding-right: 20px;
+}
+
+.bottom-content :hover{
+  background: #2e3c44;
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 250px; 
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+  }
+
+.user-info {
+    text-align: right;
+  }
+  
+  .user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+.content {
+  margin-left: 20px;
+  margin-right: 20px;
+  padding: 20px;
+}
+
+.inbox-container {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+
+.inbox-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.inbox-header h2 {
+  color: #082C66;
+  margin: 0;
+}
+
+.inbox-filters {
+  margin-top: 20px;
+}
+
+.search-bar {
+  position: relative;
+  flex: 1;
+  margin-right: 20px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px 35px 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.search-bar i {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+}
+
+.filter-options {
+  display: none;
+}
+
+.messages-list {
+  margin-bottom: 20px;
+}
+
+.message-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 15px 15px 20px;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.3s;
+  position: relative;
+}
+
+.message-item:hover {
+  background-color: #f8f9fa;
+}
+
+.message-item.unread {
+  background-color: #f0f7ff;
+  position: relative;
+}
+
+.message-item.unread::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background-color: #082C66;
+  border-radius: 50%;
+}
+
+.message-item.unread .message-subject,
+.message-item.unread .message-preview {
+  font-weight: bold;
+  color: #082C66;
+}
+
+.sender-info {
+  display: flex;
+  align-items: center;
+  width: 200px;
+}
+
+.sender-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.message-content {
+  flex: 1;
+}
+
+.message-subject {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.message-preview {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.message-time {
+  width: 100px;
+  text-align: right;
+  color: #666;
+}
+
+.message-actions {
+  width: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.message-actions i {
+  cursor: pointer;
+  color: #666;
+}
+
+.message-actions i:hover {
+  color: #082C66;
+}
+
+.inbox-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.inbox-pagination button {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.inbox-pagination button:hover {
+  background-color: #f0f0f0;
+}
+
+.message-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.tab-btn {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.tab-btn.active {
+  background-color: #082C66;
+  color: white;
+}
+
+.message-filter {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #666;
+  background-color: white;
+  cursor: pointer;
+}
