@@ -21,10 +21,10 @@
         <li><a href="stlist.php"><i class="fas fa-users"></i> Student List</a></li>
         <li><a href="gradelist.php"><i class="fas fa-pencil-alt"></i> Grading List</a></li>
         <li><a href="leave.php"><i class="fas fa-envelope-open-text"></i> Leave Request</a></li>
-        <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
+        <li><a href="payroll_t.php"><i class="fas fa-wallet"></i> Payroll</a></li>
     </ul>
     <div class="bottom-content">
-            <a href="../login.php"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+            <a href="../index.php"><i class="fas fa-sign-out-alt"></i> Log Out</a>
         </div>
   </div>
 
