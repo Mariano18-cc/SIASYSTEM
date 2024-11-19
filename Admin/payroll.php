@@ -51,6 +51,7 @@
                 <button class="print-button">PRINT</button>
                 <button class="service-button">CONTACT OF SERVICE</button>
     </div>
+    
      <!-- Date Container -->
      <div class="date-container">
         <p>Today's Date is:</p>

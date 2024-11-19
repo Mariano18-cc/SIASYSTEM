@@ -4,28 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Teacher Dashboard</title>
-  <link rel="stylesheet" href="../stylesheet/dashboard.css">
+  <link rel="stylesheet" href="../stylesheet/teacher_p.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="logo">
-      <img src="picture/logow.jpg" alt="Human Resource">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="../picture/logo.png" alt="Human Resource">
+        </div>
+        <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
+        <ul>
+            <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
+            <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
+            <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
+            <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
+        </ul>
+        <div class="bottom-content">
+            <a href="../login.php"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+        </div>
     </div>
-    <h2>HUMAN RESOURCE</h2>
-    <ul style="list-style-type: none; padding-left: 0;">
-        <li><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-        <li><a href="#"><i class="fas fa-inbox"></i> Inbox</a></li>
-        <li><a href="#"><i class="fas fa-users"></i> Student List</a></li>
-        <li><a href="#"><i class="fas fa-pencil-alt"></i> Grading List</a></li>
-        <li><a href="#"><i class="fas fa-envelope-open-text"></i> Leave Request</a></li>
-        <li><a href="#"><i class="fas fa-money-check-alt"></i> Payroll</a></li>
-        <li><a href="../login.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-    </ul>
-  </div>
-
   <div class="main">
     <!-- Header -->
     <div class="header">
