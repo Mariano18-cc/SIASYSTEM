@@ -4,7 +4,6 @@
   padding: 0;
   box-sizing: border-box;
   font-family:Helvetica, sans-serif;
-  overflow: hidden;
 }
   
   /* Full Viewport Height */
@@ -185,6 +184,9 @@
   .tabcontent {
     display: none;
     margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 0 0 5px 5px;
   }
   
   .payslip-header {
@@ -503,4 +505,38 @@ table tbody tr:hover {
   margin-top: 20px;
   width: 30%;
   margin-left: auto;
+}
+
+/* Update the tabcontent styling */
+.tabcontent {
+    display: none;  /* Hide all tab content by default */
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 0 0 5px 5px;
+}
+
+/* Remove the inline style from your HTML and use this instead */
+#Payslip {
+    display: none;  /* Hide Payslip tab content by default */
+}
+
+/* Search Enhancement */
+.search-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #082C66;
+    outline: none;
 }

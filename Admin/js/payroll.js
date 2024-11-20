@@ -1,16 +1,66 @@
-// Function to switch between tabs
+document.addEventListener("DOMContentLoaded", function() {
+    // Show Payslip tab by default
+    document.getElementById("Payslip").style.display = "block";
+    document.querySelector(".tablink").classList.add("active");
+    
+    // Hide Attendance tab by default
+    document.getElementById("Attendance").style.display = "none";
+    
+    document.querySelectorAll(".openModalBtn").forEach(function(button) {
+        button.onclick = function() {
+            document.getElementById("modal").style.display = "flex";
+        };
+    });
+
+    document.querySelector(".close").onclick = function() {
+        document.getElementById("modal").style.display = "none";
+    };
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById("modal")) {
+            document.getElementById("modal").style.display = "none";
+        }
+    };
+
+    // Search functionality
+    function searchEmployees() {
+        const searchInput = document.querySelector('.search-input');
+        const filter = searchInput.value.toLowerCase();
+        const rows = document.querySelectorAll('.payslip-table tbody tr');
+
+        rows.forEach(row => {
+            const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const position = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            const shouldShow = name.includes(filter) || position.includes(filter);
+            row.style.display = shouldShow ? '' : 'none';
+        });
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add search event listener
+        document.querySelector('.search-input').addEventListener('keyup', searchEmployees);
+
+        // ... your existing DOMContentLoaded code ...
+    });
+});
+
 function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
+    // Hide all tab content
+    var tabcontent = document.getElementsByClassName("tabcontent");
+    for (var i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
     }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+
+    // Remove active class from all tab buttons
+    var tablinks = document.getElementsByClassName("tablink");
+    for (var i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
     }
+
+    // Show the selected tab content and mark the button as active
     document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
+    evt.currentTarget.classList.add("active");
 }
 
 // Function to update the date to show "Month Day, Year" (e.g., October 12, 2024)
@@ -38,66 +88,3 @@ function updateDateTime() {
 }
 
 setInterval(updateDateTime, 1000); // Update every second
-
-// Simulated employee attendance data
-const attendanceHistory = {
-    "John Doe": [
-        { date: "11/12/2024", arrivalTime: "08:55:00 AM", status: "On Time" },
-        { date: "11/11/2024", arrivalTime: "09:10:00 AM", status: "Late" },
-    ],
-    "Jane Smith": [
-        { date: "11/12/2024", arrivalTime: "09:05:00 AM", status: "Late" },
-        { date: "11/11/2024", arrivalTime: "08:45:00 AM", status: "On Time" },
-    ],
-    "Alex Brown": [
-        { date: "11/12/2024", arrivalTime: "08:45:00 AM", status: "On Time" },
-        { date: "11/11/2024", arrivalTime: "08:55:00 AM", status: "On Time" },
-    ],
-};
-
-// Show attendance history in a modal when employee name is clicked
-function showAttendanceHistory(employeeName) {
-    document.getElementById("employeeName").textContent = employeeName;
-
-    // Get the history of the employee
-    const history = attendanceHistory[employeeName];
-    const historyTableBody = document.getElementById("historyTable").getElementsByTagName("tbody")[0];
-    
-    // Clear previous data
-    historyTableBody.innerHTML = "";
-
-    // Add new history data
-    history.forEach(record => {
-        const row = historyTableBody.insertRow();
-        row.insertCell(0).textContent = record.date;
-        row.insertCell(1).textContent = record.arrivalTime;
-        row.insertCell(2).textContent = record.status;
-    });
-
-    // Show the modal
-    document.getElementById("attendanceHistoryModal").style.display = "block";
-}
-
-// Close the modal
-function closeHistoryModal() {
-    document.getElementById("attendanceHistoryModal").style.display = "none";
-}
-
-// Ensure modal button event handlers are set up once the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll(".openModalBtn").forEach(function(button) {
-        button.onclick = function() {
-            document.getElementById("modal").style.display = "flex";
-        };
-    });
-
-    document.querySelector(".close").onclick = function() {
-        document.getElementById("modal").style.display = "none";
-    };
-
-    window.onclick = function(event) {
-        if (event.target == document.getElementById("modal")) {
-            document.getElementById("modal").style.display = "none";
-        }
-    };
-});
