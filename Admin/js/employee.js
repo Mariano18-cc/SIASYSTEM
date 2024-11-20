@@ -2,21 +2,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const modal = document.getElementById("add-employee-modal");
     const addButton = document.getElementById("add-button");
     const closeModal = document.getElementById("close-modal");
+    const mainContent = document.querySelector('.main-content');
 
     addButton.onclick = function () {
-        console.log("Add button clicked"); // Debugging line
         modal.style.display = "block";
-};
+        mainContent.classList.add('blur'); // Add blur to main content
+    };
 
     closeModal.onclick = function () {
         modal.style.display = "none";
-};
+        mainContent.classList.remove('blur'); // Remove blur
+    };
 
     window.onclick = function (event) {
         if (event.target === modal) {
             modal.style.display = "none";
+            mainContent.classList.remove('blur'); // Remove blur
         }
-};
+    };
 });
 
 

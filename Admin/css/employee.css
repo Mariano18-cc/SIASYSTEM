@@ -104,23 +104,41 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #ccc;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
 /* Search Bar */
 .search-container {
   display: flex;
   align-items: center;
+  gap: 10px;
+  margin: 20px 0 30px 0;
+  justify-content: space-between;
+  padding: 0 20px;
 }
 
 .search-input {
-  padding: 8px;
+  padding: 12px 20px;
+  border: 2px solid #082C66;
+  border-radius: 25px;
   font-size: 16px;
-  width: 200px;
-  border: 1px solid #ccc;
-  border-radius: 9px;
-  gap: 2px;
+  width: 300px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+  font-size: 16px;
+  color: #666;
+}
+
+.search-input:focus {
+  border-color: #2C3F6C;
+  box-shadow: 0 0 5px rgba(8, 44, 102, 0.2);
 }
 
 .search-button:hover {
@@ -188,59 +206,88 @@
   height: calc(100vh - 100px); /* Adjusts the height to leave room for the header and footer */
 }
 
+/* Updated schedule button styles to match update button size */
+.update-button,
 .schedule-button {
-  background-color:transparent;
-  color:  #082C66;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-left: 5px;
+    background-color: transparent;
+    color: #082C66;
+    border: 2px solid #082C66;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
 }
+
+.update-button:hover,
 .schedule-button:hover {
-  background-color: transparent;
+    background-color: #082C66;
+    color: white;
 }
+
+/* Add spacing between buttons */
+.schedule-button {
+    margin-left: 5px;
+}
+
 /* Modal background overlay */
 .modal {
-    display: none; 
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5); 
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
 }
 
 /* Modal content */
 .modal-content {
-    position: relative;
-    background-color:#082C66;
-    margin: auto;
-    padding: 20px;
-    border-radius: 5px;
-    width: 80%;
-    max-width: 500px;
-    top: 20%;
+    background-color: #1A3C67;
+    color: white;
+    margin: 5% auto;
+    padding: 20px 30px;
+    width: 35%;
+    border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
 }
 
 /* Close button styling */
 .close {
     position: absolute;
-    top: 10px;
     right: 20px;
-    color:FEF9FE ;
+    top: 15px;
+    color: white;
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
 }
 
-.close:hover,
-.close:focus {
-    color: #082C66;
-    text-decoration: none;
+.close:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+/* Modal header spacing */
+.modal-header {
+    padding-top: 10px;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    text-align: center;
+    margin-right: 20px;
 }
 
 /* Label and input styling */
@@ -432,6 +479,360 @@
 .add-button,.schedule-button:hover {
   background-color: #082C66; 
   color: white;/
+}
+
+/* Style for the update button and dropdown */
+.update-button {
+    background-color: transparent;
+    color: #082C66;
+    border: 2px solid #082C66;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.update-button:hover {
+    background-color: #082C66;
+    color: white;
+}
+
+/* Style for the status dropdown */
+select[name="new_status"] {
+    padding: 8px;
+    border: 2px solid #082C66;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #082C66;
+    background-color: white;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+select[name="new_status"]:focus {
+    outline: none;
+    border-color: #082C66;
+}
+
+/* Style for the dropdown options */
+select[name="new_status"] option {
+    background-color: white;
+    color: #082C66;
+    padding: 8px;
+}
+
+/* Add blur effect to main content when modal is shown */
+.blur {
+    filter: blur(5px);
+    pointer-events: none;
+}
+
+/* Update button container spacing */
+.modal-footer {
+    margin-top: 15px;
+    text-align: center;
+}
+
+/* Add these styles for the name fields container */
+.name-fields-container {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.name-field {
+    flex: 1;
+}
+
+/* Update form input styles */
+.add-employee-form input,
+.add-employee-form select {
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    height: 36px;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+}
+
+.add-employee-form label {
+    font-size: 14px;
+    color: white;
+    margin-bottom: 3px;
+    display: block;
+}
+
+/* Adjust modal width to accommodate the side-by-side fields */
+.modal-content {
+    background-color: #1A3C67;
+    color: white;
+    margin: 5% auto;
+    padding: 20px 30px;
+    width: 50%; /* Increased width slightly */
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* Modal content sizing */
+.modal-content {
+    background-color: #1A3C67;
+    color: white;
+    margin: 5% auto;
+    padding: 20px 30px;
+    width: 50%;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* Form field containers */
+.form-field {
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+/* Consistent styling for all form inputs and selects */
+.add-employee-form input,
+.add-employee-form select {
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    height: 36px; /* Fixed height for all inputs */
+    box-sizing: border-box;
+    margin-bottom: 5px;
+}
+
+/* Name fields container */
+.name-fields-container {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.name-field {
+    flex: 1;
+}
+
+/* Labels */
+.add-employee-form label {
+    font-size: 14px;
+    color: white;
+    margin-bottom: 3px;
+    display: block;
+}
+
+/* Submit button container */
+.modal-footer {
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Submit button */
+.modal-footer button {
+    padding: 8px 24px;
+    font-size: 14px;
+    background-color: #2691D9;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    height: 36px;
+}
+
+.modal-footer button:hover {
+    background-color: #1A70AD;
+}
+
+/* Add Employee button styling */
+.add-button {
+    background-color: transparent;
+    color: #082C66;
+    border: 2px solid #082C66;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.add-button i {
+    font-size: 18px;
+}
+
+.add-button:hover {
+    background-color: #082C66;
+    color: white;
+}
+
+/* If you're using an icon with the button */
+.add-button i {
+    font-size: 16px;
+}
+
+/* Container for search and add button */
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Update the search input to match */
+.search-input {
+    padding: 8px;
+    border: 2px solid #082C66;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+}
+
+/* Modal footer and submit button styling */
+.modal-footer {
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Submit button in modal */
+.modal-footer button[type="submit"] {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 8px 24px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 36px;
+    min-width: 120px;
+}
+
+.modal-footer button[type="submit"]:hover {
+    background-color: white;
+    color: #1A3C67;
+}
+
+/* Table Container */
+.employee-table {
+    margin-top: 30px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    overflow-x: auto;
+}
+
+/* Table Styling */
+.employee-info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.employee-info-table th {
+    background-color: #082C66;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.employee-info-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    color: #333;
+}
+
+.employee-info-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Action Buttons Container */
+.employee-info-table td form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Status Dropdown */
+.employee-info-table select[name="new_status"] {
+    padding: 8px;
+    border: 2px solid #082C66;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #082C66;
+    background-color: white;
+    cursor: pointer;
+    margin-right: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.employee-info-table select[name="new_status"]:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.employee-info-table select[name="new_status"]:focus {
+    border-color: #2C3F6C;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Update and Schedule Buttons */
+.update-button, .schedule-button {
+    background-color: transparent;
+    color: #082C66;
+    border: 2px solid #082C66;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.update-button:hover, .schedule-button:hover {
+    background-color: #082C66;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Content Header */
+.content h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #082C66;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Updated styles for the centered title without underline */
+.page-title {
+    text-align: center;
+}
+
+.page-title h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #082C66;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
 }
 
 

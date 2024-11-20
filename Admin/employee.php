@@ -164,60 +164,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
             </div>
         </div>
 
+        <!-- Add the centered title here -->
+        <div class="page-title">
+            <h1>Employee</h1>
+        </div>
+
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Search Employee...">
             <button class="add-button" id="add-button">
                 <i class="fas fa-plus"></i> Add
             </button>
-        </div>
-
-        <h1 style="font-size: 24px; font-weight: bold; color: #082C66; margin-bottom: 10px; text-align: left;">Employee</h1>
-
-        <!-- Modal for Add Employee Form -->
-        <div id="add-employee-modal" class="modal">
-            <div class="modal-content">
-                <span class="close" id="close-modal">&times;</span>
-                <div class="modal-header">
-                    <h3>Add New Employee</h3>
-                </div>
-                <form method="POST" action="employee.php" class="add-employee-form">
-                    <label for="fname">First Name:</label>
-                    <input type="text" name="fname" required><br>
-
-                    <label for="mname">Middle Name:</label>
-                    <input type="text" name="mname"><br>
-
-                    <label for="lname">Last Name:</label>
-                    <input type="text" name="lname" required><br>
-
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" required><br>
-
-                    <label for="password">Password:</label>
-                    <input type="text" name="password" required><br>
-
-                    <label for="position">Position:</label>
-                    <select name="position" id="position" required>
-                        <option value="">Select a position</option>
-                        <option value="Teacher">Teacher</option>
-                        <option value="Guard">Guard</option>
-                        <option value="Excellent">Excellent</option>
-                    </select><br>
-
-                    <label for="salary">Salary:</label>
-                    <input type="number" name="salary" step="0.01" required><br>
-
-                    <label for="status">Status:</label>
-                    <select name="status" required>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select><br>
-
-                    <div class="modal-footer">
-                        <button type="submit" name="add_employee">Add Employee</button>
-                    </div>
-                </form>
-            </div>
         </div>
 
         <!-- Employee Info Table -->
@@ -249,11 +205,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
                                         <option value="Inactive" <?php echo ($employee['status'] == 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
                                         <option value="Delete">Delete</option>
                                     </select>
-                                    <button type="submit" class="update-button">&nbsp; Update&nbsp; </button>
+                                    <button type="submit" class="update-button">Update</button>
                                 </form>
                                 <button type="button" class="schedule-button" 
                                     onclick="openScheduleModal('<?php echo $employee['employee_id']; ?>', '<?php echo $employee['fname'] . ' ' . $employee['lname']; ?>')">
-                                    &nbsp; Schedule&nbsp;
+                                    Schedule
                                 </button>
                             </td>
                         </tr>
