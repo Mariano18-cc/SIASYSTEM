@@ -249,18 +249,25 @@
   background-color: #082C66;
   color: white;
   padding: 10px;
-
-  font-size: 15px;  /* Container font size */
+  font-size: 15px;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.current-date-display {
+  font-weight: bold;
+  font-size: 18px;
 }
 
 /* Style for the Date Text */
 #current-date {
   font-weight: bold;
-  font-size: 18px; /* Smaller font size for the date text */
+  font-size: 18px;
 }
-
 
 /* style sa attendance*/
 
@@ -290,7 +297,7 @@ table {
 
 /* Table Header Styling */
 table thead {
-    background-color: #4CAF50;
+    background-color: #082C66;
     color: white;
 }
 

@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -99,7 +98,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #ccc;
 }
 
@@ -130,10 +129,14 @@
   
   
   .content {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    display: flex;
+    flex-direction: column;    /* Change to column to stack elements */
+    align-items: center;       /* Center items horizontally */
+    gap: 20px;                /* Add gap between all elements */
+    margin: 20px auto;
     padding: 20px;
+    background-color: #FEF9FE;
+    border-radius: 10px;
   }
   
   .job-process, .calendar, .employee {
@@ -147,83 +150,81 @@
     align-items: center;
 }
 
-.content {
-    padding: 20px;
-    background-color: #FEF9FE;
-    border-radius: 10px;
-    justify-content: space-around;
-    /* flex-direction: row; */
-}
-
 .panel {
     background-color: #2C3F6C;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    width: 400px;              /* Set width for the panel */  
+    flex: 0 1 500px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.panel:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.panel:active {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.panel h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 24px;
+    padding: 10px 0;
 }
 
 /* Job process cards */
 .job-process {
     display: flex;
-    gap: 20px;
-    min-width: 200px;
-
-}
-
-.job-process {
-  display: flex;
-  gap: 20px;
-  min-width: 200px;
+    gap: 30px;
+    justify-content: center;
+    padding: 10px;
 }
 
 .job-card,
 .stat-card {
-  width: 100px;
-  height: 120px;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 10px; /* Adjusted for more space */
-  color: #2C3F6C;
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  font-size: 14px; /* Adjust font size if needed */
+    flex: 0 1 130px;
+    height: 150px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    color: #2C3F6C;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .job-card i,
 .stat-card i {
-  font-size: 30px;
-  margin-bottom: 5px;
+    font-size: 40px;
+    margin-bottom: 10px;
 }
 
 .job-card p,
 .stat-card p {
-  margin: 0;
-  font-size: 14px; /* Adjusted font size to fit text */
-  word-wrap: break-word; /* Ensures text wraps if it’s too long */
+    margin: 5px 0;
+    font-size: 16px;
+    word-wrap: break-word;
 }
 
 /* Calendar styling */
 
 .calendar-container {
     background-color: #082C66;
-    padding: 8px;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 400px; 
-    bottom: 20px; 
-    right: 40px; /* Distance from the right */
-    box-sizing: border-box;
-    max-width: 90%; /* Responsive width */
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    
+    width: 500px;
 }
 
 .calendar-header {
@@ -231,6 +232,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    padding: 0 5px;
 }
 
 .calendar-header button {
@@ -251,19 +253,19 @@
 .calendar {
     width: 100%;
     border-collapse: collapse;
-    
 }
 
 .calendar th, .calendar td {
-    padding: 10px;
+    padding: 15px;
     border: 1px solid #082C66;
-    width: 40px; /* Fixed width for cells */
-    height: 40px; /* Fixed height for cells */
+    width: 50px;
+    height: 50px;
     text-align: center;
+    font-size: 16px;
 }
 
 .calendar td {
-    cursor: pointer; /* Pointer cursor on cells */
+    cursor: pointer;
 }
 
 .calendar td:hover {
@@ -271,14 +273,22 @@
 }
 
 .current-day {
-    background-color: #75B738; /* Highlight today's date */
+    background-color: #75B738;
     color: white; 
-    border-radius: 30%; /* Rounded corners for today's date */
+    border-radius: 30%;
 }
 
+/* Panel container */
+.panel-container {
+    display: flex;
+    justify-content: center;
+    gap: 120px;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-bottom: 30px;
+}
 
-
-
+/* Move the panels into their own container in the HTML */
   
   
 

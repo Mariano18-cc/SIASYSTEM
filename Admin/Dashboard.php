@@ -3,7 +3,6 @@ session_start();
 include "../db_connection.php"; // Ensure this file contains the database connection
 
 // Initialize variables
-$searchResults = [];
 $jobApplicationsCount = 0;
 $inProgressCount = 0;
 $teacherCount = 0;
@@ -32,19 +31,6 @@ if ($userData) {
 } else {
     echo "User not found!";
     exit();
-}
-
-// Process search if exists
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['searchTerm'])) {
-    $searchTerm = $_POST['searchTerm'];
-    
-    // Prepare and execute the SQL statement to search in the employee table
-    $stmt = $conn->prepare("SELECT * FROM employee WHERE fname LIKE ? OR lname LIKE ?");
-    $likeTerm = '%' . $searchTerm . '%';
-    $stmt->bind_param("ss", $likeTerm, $likeTerm);
-    $stmt->execute();
-    $searchResults = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
 }
 
 // Query for job application statistics
@@ -111,12 +97,6 @@ $stmt->close();
 
         <main class="main-content">
       <header class="header">
-        <div class="search-container">
-            <button class="search-button">
-                <i class="fas fa-search"></i> <!-- Font Awesome Search Icon -->
-            </button>
-            <input type="text" class="search-input" placeholder="Search...">
-        </div>
         <div class="user-info">
           <img src="../picture/ex.pic.jpg" alt="User Avatar">
           <span><?php echo htmlspecialchars($loggedInUser); ?></span>
@@ -125,56 +105,52 @@ $stmt->close();
 
         <!-- Job Process Panel -->
         <div class="content">
-        <?php if (!empty($searchResults)): ?>
-            <div class="search-results">
-                <h2>Search Results</h2>
-                <ul>
-                    <?php foreach ($searchResults as $result): ?>
-                        <li><?php echo htmlspecialchars($result['fname'] . ' ' . $result['lname']); ?> - <?php echo htmlspecialchars($result['position']); ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        <?php endif; ?>
+            <div class="panel-container">
+                <!-- Job Applications Panel -->
+                <a href="jobp.php" style="text-decoration: none;">
+                    <div class="panel">
+                        <h2>Job Applications</h2>
+                        <div class="job-process">
+                            <div class="job-card">
+                                <i class="fas fa-user-tie"></i>
+                                <p>CANDIDATES</p>
+                                <h3><?php echo $jobApplicationsCount; ?></h3>
+                            </div>
+                            <div class="job-card">
+                                <i class="fas fa-tasks"></i>
+                                <p>IN-PROGRESS</p>
+                                <h3><?php echo $inProgressCount; ?></h3>
+                            </div>
+                        </div>
+                    </div>
+                </a>
 
-            <div class="panel">
-            <h2>Job Applications</h2>
-            <div class="job-process">
-                <div class="job-card">
-                    <i class="fas fa-user-tie"></i>
-                    <p>CANDIDATES</p>
-                    <h3><?php echo $jobApplicationsCount; ?></h3>
-                </div>
-                <div class="job-card">
-                    <i class="fas fa-tasks"></i>
-                    <p>IN-PROGRESS</p>
-                    <h3><?php echo $inProgressCount; ?></h3>
-                </div>
-            </div>
+                <!-- Employee Info Panel -->
+                <a href="employee.php" style="text-decoration: none;">
+                    <div class="panel">
+                        <h2>EMPLOYEE</h2>
+                        <div class="job-process">
+                            <div class="stat-card">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                <p>TEACHER</p>
+                                <h3><?php echo $teacherCount; ?></h3>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-award"></i>
+                                <p>EXCELLENT</p>
+                                <h3><?php echo $excellentCount; ?></h3>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-shield-alt"></i>
+                                <p>GUARD</p>
+                                <h3><?php echo $guardCount; ?></h3>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
 
-            <!-- Employee Info Panel -->
-            <div class="panel">
-                <h2>EMPLOYEE</h2>
-                <div class="job-process">
-                    <div class="stat-card">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <p>TEACHER</p>
-                        <h3><?php echo $teacherCount; ?></h3>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-award"></i>
-                        <p>EXCELLENT</p>
-                        <h3><?php echo $excellentCount; ?></h3>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-shield-alt"></i>
-                        <p>GUARD</p>
-                        <h3><?php echo $guardCount; ?></h3>
-                    </div>
-                </div>
-            </div>
-<!-- Calendar -->
-            <!-- <div class="panel"> -->
+            <!-- Calendar -->
             <div class="calendar-container">
                 <div class="calendar-header">
                     <button id="prev-month">&#10094;</button>
@@ -198,8 +174,6 @@ $stmt->close();
                     </tbody>
                 </table>
             </div>
-            <!-- </div> -->
-        
         </div>
         
 

@@ -65,19 +65,30 @@ function openTab(evt, tabName) {
 
 // Function to update the date to show "Month Day, Year" (e.g., October 12, 2024)
 function updateDate() {
-    const dateElement = document.getElementById("current-date");
     const currentDate = new Date();
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = currentDate.toLocaleDateString('en-US', options);
-    dateElement.innerHTML = formattedDate;
     
-    // Also update the attendance date
+    // Update all date containers
+    const dateContainers = document.querySelectorAll('.date-container');
+    dateContainers.forEach(container => {
+        const dateSpan = container.querySelector('.current-date-display') || document.createElement('span');
+        dateSpan.className = 'current-date-display';
+        dateSpan.textContent = formattedDate;
+        if (!container.querySelector('.current-date-display')) {
+            container.appendChild(dateSpan);
+        }
+    });
+    
+    // Keep the attendance date update
     const attendanceDateElement = document.getElementById("attendance-date");
-    attendanceDateElement.innerHTML = formattedDate;
+    if (attendanceDateElement) {
+        attendanceDateElement.innerHTML = formattedDate;
+    }
 }
 
-// Update the date immediately on page load
-updateDate();
+// Call updateDate when the page loads
+document.addEventListener('DOMContentLoaded', updateDate);
 
 // Update date and time every second
 function updateDateTime() {

@@ -56,8 +56,7 @@
      <!-- Date Container -->
      <div class="date-container">
         <p>Today's Date is:</p>
-        <div id="current-date"></div>
-            </div>
+     </div>
             <table class="payslip-table">
                 <thead>
                     <tr>
@@ -150,7 +149,6 @@
             <div class="attendance-header">
                 <div class="date-container">
                     <p>Today's Date is:</p>
-                    <div id="attendance-date"></div>
                 </div>
             </div>
             
