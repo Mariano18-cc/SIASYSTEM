@@ -265,7 +265,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label>Position Applied:</label>
                 <select name="position_applied" required>
                     <option value="">Select Position</option>
-                    <option value="Teacher">Teacher</option>
+                    <option value="Kinder Teacher">Kinder Teacher</option>
+                    <option value="Elementary Teacher">Elementary Teacher</option>
+                    <option value="Junior High Teacher">Junior High Teacher</option>
+                    <option value="School Administrator">School Administrator</option>
+                    <option value="Guidance Councilor">Guidance Councilor</option>
+                    <option value="IT Support Specialist">IT Support Specialist</option>
+                    <option value="Librarian">Librarian</option>
+                    <option value="School Nurse">School Nurse</option>
+                    <option value="Finance/Accounting">Finance/Accounting</option>
+                    <option value="Registrar">Registrar</option>
+                    <option value="Custodial/Maintenance">Custodial/Maintenance</option>
                     <option value="Guard">Guard</option>
                     <option value="Excellent">Excellent</option>
                 </select>
@@ -274,9 +284,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label>Specific Subject:</label>
                 <select name="subject" required>
                     <option value="">Select Subject</option>
+                    <option value="English">English</option>
                     <option value="Math">Mathematics</option>
                     <option value="Science">Science</option>
-                    <option value="English">English</option>
+                    <option value="Filipino">Filipino</option>
+                    <option value="Physical Education">Physical Education</option>
+                    <option value="MAPEH">MAPEH</option>
+                    <option value="History">History</option>
                 </select>
             </div>
         </div>
