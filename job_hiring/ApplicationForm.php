@@ -13,73 +13,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phone = $_POST['phone'];
     $bday = $_POST['date_of_birth'];
     $applying_position = $_POST['position_applied'];
-    $subject = $_POST['subject'];
+    $subject = isset($_POST['subject']) ? $_POST['subject'] : null;
     $employment_type = $_POST['employment_type'];
     $status = "New";
 
     // File upload handling
-    $upload_dir = $_SERVER['DOCUMENT_ROOT'] . "/SIASYSTEM/uploads/";
-    if (!is_dir($upload_dir)) {
-        mkdir($upload_dir, 0777, true);
-    }
+    $upload_dir = realpath(__DIR__ . '/../applicant_resume/') . '/';
 
     // Function to handle file upload
-    function handleFileUpload($file, $upload_dir, $allowed_types) {
-        if ($file['error'] === 0) {
-            $file_extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-            
-            if (!in_array($file_extension, $allowed_types)) {
-                return ['success' => false, 'message' => "Invalid file type. Allowed types: " . implode(', ', $allowed_types)];
-            }
-
-            $new_filename = uniqid() . '.' . $file_extension;
-            $destination = $upload_dir . $new_filename;
-
-            if (move_uploaded_file($file['tmp_name'], $destination)) {
-                return ['success' => true, 'filename' => $new_filename];
-            }
-            return ['success' => false, 'message' => "Failed to upload file."];
+    function handleFileUpload($file, $upload_dir, $allowed_types, $fname, $mname, $lname) {
+        // Check if file upload encountered errors
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            return ['success' => false, 'message' => "Error during file upload. Code: " . $file['error']];
         }
-        return ['success' => false, 'message' => "No file uploaded."];
+
+        // Ensure upload directory exists
+        if (!is_dir($upload_dir)) {
+            if (!mkdir($upload_dir, 0777, true)) {
+                return ['success' => false, 'message' => "Failed to create upload directory."];
+            }
+        }
+
+        // Validate file type
+        $file_extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        if (!in_array($file_extension, $allowed_types)) {
+            return ['success' => false, 'message' => "Invalid file type. Only PDF files are allowed."];
+        }
+
+        // Generate new filename
+        $new_filename = "{$fname}_{$mname}_{$lname}_resume.pdf";
+        $new_filename = preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $new_filename); // Sanitize filename
+        $destination = $upload_dir . $new_filename;
+
+        // Move uploaded file
+        if (move_uploaded_file($file['tmp_name'], $destination)) {
+            return ['success' => true, 'filename' => $new_filename];
+        }
+
+        return ['success' => false, 'message' => "Failed to move uploaded file."];
     }
 
-    // Handle CV upload
-    $cv_path = '';
-    if (isset($_FILES['cv'])) {
-        $cv_result = handleFileUpload($_FILES['cv'], $upload_dir, ['pdf', 'doc', 'docx']);
-        if ($cv_result['success']) {
-            $cv_path = $cv_result['filename'];
-        }
-    }
-
-    // Handle Resume upload
+    // Handle resume upload
     $resume_path = '';
-    if (isset($_FILES['resume'])) {
-        $resume_result = handleFileUpload($_FILES['resume'], $upload_dir, ['pdf', 'doc', 'docx']);
+    if (isset($_FILES['resume']) && $_FILES['resume']['error'] !== UPLOAD_ERR_NO_FILE) {
+        $resume_result = handleFileUpload($_FILES['resume'], $upload_dir, ['pdf'], $fname, $mname, $lname);
         if ($resume_result['success']) {
             $resume_path = $resume_result['filename'];
+        } else {
+            echo "<script>alert('Error uploading resume: " . $resume_result['message'] . "');</script>";
         }
-    }
-
-    // Handle Signature upload
-    $signature_path = '';
-    if (isset($_FILES['signature'])) {
-        $signature_result = handleFileUpload($_FILES['signature'], $upload_dir, ['jpg', 'jpeg', 'png']);
-        if ($signature_result['success']) {
-            $signature_path = $signature_result['filename'];
-        }
+    } else {
+        echo "<script>alert('No resume file uploaded or invalid file.');</script>";
     }
 
     // Insert data into the database
     $sql = "INSERT INTO applicant (fname, mname, lname, email, phone, bday, applying_position, subject, 
-            employment_type, cv_path, resume_path, signature_path, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            employment_type, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
     if ($stmt) {
-        $stmt->bind_param("sssssssssssss", 
-            $fname, $mname, $lname, $email, $phone, $bday, $applying_position, $subject,
-            $employment_type, $cv_path, $resume_path, $signature_path, $status
+        $stmt->bind_param(
+            "ssssssssss",
+            $fname,
+            $mname,
+            $lname,
+            $email,
+            $phone,
+            $bday,
+            $applying_position,
+            $subject,
+            $employment_type,
+            $status
         );
 
         if ($stmt->execute()) {
@@ -96,6 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn->close();
 }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -281,8 +287,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
             </div>
             <div class="form-field">
-                <label>Specific Subject:</label>
-                <select name="subject" required>
+                <label>Specific Subject:(if Teacher)</label>
+                <select name="subject">
                     <option value="">Select Subject</option>
                     <option value="English">English</option>
                     <option value="Math">Mathematics</option>
@@ -304,31 +310,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </select>
         </div>
 
-        <div class="form-section">Documents</div>
-        
-        <div class="file-upload">
+        <div class="form-section">Document</div>
+               
             <div class="upload-field">
-                <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" style="display: none;" onchange="updateFileName(this, 'cv-label')">
-                <label for="cv" class="file-button">
-                    <i class="fas fa-arrow-down"></i> 
-                    <span id="cv-label">Attach CV</span>
-                </label>
-            </div>
-            
-            <div class="upload-field">
-                <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" style="display: none;" onchange="updateFileName(this, 'resume-label')">
+                <input type="file" id="resume" name="resume" accept=".pdf" style="display: none;" onchange="updateFileName(this, 'resume-label')">
                 <label for="resume" class="file-button">
                     <i class="fas fa-arrow-down"></i> 
                     <span id="resume-label">Attach Resume</span>
                 </label>
             </div>
             
-            <div class="upload-field">
-                <input type="file" id="signature" name="signature" accept=".jpg,.jpeg,.png" style="display: none;" onchange="updateFileName(this, 'signature-label')">
-                <label for="signature" class="file-button">
-                    <i class="fas fa-arrow-down"></i> 
-                    <span id="signature-label">E-Signature</span>
-                </label>
+          
             </div>
         </div>
 
