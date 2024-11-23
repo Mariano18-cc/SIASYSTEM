@@ -4,49 +4,31 @@ function openModal(applicantId) {
         .then(response => response.json())
         .then(data => {
             const modal = document.getElementById('applicantModal');
-            const modalContent = `
-                <div class="modal-content">
-                    <span class="close" onclick="closeModal()">&times;</span>
-                    <div class="modal-header">
-                        <h3>Applicant Details</h3>
-                    </div>
-                    <div class="modal-body">
-                        <div class="info-row">
-                            <span class="info-label">Applicant ID:</span>
-                            <span class="info-value" id="modal_applicant_id">${data.applicant_id}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Full Name:</span>
-                            <span class="info-value" id="modal_full_name">${data.fname} ${data.mname} ${data.lname}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Email:</span>
-                            <span class="info-value" id="modal_email">${data.email}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Birthday:</span>
-                            <span class="info-value" id="modal_bday">${data.bday}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Position:</span>
-                            <span class="info-value" id="modal_position">${data.applying_position}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Status:</span>
-                            <span class="info-value" id="modal_status">${data.status}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Resume:</span>
-                            <a id="modal_resume_link" href="${data.resume || '#'}" ${!data.resume ? 'disabled' : ''}>
-                                ${data.resume ? 'Open Resume' : 'Resume not available'}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            modal.innerHTML = modalContent;
-            modal.style.display = 'flex';
+            document.getElementById('modal_applicant_id').textContent = data.applicant_id || 'N/A';
+            document.getElementById('modal_full_name').textContent = `${data.fname} ${data.mname} ${data.lname}` || 'N/A';
+            document.getElementById('modal_email').textContent = data.email || 'N/A';
+            document.getElementById('modal_phone').textContent = data.phone || 'N/A';
+            document.getElementById('modal_bday').textContent = data.bday || 'N/A';
+            document.getElementById('modal_position').textContent = data.applying_position || 'N/A';
+            document.getElementById('modal_subject').textContent = data.subject || 'N/A';
+            document.getElementById('modal_employment_type').textContent = data.employment_type || 'N/A';
+            document.getElementById('modal_status').textContent = data.status || 'N/A';
+
+            const resumeLink = document.getElementById('modal_resume_link');
+            if (data.resume) {
+                resumeLink.href = data.resume;
+                resumeLink.textContent = 'Open Resume';
+                resumeLink.removeAttribute('disabled');
+            } else {
+                resumeLink.href = '#';
+                resumeLink.textContent = 'Resume not available';
+                resumeLink.setAttribute('disabled', 'disabled');
+            }
+
+            modal.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error fetching applicant details:', error);
         });
 }
 
@@ -61,4 +43,4 @@ window.onclick = function(event) {
     if (event.target === modal) {
         closeModal();
     }
-}
+};
