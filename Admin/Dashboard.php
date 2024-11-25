@@ -11,7 +11,7 @@ $guardCount = 0;
 
 // Check if the user is logged in
 if (!isset($_SESSION['user'])) {
-    header("Location: login.php"); // Redirect to login if no user is logged in
+    header("Location: ../login.php"); // Redirect to login if no user is logged in
     exit();
 }
 
