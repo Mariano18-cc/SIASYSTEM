@@ -136,8 +136,8 @@ html, body {
 }
 
 .leave-requests th {
-    background-color: #f8f9fa;
-    color: #666;
+    background-color: #082C66;
+    color: white;
     font-weight: 500;
     padding: 15px;
     text-align: center;
@@ -151,9 +151,14 @@ html, body {
     border: 1px solid #eee;
 }
 
-.leave-requests tr:hover {
+.leave-requests tr:nth-child(even) {
     background-color: #f5f5f5;
 }
+
+.leave-requests tr:nth-child(odd) {
+    background-color: white;
+}
+
 
 /* Status badges */
 .status {
