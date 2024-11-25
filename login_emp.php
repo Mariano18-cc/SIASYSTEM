@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!empty($email) && !empty($password)) {
         try {
             // Query to check if the user exists using the email
-            $sql = "SELECT `ID`, `employee_id`, `fname`, `mname`, `lname`, `email`, `password`, `hired_date`, `position`, `salary`, `status` FROM `employee` WHERE `email` = :email";
+            $sql = "SELECT * FROM `employee` WHERE `email` = :email AND `status` = 'Active'";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
             $stmt->execute();
@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user) {
-                // Compare the provided password with the stored password (no hashing)
+                // Compare the provided password with the stored password
                 if ($password == $user['password']) {
                     // Store user data in session
                     $_SESSION['user_id'] = $user['ID'];
@@ -41,19 +41,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $_SESSION['status'] = $user['status'];
 
                     // Redirect to the employee dashboard
-                    header("Location: http://localhost/SIASYSTEM/Employee/employee_p.php");
+                    header("Location: Employee/employee_p.php");
                     exit();
                 } else {
-                    // Invalid password
                     $error = "Invalid email or password.";
                 }
             } else {
-                // No user found
-                $error = "Invalid email or password.";
+                $error = "Invalid email or password or account is inactive.";
             }
         } catch (PDOException $e) {
-            // Database query error
             $error = "An error occurred. Please try again later.";
+            // For debugging: 
+            error_log("Database Error: " . $e->getMessage());
         }
     } else {
         $error = "Please fill in all fields.";

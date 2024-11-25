@@ -1,3 +1,22 @@
+<?php
+// Add this at the top of the file
+session_start();
+include "../db_connection.php";
+
+// Check if user is logged in
+if (!isset($_SESSION['employee_id'])) {
+    header("Location: ../index.php");
+    exit();
+}
+
+// Get employee details
+$stmt = $conn->prepare("SELECT fname, lname FROM employee WHERE employee_id = ?");
+$stmt->bind_param("s", $_SESSION['employee_id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$employee = $result->fetch_assoc();
+$stmt->close();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +50,7 @@
     <div class="header">
         <div class="user-info">
             <img src="../picture/ex.pic.jpg" alt="User Avatar" class="user-avatar">
-            <span>cakelyn</span>
+            <span class="employee-name"><?php echo htmlspecialchars($employee['fname'] . ' ' . $employee['lname']); ?></span>
         </div>
         
     </div>
