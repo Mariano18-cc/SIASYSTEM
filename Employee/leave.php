@@ -1,138 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teacher Dashboard</title>
-  <link rel="stylesheet" href="stylesheet/t_leave.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Requests</title>
+    <link rel="stylesheet" href="css/leave.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="logo">
-      <img src="picture/logow.jpg" alt="Human Resource">
-    </div>
-    <h2>HUMAN RESOURCE</h2>
-    <ul style="list-style-type: none; padding-left: 0;">
-        <li><a href="t_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-        <li><a href="t_leave.html"><i class="fas fa-envelope-open-text"></i> Leave Request</a></li>
-        <li><a href="t_attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
-        <li><a href="t_payroll.html"><i class="fas fa-money-check-alt"></i> Payroll</a></li>
-        <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
-    </ul>
-  </div>
-
-  <div class="main">
-    <!-- Header -->
-    <div class="header">
-        <div class="user-info">
-            <img src="picture/ex.pic" alt="User Avatar" class="user-avatar">
-            <span>cakelyn</span>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="../picture/logo.png" alt="Human Resource">
+        </div>
+        <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
+        <ul style="list-style-type: none; padding-left: 0;">
+            <li><a href="employee_p.php"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="inbox.php"><i class="fas fa-inbox"></i> Inbox</a></li>
+            <li><a href="leave.php"><i class="fas fa-envelope-open-text"></i> Leave Request</a></li>
+            <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
+        </ul>
+        <div class="bottom-content">
+            <a href="../index.php"><i class="fas fa-sign-out-alt"></i> Log Out</a>
         </div>
     </div>
 
     <div class="main-content">
-        <!-- Header with button and trash can -->
+        <!-- Header (same as other pages) -->
         <div class="header">
-          <button class="request-button" id="requestButton"><i class="fas fa-plus"></i> Request Leave</button>
-          <button class="trash-button" title="Delete selected">
-            <i class="fas fa-trash trash-icon"></i>
-          </button> <!-- Ensure this tag is properly closed -->
-        </div>
-    
-        <!-- Leave Request Table -->
-        <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th><input type="checkbox" id="checkAll"></th> <!-- Checkbox to select all -->
-                  <th>Request ID</th>
-                  <th>Title</th>
-                  <th>Request Date</th>
-                  <th>Statement</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody id="requestTableBody">
-                <tr>
-                  <td><input type="checkbox" class="item"></td>
-                  <td>001</td>
-                  <td>Sick Leave</td>
-                  <td>2024-10-01</td>
-                  <td>Fever and cold</td>
-                  <td>Pending</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" class="item"></td>
-                  <td>002</td>
-                  <td>Vacation</td>
-                  <td>2024-10-05</td>
-                  <td>Family trip</td>
-                  <td>Approved</td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" class="item"></td>
-                  <td>003</td>
-                  <td>Emergency</td>
-                  <td>2024-10-15</td>
-                  <td>Family emergency</td>
-                  <td>Rejected</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="user-info">
+                <img src="../picture/ex.pic.jpg" alt="User Avatar" class="user-avatar">
+                <span>cakelyn</span>
+            </div>
         </div>
 
-        <!-- Deleted Items Section -->
-        <div class="deleted-items" id="deletedItems" style="display: none;">
-            <h2>Deleted Items</h2>
-            <ul id="deletedList"></ul>
+        <!-- Leave Request Content -->
+        <div class="content">
+            <div class="leave-container">
+                <div class="leave-header">
+                    <h2>Leave Requests</h2>
+                    <button class="request-btn">Request</button>
+                </div>
+                
+                <div class="leave-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Title</th>
+                                <th>Request Date</th>
+                                <th>Statement</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#527367455</td>
+                                <td>Emergency Leave</td>
+                                <td>07/02/24</td>
+                                <td></td>
+                                <td><span class="status approved">Approved</span></td>
+                                <td>
+                                    <i class="fas fa-trash"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <!-- Popup Form for Leave Request -->
-   
-<div class="popup" id="requestPopup">
-  <div class="popup-content">
-      <span class="close-btn" id="closePopup">&times;</span>
-      <h2>Request Leave</h2>
-      <form id="leaveRequestForm">
-          <label for="leaveType">Leave Type:</label>
-          <select id="leaveType" required>
-              <option value="" disabled selected>Select leave type</option>
-              <option value="Sick Leave">Sick Leave</option>
-              <option value="Maternity/Paternity Leave">Maternity/Paternity Leave</option>
-              <option value="Funeral Leave">Funeral Leave</option>
-              <option value="Emergency Leave">Emergency Leave</option>
-          </select>
+    <!-- Add this before </body> -->
+    <div id="requestModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Leave Request Form</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form class="request-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Select Leave Type:</label>
+                    <select name="title" required>
+                        <option value="Sick Leave">Sick Leave</option>
+                        <option value="Maternity/Paternity Leave">Maternity/Paternity Leave</option>
+                        <option value="Funeral Leave">Funeral Leave</option>
+                        <option value="Emergency Leave">Emergency Leave</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Request Date:</label>
+                    <input type="date" name="request_date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Statement:</label>
+                    <textarea name="statement" required placeholder="Enter your reason for leave..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Attach File (Optional):</label>
+                    <div class="file-input-container">
+                        <input type="file" name="attachment" accept=".png,.pdf">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">Submit</button>
+                    <button type="button" class="cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-          <label for="requestDate">Request Date:</label>
-          <input type="date" id="requestDate" required>
-
-          <label for="endDate">End Date:</label>
-          <input type="date" id="endDate" required>
-
-          <label for="statement">Statement (Optional):</label>
-          <textarea id="statement" placeholder="Optional statement"></textarea>
-
-          <label for="attachFile">Attach File:</label>
-          <input type="file" id="attachFile">
-
-          <button type="submit">Submit Request</button>
-      </form>
-  </div>
-</div>
-<!-- Success Message Popup -->
-<div class="popup" id="successPopup">
-  <div class="popup-content">
-      <span class="close-btn" id="closeSuccessPopup">&times;</span>
-      <h2>Request Submitted Successfully</h2>
-      <p>Your leave request has been submitted. Thank you!</p>
-      <button id="okButton">OK</button>
-  </div>
-</div>
-
-
-    <script src="javascript/t_leave.js"></script>
+    <script src="js/leave.js"></script>
 </body>
 </html>

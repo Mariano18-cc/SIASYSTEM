@@ -16,10 +16,10 @@
     </div>
     <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
     <ul style="list-style-type: none; padding-left: 0;">
-      <li><a href="teacher_p.php"><i class="fas fa-home"></i> Dashboard</a></li>
+      <li><a href="employee_p.php"><i class="fas fa-home"></i> Dashboard</a></li>
         <li><a href="inbox.php"><i class="fas fa-inbox"></i> Inbox</a></li>
         <li><a href="leave.php"><i class="fas fa-envelope-open-text"></i> Leave Request</a></li>
-        <li><a href="payroll_t.php"><i class="fas fa-wallet"></i> Payroll</a></li>
+        <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
     </ul>
     <div class="bottom-content">
             <a href="../index.php"><i class="fas fa-sign-out-alt"></i> Log Out</a>
