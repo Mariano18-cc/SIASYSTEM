@@ -110,7 +110,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <td><?php echo $request['start_date']; ?></td>
                         <td><?php echo $request['end_date']; ?></td>
                         <td><?php echo $request['total_days']; ?></td>
-                        <td><?php echo $request['reason']; ?></td>
+                        <td class="statement-cell">
+                            <?php 
+                            $words = explode(' ', $request['reason']);
+                            if (count($words) > 10) {
+                                echo htmlspecialchars(implode(' ', array_slice($words, 0, 10))) . '... ';
+                                echo '<button class="view-statement-btn" onclick="showStatement(' . 
+                                    $request['request_id'] . ', \'' . 
+                                    addslashes(htmlspecialchars($request['reason'])) . '\', \'' . 
+                                    htmlspecialchars($request['employee_id']) . '\', \'' . 
+                                    htmlspecialchars($request['type_name']) . '\')" title="View full statement">
+                                    <i class="fas fa-eye"></i>
+                                </button>';
+                            } else {
+                                echo htmlspecialchars($request['reason']);
+                            }
+                            ?>
+                        </td>
                         <td><span class="status <?php echo strtolower($request['status']); ?>"><?php echo $request['status']; ?></span></td>
                         <td><?php echo $request['applied_date']; ?></td>
                         <td>
@@ -134,5 +150,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </div>
  
+<div id="statementModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Leave Statement</h3>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div id="statementText"></div>
+            <div class="modal-details">
+                <p>Employee ID: <strong id="employeeId"></strong></p>
+                <p>Leave Type: <strong id="leaveType"></strong></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/leave.js"></script>
 </body>
 </html>
