@@ -1,0 +1,234 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Helvetica, sans-serif;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #082C66;
+    color: white;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 20px;
+}
+
+.sidebar .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar .logo img {
+    width: 250px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.sidebar ul li {
+    margin: 20px 0;
+}
+
+.sidebar ul li i {
+    margin-right: 10px;
+}
+
+.sidebar ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.sidebar ul li:hover {
+    background: #2e3c44;
+    border-radius: 10px;
+}
+
+.bottom-content {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.bottom-content a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.bottom-content i {
+    padding-right: 20px;
+}
+
+.bottom-content :hover {
+    background: #2e3c44;
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.user-info {
+    text-align: right;
+}
+
+.user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Leave Requests Table Styles */
+.leave-requests {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin: 20px;
+}
+
+.leave-requests h2 {
+    color: #082C66;
+    margin-bottom: 20px;
+}
+
+.leave-requests table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.leave-requests th {
+    background-color: #f8f9fa;
+    color: #666;
+    font-weight: 500;
+    padding: 15px;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+}
+
+.leave-requests td {
+    padding: 12px;
+    text-align: center;
+    color: #333;
+    border: 1px solid #eee;
+}
+
+.leave-requests tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Status badges */
+.status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.status.approved {
+    background-color: #28a745;  /* Green */
+    color: white;
+}
+
+.status.pending {
+    background-color: #ffc107;  /* Yellow */
+    color: black;
+}
+
+.status.rejected {
+    background-color: #dc3545;  /* Red */
+    color: white;
+}
+
+/* Action buttons */
+.action-btn {
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    margin: 0 3px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.action-btn.approve i {
+    color: #4CAF50;
+}
+
+.action-btn.reject i {
+    color: #F44336;
+}
+
+.action-btn.approve:hover {
+    background-color: #E8F5E9;
+    border-color: #4CAF50;
+}
+
+.action-btn.reject:hover {
+    background-color: #FEEBEE;
+    border-color: #F44336;
+}
+
+.action-btn i {
+    margin: 0;
+}
+
+/* Adjust the column width for larger buttons */
+.leave-requests th:last-child,
+.leave-requests td:last-child {
+    min-width: 100px;
+    white-space: nowrap;
+}
+
+/* Add this to your existing CSS */
+.leave-requests td:nth-child(7) { /* Statement/Reason column */
+    max-width: 200px;
+    white-space: normal;
+    word-wrap: break-word;
+    text-align: left;
+}

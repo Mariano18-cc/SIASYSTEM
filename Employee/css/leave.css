@@ -352,3 +352,86 @@ input[type="checkbox"] {
     --accent-color: #f4811e;
     --hover-color: #2e3c44;
 }
+
+.delete-btn {
+    background: none;
+    border: none;
+    color: #ff4444;
+    cursor: pointer;
+    padding: 0;
+}
+
+.delete-btn:hover {
+    color: #cc0000;
+}
+
+.alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 2000;
+    text-align: center;
+    min-width: 300px;
+    transition: opacity 0.3s ease-in-out;
+    animation: slideIn 0.3s ease-out;
+}
+
+.alert-success {
+    background-color: #ffffff;
+    border-left: 4px solid #28a745;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #ffffff;
+    border-left: 4px solid #dc3545;
+    color: #721c24;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translate(-50%, -70%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+.alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1999;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9em;
+}
+
+.status.pending {
+    background-color: #ffd700;
+    color: #000;
+}
+
+.status.approved {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.status.rejected {
+    background-color: #dc3545;
+    color: #fff;
+}

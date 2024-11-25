@@ -86,6 +86,7 @@ if (isset($_GET['generate_pdf'])) {
             <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
             <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
             <li><a href="printr.php"><i class="fas fa-receipt"></i> Print Receipt</a></li>
+            <li><a href="leave_m.php"><i class="fas fa-envelope-open-text"></i>  Leave Management</a></li>
         </ul>
         <div class="bottom-content">
             <a href="../index.php"><i class="fas fa-sign-out-alt"></i> Log Out</a>
