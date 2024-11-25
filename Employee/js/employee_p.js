@@ -65,3 +65,41 @@ document.getElementById("next-month").addEventListener("click", function() {
 
 // Initial calendar generation
 generateCalendar(currentMonth, currentYear);
+
+// Sample schedule data - you can replace this with data from your backend
+const scheduleData = [
+    { day: 'Mon', time: '9:00 AM - 10:30 AM' },
+    { day: 'Tue', time: '11:00 AM - 12:30 PM' },
+    { day: 'Wed', time: '2:00 PM - 3:30 PM' },
+    { day: 'Thu', time: '1:00 PM - 2:30 PM' },
+    { day: 'Fri', time: '10:00 AM - 11:30 AM' }
+];
+
+function renderSchedule() {
+    const scheduleBody = document.getElementById('scheduleBody');
+    scheduleBody.innerHTML = ''; // Clear existing content
+
+    scheduleData.forEach(slot => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="day">${slot.day}</td>
+            <td class="time">${slot.time}</td>
+        `;
+        scheduleBody.appendChild(row);
+    });
+}
+
+// Call this when the page loads
+document.addEventListener('DOMContentLoaded', renderSchedule);
+
+// Add this to your calendar cell creation code
+document.querySelectorAll('.calendar td').forEach(td => {
+    td.addEventListener('click', function() {
+        // Remove selected class from all cells
+        document.querySelectorAll('.calendar td').forEach(td => {
+            td.classList.remove('selected-day');
+        });
+        // Add selected class to clicked cell
+        this.classList.add('selected-day');
+    });
+});
