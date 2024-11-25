@@ -36,7 +36,6 @@ $stmt->close();
     <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
     <ul style="list-style-type: none; padding-left: 0;">
       <li><a href="employee_p.php"><i class="fas fa-home"></i> Dashboard</a></li>
-        <li><a href="inbox.php"><i class="fas fa-inbox"></i> Inbox</a></li>
         <li><a href="leave.php"><i class="fas fa-envelope-open-text"></i> Leave Request</a></li>
         <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
     </ul>
@@ -51,8 +50,7 @@ $stmt->close();
         <div class="user-info">
             <img src="../picture/ex.pic.jpg" alt="User Avatar" class="user-avatar">
             <span class="employee-name"><?php echo htmlspecialchars($employee['fname'] . ' ' . $employee['lname']); ?></span>
-        </div>
-        
+        </div>   
     </div>
 
     <!-- Content -->

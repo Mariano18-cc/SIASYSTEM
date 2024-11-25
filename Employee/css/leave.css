@@ -104,7 +104,9 @@ html, body {
 }
 
 .user-info {
-    text-align: right;
+    display: flex;
+    align-items: center;
+    text-align: left;
 }
 
 .user-info img {
@@ -112,6 +114,22 @@ html, body {
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
+}
+
+.employee-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000000;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-top: 0;
+}
+
+.header h2 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
 }
 
 .content {

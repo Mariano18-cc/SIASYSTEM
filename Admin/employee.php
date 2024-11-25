@@ -1,6 +1,25 @@
 <?php
-// Include the database connection file
+// Start the session and include database connection
+session_start();
 include "../db_connection.php";
+
+// Check if the user is logged in
+if (!isset($_SESSION['user'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
+// Get user info from session
+$user = $_SESSION['user'];
+
+// Query the hradmin table to get the user's info
+$stmt = $conn->prepare("SELECT user, email FROM hradmin WHERE user = ? OR email = ?");
+$stmt->bind_param("ss", $user, $user);
+$stmt->execute();
+$userData = $stmt->get_result()->fetch_assoc();
+
+// Set logged in user
+$loggedInUser = $userData ? $userData['user'] : 'Admin User';
 
 // Initialize an array for employees
 $results = [];
@@ -255,13 +274,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
 
     <!-- Main content -->
     <main class="main-content">
-        <div class="header">
-            <div class="user-info">
-                <img src="../picture/ex.pic.jpg" alt="User Avatar" class="user-avatar">
-                <span>Cakelyn</span><br>
-                <p class="department">Human Resource Admin</p>
-            </div>
+      <header class="header">
+        <div class="user-info">
+          <img src="../picture/ex.pic.jpg" alt="User Avatar">
+          <span><?php echo htmlspecialchars($loggedInUser); ?></span>
         </div>
+      </header>
+
 
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Search Employee...">

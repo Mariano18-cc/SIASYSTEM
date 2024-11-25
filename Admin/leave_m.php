@@ -1,5 +1,25 @@
 <?php
-include '../db_connection.php';
+// Start the session and include database connection
+session_start();
+include "../db_connection.php";
+
+// Check if the user is logged in
+if (!isset($_SESSION['user'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
+// Get user info from session
+$user = $_SESSION['user'];
+
+// Query the hradmin table to get the user's info
+$stmt = $conn->prepare("SELECT user, email FROM hradmin WHERE user = ? OR email = ?");
+$stmt->bind_param("ss", $user, $user);
+$stmt->execute();
+$userData = $stmt->get_result()->fetch_assoc();
+
+// Set logged in user
+$loggedInUser = $userData ? $userData['user'] : 'Admin User';
 
 // Fetch leave requests for the table
 $stmt = $pdo->query("SELECT lr.*, lt.type_name, lr.reason 
@@ -54,15 +74,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </div>
 
-<div class="main-content">
-    <!-- Header -->
-    <div class="header">
+<main class="main-content">
+      <header class="header">
         <div class="user-info">
-            <img src="../picture/ex.pic.jpg" alt="User Avatar" class="user-avatar">
-            <span>cakelyn</span>
+          <img src="../picture/ex.pic.jpg" alt="User Avatar">
+          <span><?php echo htmlspecialchars($loggedInUser); ?></span>
         </div>
-        
-    </div>
+      </header>
+
 
     <div class="content">
         <div class="leave-requests">
