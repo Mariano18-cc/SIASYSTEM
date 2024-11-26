@@ -262,11 +262,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
         </div>
         <h2 style="color: white; text-align: center;">HUMAN RESOURCE</h2>
         <ul>
-            <li><a href="Dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li><a href="jobp.php" class="active"><i class="fas fa-briefcase"></i> Job Process</a></li>
+            <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="jobp.php"><i class="fas fa-briefcase"></i> Job Process</a></li>
             <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
             <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
-            <li><a href="leave_m.php"><i class="fas fa-envelope-open-text"></i>  Leave Management</a></li>
+            <li><a href="attendance.php"><i class="fas fa-clock"></i> Attendance</a></li>
+            <li><a href="leave_m.php"><i class="fas fa-envelope-open-text"></i> Leave Management</a></li>
         </ul>
         <div class="bottom-content">
             <a href="../index.php"><i class="fas fa-sign-out-alt"></i> Log Out</a>
