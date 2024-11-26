@@ -31,14 +31,15 @@ document.addEventListener('DOMContentLoaded', function() {
         this.textContent = 'Show';
     });
 
-    // Add error message handling
+    // Add error message handling with longer duration (5 seconds)
     const errorMessage = document.querySelector('.error-message');
     if (errorMessage && errorMessage.classList.contains('show')) {
         setTimeout(() => {
+            errorMessage.style.transition = 'opacity 0.5s ease';
             errorMessage.style.opacity = '0';
             setTimeout(() => {
                 errorMessage.remove();
-            }, 300);
-        }, 3000); // Message will show for 3 seconds
+            }, 500);
+        }, 5000); // Changed from 3000 to 5000 (5 seconds)
     }
 });

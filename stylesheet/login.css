@@ -168,6 +168,8 @@ button:hover {
     margin-bottom: 15px;
     display: none;
     text-align: center;
+    opacity: 1;
+    transition: opacity 0.5s ease;
 }
 
 .error-message.show {

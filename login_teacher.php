@@ -1,6 +1,6 @@
 <?php
-// Include the database connection file
-include "db_connection.php"; 
+// Include the database connection
+require_once('db_connection.php');
 
 // Start session for login tracking
 session_start();
@@ -9,55 +9,60 @@ session_start();
 $error = "";
 
 // Check if the form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get the login credentials from the POST request
-    $input = $_POST['email']; // Can be email or username
-    $password = $_POST['password'];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $input = trim($_POST['email']); // Can be email or username
+    $password = trim($_POST['password']);
 
-    // Check if the input is a valid email address
-    if (filter_var($input, FILTER_VALIDATE_EMAIL)) {
-        // If input is email, query using email
-        $stmt = $conn->prepare("SELECT * FROM `teacher` WHERE `email` = ? AND `status` = 'Active'");
-    } else {
-        // If input is not an email, treat it as a username
-        $stmt = $conn->prepare("SELECT * FROM `teacher` WHERE `username` = ? AND `status` = 'Active'");
-    }
+    // Validate input and password
+    if (!empty($input) && !empty($password)) {
+        try {
+            // First check if the user exists and is active, regardless of position
+            if (filter_var($input, FILTER_VALIDATE_EMAIL)) {
+                $sql = "SELECT * FROM `employee` WHERE `email` = :input AND `status` = 'Active'";
+            } else {
+                $sql = "SELECT * FROM `employee` WHERE `username` = :input AND `status` = 'Active'";
+            }
 
-    if ($stmt === false) {  
-        // Output error if SQL preparation fails
-        echo "Error preparing the query: " . $conn->error;
-        exit();
-    }
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':input', $input, PDO::PARAM_STR);
+            $stmt->execute();
 
-    // Bind the input parameter and execute the query
-    $stmt->bind_param("s", $input);
-    $stmt->execute();
-    $result = $stmt->get_result();
+            // Fetch the user
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Check if a user was found
-    if ($result->num_rows == 1) {
-        // Fetch user data
-        $row = $result->fetch_assoc();
-        
-        // Verify the password - using trim() to remove any whitespace
-        if (trim($password) === trim($row['password'])) {
-            // Password matches - set session variables
-            $_SESSION['teacher_id'] = $row['ID'];
-            $_SESSION['username'] = $row['username'];
-            $_SESSION['fname'] = $row['fname'];
-            $_SESSION['mname'] = $row['mname'];
-            $_SESSION['lname'] = $row['lname'];
-            $_SESSION['email'] = $row['email'];
-            $_SESSION['status'] = $row['status'];
-            
-            // Redirect to the teacher dashboard
-            header("Location: Teacher/dashboard.php");
-            exit();
-        } else {
-            $error = "Invalid email or password";
+            if ($user) {
+                // First check if the user is a teacher
+                if ($user['position'] !== 'Teacher') {
+                    $error = "Access denied. This portal is for teachers only.";
+                }
+                // Then check password if user is a teacher
+                else if (trim($password) === trim($user['password'])) {
+                    // Store user data in session
+                    $_SESSION['user_id'] = $user['ID'];
+                    $_SESSION['employee_id'] = $user['employee_id'];
+                    $_SESSION['username'] = $user['username'];
+                    $_SESSION['fname'] = $user['fname'];
+                    $_SESSION['mname'] = $user['mname'];
+                    $_SESSION['lname'] = $user['lname'];
+                    $_SESSION['email'] = $user['email'];
+                    $_SESSION['status'] = $user['status'];
+                    $_SESSION['position'] = $user['position'];
+
+                    // Redirect to the teacher dashboard
+                    header("Location: Teacher/teacher_p.php");
+                    exit();
+                } else {
+                    $error = "Incorrect password. Please try again.";
+                }
+            } else {
+                $error = "Account not found or inactive. Please check your credentials.";
+            }
+        } catch (PDOException $e) {
+            $error = "An error occurred. Please try again later.";
+            error_log("Database Error: " . $e->getMessage());
         }
     } else {
-        $error = "Invalid email or password or account is inactive";
+        $error = "Please fill in all fields.";
     }
 }
 ?>
@@ -84,8 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <img src="picture/logo.png" alt="Logo" class="logo">
             <?php
             // Display error message if login failed
-            if (isset($_POST['email']) && isset($_POST['password'])) {
-                echo '<div class="error-message show">Invalid email or password</div>';
+            if (!empty($error)) {
+                echo '<div class="error-message show">' . htmlspecialchars($error) . '</div>';
             }
             ?>
             <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">

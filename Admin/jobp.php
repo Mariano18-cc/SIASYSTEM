@@ -112,7 +112,7 @@ if (isset($_GET['id'])) {
         <li><a href="leave_m.php"><i class="fas fa-envelope-open-text"></i>  Leave Management</a></li>
     </ul>
     <div class="bottom-content">
-        <a href="../login.php"><i class="fas fa-sign-out-alt"></i>Log Out</a>
+        <a href="../index.php"><i class="fas fa-sign-out-alt"></i>Log Out</a>
     </div>
 </div>
 

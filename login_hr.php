@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-include "db_connection.php"; 
+require_once "db_connection.php"; 
 
 // Start session for login tracking
 session_start();
@@ -39,9 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Verify the password - using trim() to remove any whitespace
         if (trim($password) === trim($row['pass'])) {
             // Password matches - set session and redirect
-            $_SESSION['user'] = $row['user'];  // Store username instead of input
+            $_SESSION['user'] = $row['user'];
             $_SESSION['user_id'] = $row['ID'];
-            header("Location: Admin/dashboard.php");
+            
+            // Use absolute path from web root
+            header("Location: Admin/Dashboard.php");
             exit();
         } else {
             // Incorrect password - don't show detailed error in production
@@ -76,11 +78,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <img src="picture/logo.png" alt="Logo" class="logo">
             <?php
             // Display error message if login failed
-            if (isset($_POST['email']) && isset($_POST['password'])) {
-                echo '<div class="error-message show">Invalid email or password</div>';
+            if (isset($error)) {
+                echo '<div class="error-message show">' . htmlspecialchars($error) . '</div>';
             }
             ?>
-            <form method="POST" action="login.php">
+            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                 <input type="text" id="loginEmail" name="email" placeholder="Email or Username" required>
                 <div class="password-container">
                     <input type="password" id="loginPassword" name="password" placeholder="Password" required>
