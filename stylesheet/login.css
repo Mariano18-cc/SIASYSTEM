@@ -12,14 +12,17 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    
+    overflow-y: auto;
+    min-height: 100vh;
 }
 
 .login-container {
     text-align: center;
-   margin-top: 100px;
-   position: relative;
-   z-index: 1;
+    margin-top: 100px;
+    position: relative;
+    z-index: 1;
+    width: 90%;
+    max-width: 340px;
 }
 
 .panel {
@@ -40,14 +43,15 @@ body {
     padding: 15px 0;
     width: 100%;
     color: #082C66;
+    overflow: visible;
 }
 
 .login-box {
-    background-color:#082C66;
-    padding: 60px;
+    background-color: #082C66;
+    padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 340px;  
+    width: 100%;
     overflow: visible;
 }
 
@@ -111,10 +115,10 @@ button:hover {
 
 .back-btn {
     position: absolute;
-    left: 20px;
+    left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    padding: 8px 15px;
+    padding: 6px 12px;
     background-color: #082C66;
     color: white;
     text-decoration: none;
@@ -123,6 +127,7 @@ button:hover {
     display: flex;
     align-items: center;
     gap: 5px;
+    z-index: 1001;
 }
 
 .back-btn i {
@@ -180,4 +185,65 @@ button:hover {
     width: 100%;
     min-height: 40px;
     margin-bottom: 10px;
+}
+
+@media screen and (max-width: 480px) {
+    .panel-header h2 {
+        font-size: 1.2rem;
+        padding: 0 30px;
+    }
+    
+    .login-container {
+        margin-top: 80px;
+    }
+    
+    .login-box {
+        padding: 1.5rem;
+    }
+    
+    .logo {
+        width: 70px;
+        margin-bottom: 2rem;
+    }
+    
+    input[type="text"],
+    input[type="password"] {
+        padding: 10px;
+    }
+    
+    .back-btn {
+        left: 5px;
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+    
+    .panel-header {
+        text-align: center;
+        padding: 15px 40px;
+    }
+    
+    .back-btn i {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .back-btn {
+        padding: 3px 6px;
+        font-size: 11px;
+    }
+    
+    .panel-header {
+        padding: 15px 35px;
+    }
+}
+
+@media screen and (max-height: 600px) {
+    .login-container {
+        margin-top: 60px;
+    }
+    
+    .logo {
+        margin-bottom: 1.5rem;
+    }
 }
