@@ -157,7 +157,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
   margin-left: 5px;
 }
 .schedule-button:hover {
-  background-color: transparent;
+  background-color: #082C66;
+  color: white;
 }
 /* Modal background overlay */
 .modal {

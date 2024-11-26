@@ -35,21 +35,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows == 1) {
         // Fetch user data
         $row = $result->fetch_assoc();
-
-        // Verify the password (use password_verify if using hashed passwords)
-        if ($password == $row['pass']) {
-            // If password matches, set session and redirect to dashboard
-            $_SESSION['user'] = $input;  // Store email or username
+        
+        // Verify the password - using trim() to remove any whitespace
+        if (trim($password) === trim($row['pass'])) {
+            // Password matches - set session and redirect
+            $_SESSION['user'] = $row['user'];  // Store username instead of input
             $_SESSION['user_id'] = $row['ID'];
-            header("Location: Admin/dashboard.php"); // Redirect to your dashboard or home page
+            header("Location: Admin/dashboard.php");
             exit();
         } else {
-            // Incorrect password
-            echo "<script>alert('Invalid email or password');</script>";
+            // Incorrect password - don't show detailed error in production
+            $error = "Invalid email or password";
         }
     } else {
-        // User not found
-        echo "<script>alert('Invalid email or password');</script>";
+        // User not found - don't show detailed error in production
+        $error = "Invalid email or password";
     }
 }
 ?>
@@ -61,29 +61,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR Management System Login</title>
     <link rel="stylesheet" href="stylesheet/login.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="panel">
         <div class="panel-header">
-            <h2>HUMAN RESOURCES MANAGEMENT SYSTEM</h2>
+            <h2 style="text-align: center;">HUMAN RESOURCES MANAGEMENT SYSTEM</h2>
+            <a href="index.php" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
         </div> 
     </div>
 
     <div class="login-container">
         <div class="login-box">
             <img src="picture/logo.png" alt="Logo" class="logo">
-         
-            <form id="loginForm" method="POST" action="login.php">
+            <?php
+            // Display error message if login failed
+            if (isset($_POST['email']) && isset($_POST['password'])) {
+                echo '<div class="error-message show">Invalid email or password</div>';
+            }
+            ?>
+            <form method="POST" action="login.php">
                 <input type="text" id="loginEmail" name="email" placeholder="Email or Username" required>
                 <div class="password-container">
                     <input type="password" id="loginPassword" name="password" placeholder="Password" required>
-                    <i class="fa-solid fa-eye"></i>
+                    <button type="button" id="showPassword" class="show-password-btn">Show</button>
                 </div>
-                <p id="errorMessage" style="color:red; display:none;">Invalid email or password</p>
                 <button type="submit">Log In</button>
             </form>
         </div>
     </div>
+
+    <script src="javascript/login.js"></script>
 </body>
 </html>
 
