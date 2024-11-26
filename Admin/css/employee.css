@@ -246,32 +246,26 @@
 
 /* Modal content */
 .modal-content {
-    background-color: #1A3C67;
-    color: white;
-    margin: 5% auto;
-    padding: 20px 30px;
-    width: 35%;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 700px;
+    top: 20%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Close button styling */
 .close {
     position: absolute;
+    top: 10px;
     right: 20px;
-    top: 15px;
-    color: white;
+    color: #333;
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.3s ease;
 }
 
 .close:hover {
@@ -833,6 +827,79 @@ select[name="new_status"] option {
     text-transform: uppercase;
     letter-spacing: 1px;
     display: inline-block;
+}
+
+/* Add Employee Modal Form Styling */
+.add-employee-form {
+    padding: 15px 0;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #082C66;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(8, 44, 102, 0.1);
+}
+
+.modal-footer {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.modal-footer button {
+    background-color: #082C66;
+    color: white;
+    border: none;
+    padding: 10px 30px;  /* Increased horizontal padding */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    min-width: 150px;    /* Added minimum width */
+    white-space: nowrap; /* Prevents text wrapping */
+    transition: background-color 0.3s ease;
+}
+
+.modal-footer button:hover {
+    background-color: #061f47;
+}
+
+/* Update modal content styling */
+.modal-content {
+    max-width: 700px;
+    padding: 25px;
+}
+
+.modal-content h3 {
+    color: #082C66;
+    margin-bottom: 20px;
+    font-size: 20px;
 }
 
 

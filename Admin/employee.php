@@ -297,41 +297,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
         <div id="add-employee-modal" class="modal">
             <div class="modal-content">
                 <span class="close" id="close-modal">&times;</span>
-                <div class="modal-header">
-                    <h3>Add New Employee</h3>
-                </div>
+                <h3>Add New Employee</h3>
                 <form method="POST" action="employee.php" class="add-employee-form">
-                    <label for="fname">First Name:</label>
-                    <input type="text" name="fname" required><br>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fname">First Name</label>
+                            <input type="text" name="fname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="mname">Middle Name</label>
+                            <input type="text" name="mname">
+                        </div>
+                        <div class="form-group">
+                            <label for="lname">Last Name</label>
+                            <input type="text" name="lname" required>
+                        </div>
+                    </div>
 
-                    <label for="mname">Middle Name:</label>
-                    <input type="text" name="mname"><br>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="text" name="password" required>
+                        </div>
+                    </div>
 
-                    <label for="lname">Last Name:</label>
-                    <input type="text" name="lname" required><br>
-
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" required><br>
-
-                    <label for="password">Password:</label>
-                    <input type="text" name="password" required><br>
-
-                    <label for="position">Position:</label>
-                    <select name="position" id="position" required>
-                        <option value="">Select a position</option>
-                        <option value="Teacher">Teacher</option>
-                        <option value="Guard">Guard</option>
-                        <option value="Excellent">Excellent</option>
-                    </select><br>
-
-                    <label for="salary">Salary:</label>
-                    <input type="number" name="salary" step="0.01" required><br>
-
-                    <label for="status">Status:</label>
-                    <select name="status" required>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select><br>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="position">Position</label>
+                            <select name="position" id="position" required>
+                                <option value="">Select a position</option>
+                                <option value="Teacher">Teacher</option>
+                                <option value="Guard">Guard</option>
+                                <option value="Excellent">Excellent</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="salary">Salary</label>
+                            <input type="number" name="salary" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select name="status" required>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="modal-footer">
                         <button type="submit" name="add_employee">Add Employee</button>

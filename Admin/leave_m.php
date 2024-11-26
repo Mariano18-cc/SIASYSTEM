@@ -76,13 +76,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 
 <main class="main-content">
-      <header class="header">
+    <header class="header">
         <div class="user-info">
-          <img src="../picture/ex.pic.jpg" alt="User Avatar">
-          <span><?php echo htmlspecialchars($loggedInUser); ?></span>
+            <img src="../picture/ex.pic.jpg" alt="User Avatar">
+            <span><?php echo htmlspecialchars($loggedInUser); ?></span>
         </div>
-      </header>
-
+    </header>
 
     <div class="content">
         <div class="leave-requests">

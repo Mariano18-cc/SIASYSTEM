@@ -224,7 +224,6 @@ if (isset($_GET['id'])) {
                 <td id="modal_status"></td>
             </tr>
         </table>
-        <button onclick="closeModal()">Close</button>
     </div>
 </div>
 
