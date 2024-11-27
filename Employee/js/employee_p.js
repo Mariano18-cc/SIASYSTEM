@@ -103,3 +103,86 @@ document.querySelectorAll('.calendar td').forEach(td => {
         this.classList.add('selected-day');
     });
 });
+
+// Profile Modal Functions
+function openProfileModal() {
+    const modal = document.getElementById('profileModal');
+    if (modal) {
+        modal.style.display = 'block';
+    }
+}
+
+// Close modal when clicking the X
+document.querySelector('.close').addEventListener('click', function() {
+    document.getElementById('profileModal').style.display = 'none';
+});
+
+// Close modal when clicking outside
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('profileModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+
+let isEditing = false;
+
+function toggleEdit() {
+    isEditing = !isEditing;
+    const inputs = document.querySelectorAll('.profile-details input, .profile-details textarea');
+    const editBtn = document.querySelector('.edit-profile-btn');
+    const saveBtn = document.querySelector('.save-profile-btn');
+    const cancelBtn = document.querySelector('.cancel-edit-btn');
+
+    inputs.forEach(input => {
+        if (input.name !== 'employee_id') {
+            input.disabled = !isEditing;
+        }
+    });
+
+    editBtn.style.display = isEditing ? 'none' : 'block';
+    saveBtn.style.display = isEditing ? 'block' : 'none';
+    cancelBtn.style.display = isEditing ? 'block' : 'none';
+}
+
+function cancelEdit() {
+    const form = document.getElementById('profileForm');
+    form.reset();
+    toggleEdit();
+}
+
+// Avatar preview
+document.getElementById('avatarInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('avatarPreview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Form submission
+document.getElementById('profileForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    
+    fetch('update_profile.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Profile updated successfully!');
+            toggleEdit();
+        } else {
+            alert('Error updating profile: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the profile');
+    });
+});

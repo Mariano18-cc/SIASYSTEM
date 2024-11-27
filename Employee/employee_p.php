@@ -50,6 +50,9 @@ $stmt->close();
         <div class="user-info">
             <img src="../picture/ex.pic.jpg" alt="User Avatar" class="user-avatar">
             <span class="employee-name"><?php echo htmlspecialchars($employee['fname'] . ' ' . $employee['lname']); ?></span>
+            <button class="profile-btn" onclick="openProfileModal()">
+                <i class="fas fa-user-cog"></i>
+            </button>
         </div>   
     </div>
 
@@ -103,6 +106,51 @@ $stmt->close();
     <h2>Memo/Announcement</h2>
     <p>All employees are requested to complete their end-of-month reports by Friday. Please check your email for further instructions.</p>
   </div>
+
+  <div id="profileModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="profile-header">
+            <div class="avatar-container">
+                <img src="../picture/ex.pic.jpg" alt="Profile Picture" id="avatarPreview" class="profile-avatar">
+                <div class="avatar-overlay">
+                    <label for="avatarInput" class="avatar-upload-btn">
+                        <i class="fas fa-camera"></i>
+                    </label>
+                    <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display: none;">
+                </div>
+            </div>
+            <h2><?php echo htmlspecialchars($employee['fname'] . ' ' . $employee['lname']); ?></h2>
+        </div>
+        
+        <form id="profileForm">
+            <div class="profile-details">
+                <div class="detail-group">
+                    <label>Employee ID:</label>
+                    <input type="text" value="<?php echo htmlspecialchars($_SESSION['employee_id']); ?>" disabled>
+                </div>
+                <div class="detail-group">
+                    <label>Email:</label>
+                    <input type="email" name="email" value="<?php echo htmlspecialchars($employee['email'] ?? ''); ?>" disabled>
+                </div>
+                <div class="detail-group">
+                    <label>Contact:</label>
+                    <input type="tel" name="contact" value="<?php echo htmlspecialchars($employee['contact'] ?? ''); ?>" disabled>
+                </div>
+                <div class="detail-group">
+                    <label>Address:</label>
+                    <textarea name="address" disabled><?php echo htmlspecialchars($employee['address'] ?? ''); ?></textarea>
+                </div>
+            </div>
+            
+            <div class="profile-actions">
+                <button type="button" class="edit-profile-btn" onclick="toggleEdit()">Edit Profile</button>
+                <button type="submit" class="save-profile-btn" style="display: none;">Save Changes</button>
+                <button type="button" class="cancel-edit-btn" style="display: none;" onclick="cancelEdit()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
 
   <script src="js/employee_p.js"></script>
 </body>
