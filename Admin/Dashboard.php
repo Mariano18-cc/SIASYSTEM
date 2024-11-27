@@ -149,6 +149,35 @@ $stmt->close();
                         </div>
                     </div>
                 </a>
+
+                <!-- Add Attendance Overview Panel -->
+                <a href="attendance.php" style="text-decoration: none;">
+                    <div class="panel">
+                        <h2>Attendance Overview</h2>
+                        <div class="job-process">
+                            <div class="stat-card">
+                                <i class="fas fa-user-check"></i>
+                                <p>PRESENT</p>
+                                <h3 id="presentCount">0</h3>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-user-times"></i>
+                                <p>ABSENT</p>
+                                <h3 id="absentCount">0</h3>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-clock"></i>
+                                <p>LATE</p>
+                                <h3 id="lateCount">0</h3>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-business-time"></i>
+                                <p>ON LEAVE</p>
+                                <h3 id="leaveCount">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
 
             <!-- Calendar -->
