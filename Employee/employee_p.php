@@ -48,7 +48,6 @@ $stmt->close();
     <!-- Header -->
     <div class="header">
         <div class="user-info">
-            <img src="../picture/ex.pic.jpg" alt="User Avatar" class="user-avatar">
             <span class="employee-name"><?php echo htmlspecialchars($employee['fname'] . ' ' . $employee['lname']); ?></span>
             <button class="profile-btn" onclick="openProfileModal()">
                 <i class="fas fa-user-cog"></i>
@@ -111,15 +110,6 @@ $stmt->close();
     <div class="modal-content">
         <span class="close">&times;</span>
         <div class="profile-header">
-            <div class="avatar-container">
-                <img src="../picture/ex.pic.jpg" alt="Profile Picture" id="avatarPreview" class="profile-avatar">
-                <div class="avatar-overlay">
-                    <label for="avatarInput" class="avatar-upload-btn">
-                        <i class="fas fa-camera"></i>
-                    </label>
-                    <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display: none;">
-                </div>
-            </div>
             <h2><?php echo htmlspecialchars($employee['fname'] . ' ' . $employee['lname']); ?></h2>
         </div>
         

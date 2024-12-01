@@ -48,7 +48,6 @@ $stmt->close();
         <!-- Header with just user info -->
         <div class="header">
             <div class="user-info">
-                <img src="../picture/ex.pic.jpg" alt="User Avatar" class="user-avatar">
                 <span class="employee-name"><?php echo htmlspecialchars($employee['fname'] . ' ' . $employee['lname']); ?></span>
             </div>
         </div>

@@ -1,8 +1,5 @@
 <?php
 session_start();
-error_reporting(E_ALL);
-ini_set('display_errors', 0);
-
 include "../db_connection.php";
 
 // Check if the user is logged in
@@ -92,10 +89,22 @@ $query = "SELECT id, employee_id, CONCAT(fname, ' ', mname, ' ', lname) as full_
          position, salary, status 
          FROM employee 
          WHERE status = 'Active'";
-$result = $conn->query($query);
 
+// Improve security by using prepared statement for search
+if (isset($_GET['search'])) {
+    $search = '%' . $_GET['search'] . '%';
+    $query .= " AND (employee_id LIKE ? OR CONCAT(fname, ' ', mname, ' ', lname) LIKE ?)";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ss", $search, $search);
+    $result = $stmt->execute();
+} else {
+    $result = $conn->query($query);
+}
+
+// Add error handling for database connection
 if (!$result) {
-    die("Query failed: " . $conn->error);
+    error_log("Database query failed: " . $conn->error);
+    die("An error occurred while fetching data. Please try again later.");
 }
 ?>
 
@@ -139,8 +148,7 @@ if (!$result) {
         </div>
         <div class="user-info">
           <img src="../picture/ex.pic.jpg" alt="User Avatar">
-
-         
+          <span><?php echo htmlspecialchars($loggedInUser); ?></span>
         </div>
       </header>
 
@@ -233,27 +241,6 @@ if (!$result) {
             </div>
         </div>
         
-    <script>
-        console.log('Inline script loaded');
-        document.addEventListener('DOMContentLoaded', function() {
-            const viewButtons = document.querySelectorAll('.view-button');
-            console.log('DOM loaded, found buttons:', viewButtons.length);
-            
-            viewButtons.forEach(button => {
-                console.log('Adding click listener to button:', button.getAttribute('data-employee-id'));
-                button.addEventListener('click', function() {
-                    console.log('Button clicked!');
-                    const modal = document.getElementById('payrollModal');
-                    console.log('Modal element:', modal);
-                    if (modal) {
-                        modal.style.display = 'block';
-                    } else {
-                        console.error('Modal element not found!');
-                    }
-                });
-            });
-        });
-    </script>
     <script src="js/payroll.js"></script>
 </body>
 </html>
