@@ -40,6 +40,11 @@
     align-items: center;
 }
 
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px; /* Add space below the h2 element */
+}
+
 .sidebar .logo img {
     width: 250px;
     height: 100px;
@@ -49,6 +54,7 @@
 .sidebar ul {
     list-style-type: none;
     padding-left: 0;
+    margin-top: 20px;
 }
 
 .sidebar ul li {

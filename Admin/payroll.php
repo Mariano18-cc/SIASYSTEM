@@ -1,7 +1,103 @@
+<?php
+session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
 
+include "../db_connection.php";
 
+// Check if the user is logged in
+if (!isset($_SESSION['user'])) {
+    header("Location: ../login.php");
+    exit();
+}
 
+// Get user info from session
+$user = $_SESSION['user'];
 
+// Query the hradmin table to get the user's info
+$stmt = $conn->prepare("SELECT user, email FROM hradmin WHERE user = ? OR email = ?");
+$stmt->bind_param("ss", $user, $user);
+$stmt->execute();
+$userData = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
+// Handle AJAX request for employee details
+if (isset($_GET['action']) && $_GET['action'] === 'get_employee_details') {
+    header('Content-Type: application/json');
+    
+    if (isset($_GET['id'])) {
+        try {
+            $id = intval($_GET['id']);
+            $query = "SELECT id, employee_id, CONCAT(fname, ' ', mname, ' ', lname) as full_name, 
+                      email, position, salary as monthly_salary, hired_date, phone_number 
+                      FROM employee WHERE id = ?";
+            
+            $stmt = $conn->prepare($query);
+            if (!$stmt) {
+                throw new Exception("Prepare failed: " . $conn->error);
+            }
+            
+            $stmt->bind_param("i", $id);
+            if (!$stmt->execute()) {
+                throw new Exception("Execute failed: " . $stmt->error);
+            }
+            
+            $result = $stmt->get_result();
+            
+            if ($row = $result->fetch_assoc()) {
+                // Calculate deductions
+                $salary = floatval($row['monthly_salary']);
+                
+                // Calculate deductions (you can adjust these values based on your requirements)
+                $incomeTax = $salary * 0.12; // 12% income tax
+                $philHealth = $salary * 0.035; // 3.5% PhilHealth
+                $pagibig = 100; // Fixed Pag-IBIG contribution
+                $sss = $salary * 0.045; // 4.5% SSS
+                
+                // Calculate total deductions and net salary
+                $totalDeductions = $incomeTax + $philHealth + $pagibig + $sss;
+                $netSalary = $salary - $totalDeductions;
+                
+                // Add calculations to the response
+                $row['deductions'] = [
+                    'Income Tax' => number_format($incomeTax, 2),
+                    'PhilHealth' => number_format($philHealth, 2),
+                    'Pag-IBIG' => number_format($pagibig, 2),
+                    'SSS' => number_format($sss, 2)
+                ];
+                $row['total_deductions'] = number_format($totalDeductions, 2);
+                $row['net_salary'] = number_format($netSalary, 2);
+                
+                echo json_encode($row);
+            } else {
+                http_response_code(404);
+                echo json_encode(['error' => 'Employee not found']);
+            }
+            $stmt->close();
+        } catch (Exception $e) {
+            http_response_code(500);
+            error_log("Error in get_employee_details: " . $e->getMessage());
+            echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+        }
+        exit();
+    } else {
+        http_response_code(400);
+        echo json_encode(['error' => 'No employee ID provided']);
+        exit();
+    }
+}
+
+// Regular page load - only proceed if not an AJAX request
+$query = "SELECT id, employee_id, CONCAT(fname, ' ', mname, ' ', lname) as full_name, 
+         position, salary, status 
+         FROM employee 
+         WHERE status = 'Active'";
+$result = $conn->query($query);
+
+if (!$result) {
+    die("Query failed: " . $conn->error);
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,146 +144,116 @@
         </div>
       </header>
 
-        <div class="tabs">
-            <button class="tablink active" onclick="openTab(event, 'Payslip')">Payslip</button>
-            <button class="tablink" onclick="openTab(event, 'Attendance')">Attendance</button>
-        </div>
+        <div id="Payslip" style="display: block;">
+            <div class="payroll-summary">
+                <div class="summary-card">
+                    <h3>Total Payroll</h3>
+                    <?php
+                    $total_query = "SELECT SUM(salary) as total_payroll FROM employee WHERE status = 'Active'";
+                    $total_result = $conn->query($total_query);
+                    $total_row = $total_result->fetch_assoc();
+                    ?>
+                    <p class="amount">₱<?php echo number_format($total_row['total_payroll'], 2); ?></p>
+                </div>
+                <div class="summary-card">
+                    <h3>Total Employees</h3>
+                    <?php
+                    $count_query = "SELECT COUNT(*) as total_employees FROM employee WHERE status = 'Active'";
+                    $count_result = $conn->query($count_query);
+                    $count_row = $count_result->fetch_assoc();
+                    ?>
+                    <p class="amount"><?php echo $count_row['total_employees']; ?></p>
+                </div>
+            </div>
 
-        <div id="Payslip" class="tabcontent" style="display: block;">
-            <div class="payslip-header">
-                <button class="print-button">PRINT</button>
-                <button class="service-button">CONTACT OF SERVICE</button>
-    </div>
-    
-     <!-- Date Container -->
-     <div class="date-container">
-        <p>Today's Date is:</p>
-     </div>
             <table class="payslip-table">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>Employee ID</th>
                         <th>Name</th>
                         <th>Position</th>
-                        <th>Minimum Rate</th>
-                        <th>Daily Rate</th>
                         <th>Salary</th>
+                        <th>Pay Period</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
+                    <?php while($row = $result->fetch_assoc()): ?>
                     <tr>
-                        <td><div class="circle red">JP</div></td>
-                        <td>Mangmang, Jay Prince</td>
-                        <td>Teacher</td>
-                        <td>P200</td>
-                        <td>P1,200.00</td>
-                        <td>P36,000.00</td>
-                        <td><button class="openModalBtn view-button">View</button></td>
+                        <td><?php echo htmlspecialchars($row['employee_id']); ?></td>
+                        <td><?php echo htmlspecialchars($row['full_name']); ?></td>
+                        <td><?php echo htmlspecialchars($row['position']); ?></td>
+                        <td>₱<?php echo number_format($row['salary'], 2); ?></td>
+                        <td><?php echo date('M 1-15, Y'); // First half of month ?></td>
+                        <td>
+                            <button 
+                                type="button" 
+                                class="view-button" 
+                                data-employee-id="<?php echo htmlspecialchars($row['id']); ?>"
+                            >
+                                View
+                            </button>
+                        </td>
                     </tr>
-                    <tr>
-                        <td><div class="circle orange">JP</div></td>
-                        <td>Jay Prince, Pogi</td>
-                        <td>Teacher</td>
-                        <td>P200</td>
-                        <td>P1,200.00</td>
-                        <td>P36,000.00</td>
-                        <td><button class="openModalBtn view-button">View</button></td>
-                    </tr>
-                    <tr>
-                        <td><div class="circle green">JS</div></td>
-                        <td>Jay Prince, Sobrang Pogi</td>
-                        <td>Teacher</td>
-                        <td>P200</td>
-                        <td>P1,200.00</td>
-                        <td>P36,000.00</td>
-                        <td><button class="openModalBtn view-button">View</button></td>
-                    </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
 
-</div>
-        <div id="modal" class="modal">
+        <!-- View Modal -->
+        <div id="payrollModal" class="modal">
             <div class="modal-content">
-                <span class="close">&times;</span>
                 <div class="modal-header">
+                    <span class="close">&times;</span>
                     <div class="header-content">
-                        <h3>MANGMANG, JAY PRINCE T.</h3>
-                        <p>mangmangjayprince@gmail.com</p>
+                        <h3 id="employeeName">Employee Name</h3>
+                        <p id="employeeEmail">employee@email.com</p>
                     </div>
                     <div class="header-buttons">
-                        <button class="send-btn">Send</button>
-                        <button class="print-btn">Print</button>
+                        <button class="send-btn">
+                            <i class="fas fa-paper-plane"></i> Send Payslip
+                        </button>
+                        <button class="print-btn">
+                            <i class="fas fa-print"></i> Print
+                        </button>
                     </div>
                     <div class="balance-date">
-                        <h2 class="balance">₱ 36,000.00</h2>
-                        <p class="date">OCTOBER 15, 2024</p>
+                        <h2 id="balanceAmount">₱ 0.00</h2>
+                        <p id="currentDate">JANUARY 1, 2024</p>
                     </div>
                 </div>
                 <div class="modal-body">
-                    <table class="details-table">
-                        <tr>
-                            <td class="label">Earnings</td>
-                            <td class="value">₱ 10,000.00</td>
-                        </tr>
-                        <tr>
-                            <td class="label">Deduction</td>
-                            <td class="value">₱ 2,000.00</td>
-                        </tr>
-                        <tr>
-                            <td class="label">Tax</td>
-                            <td class="value">₱ 1,500.00</td>
-                        </tr>
-                        <tr>
-                            <td class="label">Others</td>
-                            <td class="value">₱ 500.00</td>
-                        </tr>
+                    <table id="detailsTable" class="details-table">
+                        <!-- Content will be dynamically populated -->
                     </table>
-                    <div class="total">
-                        <p>Total:₱ 7,000.00</p>
+                    <div id="totalSection">
+                        <!-- Content will be dynamically populated -->
                     </div>
                 </div>
             </div>
         </div>
         
-        <div id="Attendance" class="tabcontent">
-            <div class="attendance-header">
-                <div class="date-container">
-                    <p>Today's Date is:</p>
-                </div>
-            </div>
+    <script>
+        console.log('Inline script loaded');
+        document.addEventListener('DOMContentLoaded', function() {
+            const viewButtons = document.querySelectorAll('.view-button');
+            console.log('DOM loaded, found buttons:', viewButtons.length);
             
-            <div id="datetime"></div>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Time of Arrival</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="attendanceRecords">
-                    <tr onclick="showAttendanceHistory('John Doe')">
-                        <td class="employee-name">John Doe</td>
-                        <td>08:55:00 AM</td>
-                        <td class="ontime">On Time</td>
-                    </tr>
-                    <tr onclick="showAttendanceHistory('Jane Smith')">
-                        <td class="employee-name">Jane Smith</td>
-                        <td>09:05:00 AM</td>
-                        <td class="late">Late</td>
-                    </tr>
-                    <tr onclick="showAttendanceHistory('Alex Brown')">
-                        <td class="employee-name">Alex Brown</td>
-                        <td>08:45:00 AM</td>
-                        <td class="ontime">On Time</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
+            viewButtons.forEach(button => {
+                console.log('Adding click listener to button:', button.getAttribute('data-employee-id'));
+                button.addEventListener('click', function() {
+                    console.log('Button clicked!');
+                    const modal = document.getElementById('payrollModal');
+                    console.log('Modal element:', modal);
+                    if (modal) {
+                        modal.style.display = 'block';
+                    } else {
+                        console.error('Modal element not found!');
+                    }
+                });
+            });
+        });
+    </script>
     <script src="js/payroll.js"></script>
 </body>
 </html>

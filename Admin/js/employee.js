@@ -20,6 +20,55 @@ document.addEventListener("DOMContentLoaded", function () {
             mainContent.classList.remove('blur'); // Remove blur
         }
     };
+
+    const employeeDetailsModal = document.getElementById("employee-details-modal");
+    const closeDetailsModal = document.getElementById("close-details-modal");
+
+    // Function to fetch and display employee details
+    window.showEmployeeDetails = function(employeeId) {
+        employeeDetailsModal.style.display = "block";
+        mainContent.classList.add('blur'); // Add blur effect
+        
+        fetch(`employee.php?get_employee_details=1&employee_id=${employeeId}`)
+            .then(response => response.json())
+            .then(employee => {
+                document.getElementById("employee-name").textContent = `${employee.fname} ${employee.lname}`;
+                document.getElementById("employee-position").textContent = employee.position;
+                document.getElementById("detail-employee-id").textContent = employee.employee_id;
+                document.getElementById("detail-email").textContent = employee.email;
+                document.getElementById("detail-phone").textContent = employee.phone || 'Not provided';
+                document.getElementById("detail-birthday").textContent = employee.birthday || 'Not provided';
+                document.getElementById("detail-employment-type").textContent = employee.employment_type || 'Not specified';
+                document.getElementById("detail-hired-date").textContent = employee.hired_date;
+                document.getElementById("detail-status").textContent = employee.status;
+                document.getElementById("detail-salary").textContent = `$${employee.salary}`;
+            })
+            .catch(error => {
+                console.error("Error fetching employee details:", error);
+                employeeDetailsModal.style.display = "none";
+                mainContent.classList.remove('blur');
+            });
+    };
+
+    // Close modal when clicking the X button
+    closeDetailsModal.onclick = function(e) {
+        e.stopPropagation(); // Prevent event from bubbling up
+        employeeDetailsModal.style.display = "none";
+        mainContent.classList.remove('blur');
+    }
+
+    // Close modal when clicking outside
+    employeeDetailsModal.onclick = function(event) {
+        if (event.target === employeeDetailsModal) {
+            employeeDetailsModal.style.display = "none";
+            mainContent.classList.remove('blur');
+        }
+    }
+
+    // Prevent modal content clicks from closing the modal
+    employeeDetailsModal.querySelector('.modal-content').onclick = function(e) {
+        e.stopPropagation();
+    }
 });
 
 

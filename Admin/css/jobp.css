@@ -22,6 +22,7 @@
   flex-direction: column;
   justify-content: space-between;
   font-size: 20px;
+  overflow-y: auto;
 }
 
 .sidebar .logo {
@@ -36,9 +37,16 @@
   object-fit: contain; 
 }
 
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: white;
+}
+
 .sidebar ul {
   list-style-type: none;
   padding-left: 0;
+  margin-top: 20px;
 }
 
 .sidebar ul li {
@@ -87,7 +95,7 @@
 
 /* Main Content Area */
 .main-content {
-  margin-left: 250px; /* Space for the sidebar */
+  margin-left: 250px;
   padding: 20px;
   height: 100vh;
   overflow-y: auto;
@@ -199,6 +207,7 @@ table tr:hover {
   background-color: rgba(0,0,0,0.4); /* Black background with transparency */
   overflow: auto;
   padding-top: 60px;
+  overflow-y: auto;
 }
 
 /* Modal content */
@@ -209,6 +218,8 @@ table tr:hover {
   border: 1px solid #888;
   width: 80%;
   max-width: 600px;
+  overflow-y: auto;
+  max-height: 90vh;
 }
 
 /* Close button */
@@ -332,6 +343,7 @@ select[name="new_status"]:focus {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
+    overflow-y: auto;
 }
 
 .modal-content {
@@ -343,6 +355,8 @@ select[name="new_status"]:focus {
     max-width: 600px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     position: relative;
+    overflow-y: auto;
+    max-height: 90vh;
 }
 
 /* Modal header */

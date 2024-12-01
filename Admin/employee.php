@@ -28,11 +28,11 @@ $results = [];
 if (isset($_GET['ajax']) && isset($_GET['search']) && !empty($_GET['search'])) {
     $search = "%" . $_GET['search'] . "%";
     // Search by first name, last name, or position
-    $stmt = $conn->prepare("SELECT ID, employee_id, fname, lname, position, hired_date, status FROM employee WHERE fname LIKE ? OR lname LIKE ? OR position LIKE ?");
+    $stmt = $conn->prepare("SELECT ID, employee_id, fname, lname, email, position, hired_date, status, salary FROM employee WHERE fname LIKE ? OR lname LIKE ? OR position LIKE ?");
     $stmt->bind_param("sss", $search, $search, $search);
 } else {
     // Fetch all employees if no search query is provided
-    $stmt = $conn->prepare("SELECT ID, employee_id, fname, lname, position, hired_date, status FROM employee");
+    $stmt = $conn->prepare("SELECT ID, employee_id, fname, lname, email, position, hired_date, status, salary FROM employee");
 }
 
 $stmt->execute();
@@ -135,6 +135,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
     // Redirect to refresh the page and show the new schedule
     header("Location: employee.php");
     exit();
+}
+
+// Add this section after the existing POST handlers and before the HTML
+if (isset($_GET['get_employee_details'])) {
+    $employee_id = $_GET['employee_id'];
+    
+    $stmt = $conn->prepare("SELECT employee_id, fname, lname, email, phone, birthday, 
+        employment_type, position, hired_date, status, salary 
+        FROM employee WHERE employee_id = ?");
+    $stmt->bind_param("s", $employee_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($employee = $result->fetch_assoc()) {
+        // Remove sensitive information
+        unset($employee['password']);
+        echo json_encode($employee);
+    } else {
+        http_response_code(404);
+        echo json_encode(['error' => 'Employee not found']);
+    }
+    
+    $stmt->close();
+    exit(); // Stop further execution
 }
 ?>
 <!DOCTYPE html>
@@ -370,9 +394,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
                 </thead>
                 <tbody id="employee-tbody">
                     <?php foreach ($results as $employee): ?>
-                        <tr>
+                        <tr class="employee-row" data-employee-id="<?php echo $employee['employee_id']; ?>">
                             <td><?php echo $employee['employee_id']; ?></td>
-                            <td><?php echo $employee['fname'] . " " . $employee['lname']; ?></td>
+                            <td>
+                                <?php echo $employee['fname'] . " " . $employee['lname']; ?>
+                                <button class="info-button" onclick="showEmployeeDetails('<?php echo $employee['employee_id']; ?>')">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </td>
                             <td><?php echo $employee['position']; ?></td>
                             <td><?php echo $employee['hired_date']; ?></td>
                             <td><?php echo $employee['status']; ?></td>
@@ -494,7 +523,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     row.innerHTML = `
                         <td>${employee.employee_id}</td>
-                        <td>${employee.fname} ${employee.lname}</td>
+                        <td>
+                            ${employee.fname} ${employee.lname}
+                            <button class="info-button" onclick="showEmployeeDetails('${employee.employee_id}')">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                        </td>
                         <td>${employee.position}</td>
                         <td>${employee.hired_date}</td>
                         <td>${employee.status}</td>
@@ -522,6 +556,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
     
 </script>
+
+<!-- Add this before closing body tag -->
+<div id="employee-details-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-details-modal">&times;</span>
+        <h3>Employee Details</h3>
+        <div class="employee-details-content">
+            <div class="employee-profile">
+ 
+                <h4 id="employee-name"></h4>
+                <p id="employee-position"></p>
+            </div>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <label>Employee ID:</label>
+                    <span id="detail-employee-id"></span>
+                </div>
+                <div class="detail-item">
+                    <label>Email:</label>
+                    <span id="detail-email"></span>
+                </div>
+                <div class="detail-item">
+                    <label>Phone:</label>
+                    <span id="detail-phone"></span>
+                </div>
+                <div class="detail-item">
+                    <label>Birthday:</label>
+                    <span id="detail-birthday"></span>
+                </div>
+                <div class="detail-item">
+                    <label>Employment Type:</label>
+                    <span id="detail-employment-type"></span>
+                </div>
+                <div class="detail-item">
+                    <label>Hired Date:</label>
+                    <span id="detail-hired-date"></span>
+                </div>
+                <div class="detail-item">
+                    <label>Status:</label>
+                    <span id="detail-status"></span>
+                </div>
+                <div class="detail-item">
+                    <label>Salary:</label>
+                    <span id="detail-salary"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/employee.js"></script>
 </body>
 </html>
 

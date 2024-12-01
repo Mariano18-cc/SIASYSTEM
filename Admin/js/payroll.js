@@ -1,101 +1,135 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // Show Payslip tab by default
-    document.getElementById("Payslip").style.display = "block";
-    document.querySelector(".tablink").classList.add("active");
+console.log('Script loaded');
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded');
+    const modal = document.getElementById('payrollModal');
+    const buttons = document.querySelectorAll('.view-button');
+    const closeBtn = document.querySelector('.close');
     
-    // Hide Attendance tab by default
-    document.getElementById("Attendance").style.display = "none";
-    
-    document.querySelectorAll(".openModalBtn").forEach(function(button) {
-        button.onclick = function() {
-            document.getElementById("modal").style.display = "flex";
-        };
-    });
+    console.log('Found buttons:', buttons.length);
 
-    document.querySelector(".close").onclick = function() {
-        document.getElementById("modal").style.display = "none";
-    };
-
-    window.onclick = function(event) {
-        if (event.target == document.getElementById("modal")) {
-            document.getElementById("modal").style.display = "none";
-        }
-    };
-
-    // Search functionality
-    function searchEmployees() {
-        const searchInput = document.querySelector('.search-input');
-        const filter = searchInput.value.toLowerCase();
-        const rows = document.querySelectorAll('.payslip-table tbody tr');
-
-        rows.forEach(row => {
-            const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-            const position = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-            const shouldShow = name.includes(filter) || position.includes(filter);
-            row.style.display = shouldShow ? '' : 'none';
+    // Improve modal display/hide with proper animation handling
+    function showModal() {
+        modal.style.display = 'block';
+        // Allow DOM to update before adding animation class
+        requestAnimationFrame(() => {
+            modal.classList.add('show');
         });
     }
 
-    // Event listeners
-    document.addEventListener('DOMContentLoaded', function() {
-        // Add search event listener
-        document.querySelector('.search-input').addEventListener('keyup', searchEmployees);
+    function hideModal() {
+        modal.classList.remove('show');
+        // Wait for animation to complete before hiding
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300); // Match the CSS transition duration
+    }
 
-        // ... your existing DOMContentLoaded code ...
+    buttons.forEach(button => {
+        button.onclick = function() {
+            const employeeId = this.getAttribute('data-employee-id');
+            showModal();
+            
+            fetch(`payroll.php?action=get_employee_details&id=${employeeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update modal content with animation
+                    fadeIn(document.getElementById('employeeName'), data.full_name);
+                    fadeIn(document.getElementById('employeeEmail'), data.email);
+                    fadeIn(document.getElementById('balanceAmount'), `₱ ${data.net_salary}`);
+                    
+                    const currentDate = new Date().toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                    }).toUpperCase();
+                    fadeIn(document.getElementById('currentDate'), currentDate);
+
+                    // Create earnings and deductions details
+                    const detailsHTML = `
+                        <tr class="earnings">
+                            <td class="label">Basic Salary</td>
+                            <td class="value">₱ ${parseFloat(data.monthly_salary).toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                        </tr>
+                        <tr class="deduction">
+                            <td class="label">Income Tax</td>
+                            <td class="value">- ₱ ${data.deductions['Income Tax']}</td>
+                        </tr>
+                        <tr class="deduction">
+                            <td class="label">PhilHealth</td>
+                            <td class="value">- ₱ ${data.deductions['PhilHealth']}</td>
+                        </tr>
+                        <tr class="deduction">
+                            <td class="label">Pag-IBIG</td>
+                            <td class="value">- ₱ ${data.deductions['Pag-IBIG']}</td>
+                        </tr>
+                        <tr class="deduction">
+                            <td class="label">SSS</td>
+                            <td class="value">- ₱ ${data.deductions['SSS']}</td>
+                        </tr>
+                    `;
+                    
+                    const table = document.getElementById('detailsTable');
+                    fadeIn(table, detailsHTML);
+
+                    // Update total section with animation
+                    const totalHTML = `
+                        <p><span>Total Deductions:</span> <span>₱ ${data.total_deductions}</span></p>
+                        <p><span>Net Salary:</span> <span>₱ ${data.net_salary}</span></p>
+                    `;
+                    fadeIn(document.getElementById('totalSection'), totalHTML);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error loading employee details');
+                });
+        };
     });
-});
 
-function openTab(evt, tabName) {
-    // Hide all tab content
-    var tabcontent = document.getElementsByClassName("tabcontent");
-    for (var i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+    // Animation helper function
+    function fadeIn(element, content) {
+        element.style.opacity = '0';
+        element.innerHTML = content;
+        let opacity = 0;
+        const timer = setInterval(() => {
+            if (opacity >= 1) {
+                clearInterval(timer);
+            }
+            element.style.opacity = opacity;
+            opacity += 0.1;
+        }, 50);
     }
 
-    // Remove active class from all tab buttons
-    var tablinks = document.getElementsByClassName("tablink");
-    for (var i = 0; i < tablinks.length; i++) {
-        tablinks[i].classList.remove("active");
-    }
+    // Enhance print functionality
+    document.querySelector('.print-btn').onclick = function() {
+        // Add print-specific class to body
+        document.body.classList.add('printing');
+        
+        // Print after brief delay to ensure styles are applied
+        setTimeout(() => {
+            window.print();
+            // Remove print class after printing
+            document.body.classList.remove('printing');
+        }, 100);
+    };
 
-    // Show the selected tab content and mark the button as active
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.classList.add("active");
-}
-
-// Function to update the date to show "Month Day, Year" (e.g., October 12, 2024)
-function updateDate() {
-    const currentDate = new Date();
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = currentDate.toLocaleDateString('en-US', options);
+    // Improve modal close handlers
+    closeBtn.onclick = hideModal;
     
-    // Update all date containers
-    const dateContainers = document.querySelectorAll('.date-container');
-    dateContainers.forEach(container => {
-        const dateSpan = container.querySelector('.current-date-display') || document.createElement('span');
-        dateSpan.className = 'current-date-display';
-        dateSpan.textContent = formattedDate;
-        if (!container.querySelector('.current-date-display')) {
-            container.appendChild(dateSpan);
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            hideModal();
+        }
+    };
+
+    // Add escape key handler
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && modal.style.display === 'block') {
+            hideModal();
         }
     });
-    
-    // Keep the attendance date update
-    const attendanceDateElement = document.getElementById("attendance-date");
-    if (attendanceDateElement) {
-        attendanceDateElement.innerHTML = formattedDate;
-    }
-}
 
-// Call updateDate when the page loads
-document.addEventListener('DOMContentLoaded', updateDate);
-
-// Update date and time every second
-function updateDateTime() {
-    const now = new Date();
-    const date = now.toLocaleDateString();
-    const time = now.toLocaleTimeString();
-    document.getElementById("datetime").innerHTML = `Date: ${date} | Time: ${time}`;
-}
-
-setInterval(updateDateTime, 1000); // Update every second
+    // Send functionality (you can customize this)
+    document.querySelector('.send-btn').onclick = function() {
+        alert('Payslip sent successfully!');
+    };
+});
