@@ -1,120 +1,103 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 20px;
+:root {
+    --primary-blue: #002B5B;
+    --accent-orange: #FF8C00;
+    --text-color: #3F8AEC;
+}
+
+/* Navigation */
+.navbar {
+    background-color: var(--primary-blue);
+    padding: 0.5rem 2rem;
+}
+.navbar-brand img {
+    width: 50px;
+    height: 50px;
+}
+.navbar-nav .nav-link {
+    color: white !important;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+}
+.navbar .btn-login {
+    background-color: var(--accent-orange);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4rem 2rem;
+    min-height: calc(100vh - 80px);
+}
+.content-left {
+    flex: 1;
+    padding-right: 2rem;
+}
+.content-right {
+    flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: 100vh;
 }
-
-.form-container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 800px;
+.school-logo {
+    width: 80%;
+    max-width: 400px;
 }
-
-h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 30px;
-}
-
-.form-section {
-    background-color: #f8f9fa;
-    padding: 10px;
-    margin: 20px 0;
+.main-title {
+    color: var(--text-color);
+    font-size: 2.5rem;
     font-weight: bold;
-    border-left: 4px solid #007bff;
+    margin-bottom: 1rem;
 }
-
-.form-group {
-    margin-bottom: 20px;
+.subtitle {
+    color: #666;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+.email-signup {
+    background: white;
+    padding: 0.5rem;
+    border-radius: 30px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    max-width: 500px;
+    margin-top: 1rem;
 }
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
-    font-weight: 500;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="date"],
-select {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    transition: border-color 0.3s;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="date"]:focus,
-select:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-}
-
-.form-group input,
-.form-group select {
+.email-signup input {
     flex: 1;
-    min-width: 200px;
-}
-
-input[type="file"] {
-    padding: 10px 0;
-}
-
-.form-check {
-    margin: 20px 0;
-}
-
-.form-check input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-.submit-button {
-    background-color: #007bff;
-    color: white;
-    padding: 12px 24px;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s;
+    padding: 0.5rem 1rem;
+    outline: none;
+}
+.email-signup .btn-apply {
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 0.5rem 2rem;
+    border-radius: 25px;
 }
 
-.submit-button:hover {
-    background-color: #0056b3;
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem;
+    color: #666;
+    font-size: 0.9rem;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
-    .form-container {
-        padding: 20px;
-    }
-    
-    .form-group {
+    .main-content {
         flex-direction: column;
-        gap: 10px;
+        text-align: center;
     }
-    
-    .form-group input,
-    .form-group select {
-        min-width: 100%;
+    .content-left {
+        padding-right: 0;
+        margin-bottom: 2rem;
+    }
+    .email-signup {
+        margin: 0 auto;
     }
 }
