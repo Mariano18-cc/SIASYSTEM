@@ -31,14 +31,6 @@
                 <p>View attendance, payslips, and submit leave requests</p>
                 <a href="login_staff.php">Access Staff Portal</a>
             </div>
-
-            <!-- Teacher Role -->
-            <div class="role-box">
-                <i class="fas fa-chalkboard-teacher"></i>
-                <h2>TEACHER PORTAL</h2>
-                <p>Manage classes, attendance, and academic resources</p>
-                <a href="login_teacher.php">Access Teacher Portal</a>
-            </div>
         </div>
     </div>
 

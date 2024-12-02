@@ -141,15 +141,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
 if (isset($_GET['get_employee_details'])) {
     $employee_id = $_GET['employee_id'];
     
-    $stmt = $conn->prepare("SELECT employee_id, fname, lname, email, phone, birthday, 
-        employment_type, position, hired_date, status, salary 
+    $stmt = $conn->prepare("SELECT ID, employee_id, fname, mname, lname, email, 
+        position, hired_date, status, salary, birthday, phone_number 
         FROM employee WHERE employee_id = ?");
     $stmt->bind_param("s", $employee_id);
     $stmt->execute();
     $result = $stmt->get_result();
     
     if ($employee = $result->fetch_assoc()) {
-        // Remove sensitive information
         unset($employee['password']);
         echo json_encode($employee);
     } else {
@@ -158,7 +157,7 @@ if (isset($_GET['get_employee_details'])) {
     }
     
     $stmt->close();
-    exit(); // Stop further execution
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -170,106 +169,6 @@ if (isset($_GET['get_employee_details'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="css/employee.css">
 </head>
-<style>
-    .schedule-button {
-  background-color:transparent;
-  color:  #082C66;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-left: 5px;
-}
-.schedule-button:hover {
-  background-color: #082C66;
-  color: white;
-}
-/* Modal background overlay */
-.modal {
-    display: none; 
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5); 
-}
-
-/* Modal content */
-.modal-content {
-    position: relative;
-    background-color:#082C66;
-    margin: auto;
-    padding: 20px;
-    border-radius: 5px;
-    width: 80%;
-    max-width: 500px;
-    top: 20%;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Close button styling */
-.close {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    color:FEF9FE ;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: #082C66;
-    text-decoration: none;
-}
-
-/* Label and input styling */
-.modal-content label {
-    font-weight: bold;
-    display: block;
-    margin-top: 10px;
-}
-
-.modal-content input[type="text"],
-.modal-content input[type="time"] {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-/* Submit button styling */
-.modal-content .modal-footer button {
-    background-color: #082C66;
-    color: #fff; /* Set the text color to white */
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.modal-content .modal-footer button:hover {
-    background-color: #0A1E50;
-}
-
-.alert {
-    background-color: #4CAF50; /* Green */
-    color: white;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    text-align: center;
-}
-
-
-</style>
 <body>
 
 <?php if (isset($_SESSION['message'])): ?>
@@ -461,102 +360,6 @@ if (isset($_GET['get_employee_details'])) {
     </div>
 </div>
 
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-    // Handle the "Add Employee" modal
-    const addEmployeeModal = document.getElementById("add-employee-modal");
-    const addButton = document.getElementById("add-button");
-    const closeAddModal = document.getElementById("close-modal");
-
-    addButton.onclick = function () {
-        console.log("Add button clicked"); // Debugging line
-        addEmployeeModal.style.display = "block";
-    };
-
-    closeAddModal.onclick = function () {
-        addEmployeeModal.style.display = "none";
-    };
-
-    window.onclick = function (event) {
-        if (event.target === addEmployeeModal) {
-            addEmployeeModal.style.display = "none";
-        }
-    };
-
-    // Handle the "Schedule Employee" modal
-    const scheduleModal = document.getElementById("schedule-modal");
-    const closeScheduleModal = document.getElementById("close-schedule-modal");
-
-    // Function to open the "Schedule Employee" modal
-    window.openScheduleModal = function (employeeId, employeeName) {
-        document.getElementById("schedule-employee-id").value = employeeId;
-        document.getElementById("schedule-employee-name").value = employeeName;
-        scheduleModal.style.display = "block";
-    };
-
-    closeScheduleModal.onclick = function () {
-        scheduleModal.style.display = "none";
-    };
-
-    window.onclick = function (event) {
-        if (event.target === scheduleModal) {
-            scheduleModal.style.display = "none";
-        }
-    };
-
-    // Handle search functionality
-    const searchInput = document.getElementById("search-input");
-    const employeeTbody = document.getElementById("employee-tbody");
-
-    searchInput.addEventListener("keyup", function () {
-        const query = this.value.trim();
-
-        // Make an AJAX request to fetch filtered employees
-        fetch("employee.php?ajax=1&search=" + encodeURIComponent(query))
-            .then(response => response.json())
-            .then(data => {
-                employeeTbody.innerHTML = ""; // Clear existing rows
-
-                // Populate table with new search results
-                data.forEach(employee => {
-                    const row = document.createElement("tr");
-
-                    row.innerHTML = `
-                        <td>${employee.employee_id}</td>
-                        <td>
-                            ${employee.fname} ${employee.lname}
-                            <button class="info-button" onclick="showEmployeeDetails('${employee.employee_id}')">
-                                <i class="fas fa-info-circle"></i>
-                            </button>
-                        </td>
-                        <td>${employee.position}</td>
-                        <td>${employee.hired_date}</td>
-                        <td>${employee.status}</td>
-                        <td>
-                            <form method="POST" action="employee.php">
-                                <input type="hidden" name="employee_id" value="${employee.employee_id}">
-                                <select name="new_status" required>
-                                    <option value="Active" ${employee.status === 'Active' ? 'selected' : ''}>Active</option>
-                                    <option value="Inactive" ${employee.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
-                                    <option value="Delete">Delete</option>
-                                </select>
-                                <button type="submit" class="update-button">Update Status</button>
-                            </form>
-                            <button type="button" class="schedule-button" onclick="openScheduleModal('${employee.employee_id}', '${employee.fname} ${employee.lname}')">
-                                Schedule
-                            </button>
-                        </td>
-                    `;
-                    employeeTbody.appendChild(row);
-                });
-            })
-            .catch(error => console.error("Error fetching employee data:", error));
-    });
-});
-
-    
-</script>
-
 <!-- Add this before closing body tag -->
 <div id="employee-details-modal" class="modal">
     <div class="modal-content">
@@ -564,7 +367,6 @@ document.addEventListener("DOMContentLoaded", function () {
         <h3>Employee Details</h3>
         <div class="employee-details-content">
             <div class="employee-profile">
- 
                 <h4 id="employee-name"></h4>
                 <p id="employee-position"></p>
             </div>
