@@ -162,6 +162,36 @@
                 margin: 20px auto;
             }
         }
+
+        /* Add these styles to your existing stylesheet */
+        .about-us {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            width: 100%;
+            display: block;
+            position: relative;
+        }
+
+        .about-us h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .about-us h1 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        .about-us p {
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.6;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -205,6 +235,18 @@
         <div class="content-right">
             <img src="../picture/logo (4).jpg" alt="School Logo" class="school-logo">
         </div>
+    </div>
+
+    <!-- About Us Section -->
+    <div class="about-us">
+        <h2>ABOUT US</h2>
+        <h1>KUMDAN JUNGANG CHRISTIAN SCHOOL</h1>
+        
+        <p>AT KUMDAN JUNGANG CHRISTIAN SCHOOL, WE ARE DEDICATED TO NURTURING THE MINDS AND HEARTS OF OUR STUDENTS THROUGH A CHRIST-CENTERED EDUCATION. OUR MISSION IS TO INSPIRE ACADEMIC EXCELLENCE WHILE FOSTERING SPIRITUAL GROWTH, CHARACTER DEVELOPMENT, AND COMMUNITY SERVICE.</p>
+        
+        <p>WE BELIEVE IN CREATING A SUPPORTIVE AND INCLUSIVE ENVIRONMENT WHERE EVERY CHILD CAN THRIVE. WITH A CURRICULUM ROOTED IN BIBLICAL VALUES AND A COMMITMENT TO ACADEMIC ACHIEVEMENT, WE EQUIP STUDENTS WITH THE KNOWLEDGE, SKILLS, AND FAITH TO SUCCEED IN ALL AREAS OF LIFE.</p>
+        
+        <p>JOIN US ON A JOURNEY OF LEARNING, FAITH, AND DISCOVERY AS WE GUIDE STUDENTS TO BECOME COMPASSIONATE LEADERS AND LIFELONG LEARNERS.</p>
     </div>
 </body>
 </html>
