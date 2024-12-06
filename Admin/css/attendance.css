@@ -460,4 +460,56 @@
     .panel-container {
         gap: 30px;
     }
+}
+
+.no-records {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+.status-badge.present {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+}
+
+.status-badge.late {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+}
+
+.status-badge.absent {
+    background: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+}
+
+.view-btn, .edit-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 2px;
+    transition: all 0.3s ease;
+}
+
+.view-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.edit-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.view-btn:hover, .edit-btn:hover {
+    opacity: 0.8;
 } 

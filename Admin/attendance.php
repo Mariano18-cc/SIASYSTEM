@@ -135,18 +135,56 @@ if ($userData) {
                             </tr>
                         </thead>
                         <tbody id="attendanceRecords">
-                            <!-- Sample row -->
+                            <!-- Static attendance records -->
                             <tr>
                                 <td>EMP001</td>
-                                <td>John Doe</td>
+                                <td>John Smith</td>
                                 <td>IT Department</td>
                                 <td>2024-03-20</td>
-                                <td>08:55 AM</td>
-                                <td>05:00 PM</td>
-                                <td><span class="status-badge ontime">On Time</span></td>
+                                <td>08:00:00</td>
+                                <td>17:00:00</td>
+                                <td><span class="status-badge present">Present</span></td>
                                 <td>
-                                    <button class="view-btn" title="View Details"><i class="fas fa-eye"></i></button>
-                                    <button class="edit-btn" title="Edit Record"><i class="fas fa-edit"></i></button>
+                                    <button class="view-btn" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="edit-btn" title="Edit Record">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>EMP002</td>
+                                <td>Jane Doe</td>
+                                <td>HR Department</td>
+                                <td>2024-03-20</td>
+                                <td>08:30:00</td>
+                                <td>17:00:00</td>
+                                <td><span class="status-badge late">Late</span></td>
+                                <td>
+                                    <button class="view-btn" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="edit-btn" title="Edit Record">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>EMP003</td>
+                                <td>Mike Johnson</td>
+                                <td>Finance Department</td>
+                                <td>2024-03-20</td>
+                                <td>00:00:00</td>
+                                <td>Not yet</td>
+                                <td><span class="status-badge absent">Absent</span></td>
+                                <td>
+                                    <button class="view-btn" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="edit-btn" title="Edit Record">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
