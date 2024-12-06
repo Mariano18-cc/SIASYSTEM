@@ -163,3 +163,40 @@ h2 {
         font-size: 18px;
     }
 }
+.programs {
+    background-color: #003366; /* Darker blue background */
+    color: white;
+    padding: 60px 20px;
+    text-align: left; /* Align text to the left */
+}
+
+.programs h1 {
+    text-align: center; /* Center the main title */
+    font-size: 48px; /* Adjust font size */
+    margin-bottom: 40px; /* Space below the title */
+}
+
+.programs-container {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between columns */
+}
+
+.program-column {
+    flex: 1; /* Allow columns to grow equally */
+    margin: 0 20px; /* Space between columns */
+}
+
+.program-column h2 {
+    font-size: 24px; /* Adjust heading size */
+    margin-bottom: 20px; /* Space below headings */
+}
+
+.program-column ul {
+    list-style-type: disc; /* Use disc for bullet points */
+    padding-left: 20px; /* Indent bullet points */
+}
+
+.program-column li {
+    margin-bottom: 10px; /* Space between list items */
+    line-height: 1.5; /* Improve readability */
+}
