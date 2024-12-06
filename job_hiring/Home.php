@@ -276,8 +276,7 @@
             <img src="../picture/AdKUMDAN JUNGANG CHRISTIAN SCHOOL INC..png" alt="School Logo" class="school-logo">
         </div>
     </div>
-                <span style="font-size: 48px; font-weight: bold; color: white;">KJCSI</span>
-            </a>
+        
     <!-- About Us Section -->
     <div class="about-us">
         <div class="about-us-content">
