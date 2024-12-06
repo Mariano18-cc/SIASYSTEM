@@ -83,3 +83,17 @@ body {
 .time-in-button:hover {
     background-color: #218838;
 }
+
+
+.employee-details {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+.timer {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.details-content {
+    display: none; /* Initially hidden */
+}

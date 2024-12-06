@@ -1,71 +1,74 @@
 <?php
 require_once('db_connection.php');
-$error = "";
 session_start();
+date_default_timezone_set('Asia/Manila');
 
-// Initialize variables
-$employeeDetails = [
-    'name' => '',
-    'employee_id' => '',
-    'email' => ''
-];
-$currentDateTime = date("Y-m-d H:i:s"); // Server-side current date and time
+$employeeDetails = ['name' => '', 'employee_id' => '', 'email' => ''];
+$currentDateTime = date("Y-m-d g:i A");
 
-// Check if the form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['check_id'])) {
+// Fetch employee details when "Check ID" is clicked
+if (isset($_POST['check_id'])) {
     $employee_id = $_POST['employee_id'];
-
-    // Prepare and execute the query to get employee details
+    
+    // Prepare a query to fetch employee details (fname, lname, email)
     $stmt = $conn->prepare("SELECT fname, lname, email FROM employee WHERE employee_id = ?");
+    
+    if (!$stmt) {
+        echo json_encode(['status' => 'error', 'message' => 'Failed to prepare statement: ' . $conn->error]);
+        exit();
+    }
+
     $stmt->bind_param("s", $employee_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if ($employee = $result->fetch_assoc()) {
-        // Mask the email
-        $maskedEmail = substr($employee['email'], 0, 3) . str_repeat('*', strlen($employee['email']) - 3);
-        $employeeDetails = [
-            'name' => $employee['fname'] . ' ' . $employee['lname'],
-            'employee_id' => $employee_id,
-            'email' => $maskedEmail
-        ];
+    if ($result->num_rows > 0) {
+        $employee = $result->fetch_assoc();
+        // Combine first name and last name into full name
+        $full_name = $employee['fname'] . ' ' . $employee['lname'];
+        echo json_encode([
+            'status' => 'success',
+            'name' => $full_name,  // Sending combined full name
+            'email' => $employee['email'],
+            'employee_id' => $employee_id
+        ]);
     } else {
-        $employeeDetails = ['error' => 'Employee not found'];
+        echo json_encode(['status' => 'error', 'message' => 'Employee not found.']);
     }
-
-    $stmt->close();
-} elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['time_in'])) {
-    $employee_id = $_POST['employee_id'];
-    $currentDateTime = date("Y-m-d H:i:s");
-    $currentDate = date("Y-m-d");
-    $currentTime = date("H:i:s");
-    $workday = date("l"); // This will give us the current day of the week
-    $defaultTimeOut = '00:00:00'; // Use this as a placeholder for time_out
-    $remarks = 'Time-in recorded';
-
-    // Insert the time-in record into the attendance table
-    $stmt = $conn->prepare("INSERT INTO attendance (employee_id, workday, date, time_in, time_out, remarks) VALUES (?, ?, ?, ?, ?, ?)");
-    if ($stmt === false) {
-        echo json_encode(['status' => 'error', 'message' => 'Failed to prepare statement: ' . $conn->error]);
-        exit();
-    }
-    $stmt->bind_param("ssssss", $employee_id, $workday, $currentDate, $currentTime, $defaultTimeOut, $remarks);
-
-    if ($stmt->execute()) {
-        $formattedDateTime = date("F j, Y g:i A", strtotime($currentDateTime));
-        echo json_encode(['status' => 'success', 'time' => $formattedDateTime]);
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Failed to execute statement: ' . $stmt->error]);
-    }
-
     $stmt->close();
     exit();
 }
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
-file_put_contents('debug.log', print_r($_POST, true), FILE_APPEND);
+// Handle "Time Out" functionality
+if (isset($_POST['time_out'])) {
+    $employee_id = $_POST['employee_id'];
+    $currentDate = date("Y-m-d");
+    $currentTime = date("H:i:s");
+    $currentDateTime = new DateTime();
 
+    $stmt = $conn->prepare("UPDATE attendance SET time_out = ?, remarks = ? WHERE employee_id = ? AND date = ? AND time_out IS NULL");
+    
+    if (!$stmt) {
+        echo json_encode(['status' => 'error', 'message' => 'Failed to prepare statement: ' . $conn->error]);
+        exit();
+    }
+
+    $remarks = 'Time-out recorded';
+    $stmt->bind_param("ssss", $currentTime, $remarks, $employee_id, $currentDate);
+
+    if ($stmt->execute()) {
+        echo json_encode([
+            'status' => 'success', 
+            'action' => 'time_out', 
+            'time' => $currentDateTime->format('F j, Y g:i A'), 
+            'employee_id' => $employee_id
+        ]);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Failed to execute statement: ' . $stmt->error]);
+    }
+    $stmt->close();
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -74,14 +77,14 @@ file_put_contents('debug.log', print_r($_POST, true), FILE_APPEND);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Tracker</title>
-    <link rel="stylesheet" href="stylesheet/attendance_t.css"> <!-- Add your CSS file -->
+    <link rel="stylesheet" href="stylesheet/attendance_t.css">
 </head>
 <body>
-<div class="header-container">
+    <div class="header-container">
         <h1>Attendance Tracker</h1>
-        <p><strong>Date and Time:</strong> <span id="current-datetime"><?php echo $currentDateTime; ?></span></p>
+        <p><strong>Date and Time:</strong> <span id="current-datetime"><?php echo $currentDateTime; ?></span></p>    
     </div>
-
+    
     <div class="container">
         <div class="search-bar">
             <h2>Check Employee ID</h2>
@@ -90,70 +93,120 @@ file_put_contents('debug.log', print_r($_POST, true), FILE_APPEND);
                 <button type="submit" name="check_id">Check ID</button>
             </form>
         </div>
-
-        <div class="employee-details">
-    <h3>Employee Details</h3>
-    <?php if (isset($employeeDetails['error'])): ?>
-        <p><?php echo $employeeDetails['error']; ?></p>
-    <?php else: ?>
-        <p><strong>Name:</strong> <?php echo htmlspecialchars($employeeDetails['name']); ?></p>
-        <p><strong>Employee ID:</strong> <?php echo htmlspecialchars($employeeDetails['employee_id']); ?></p>
-        <p><strong>Email:</strong> <?php echo htmlspecialchars($employeeDetails['email']); ?></p>
-        <p><strong>Status:</strong> <span id="statusOutput">Not timed in</span></p>
-        <form id="timeInForm">
-            <input type="hidden" name="employee_id" value="<?php echo htmlspecialchars($employeeDetails['employee_id']); ?>">
-            <button type="button" id="timeInButton" class="time-in-button">Time In</button>
-        </form>
-    <?php endif; ?>
-</div>
+    
+        <div class="employee-details" id="employee-details">
+            <h3>Employee Details</h3>
+            <div class="details-content" id="details-content">
+                <!-- Content is dynamically updated using JavaScript -->
+            </div>
+        </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const employeeForm = document.querySelector('form[action="attendance_tracker.php"]');
+            const detailsContent = document.getElementById('details-content');
 
-    <!-- Optional JavaScript for Live Time Update -->
-<script>
-    function updateDateTime() {
-        const currentDateTimeElem = document.getElementById('current-datetime');
-        const now = new Date();
-        const formatted = now.toISOString().slice(0, 19).replace('T', ' '); // Format: YYYY-MM-DD HH:mm:ss
-        currentDateTimeElem.textContent = formatted;
-    }
-    setInterval(updateDateTime, 1000); // Update every second
-
-document.addEventListener('DOMContentLoaded', function() {
-    const timeInButton = document.getElementById('timeInButton');
-    if (timeInButton) {
-        timeInButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            const employeeId = document.querySelector('input[name="employee_id"]').value;
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'attendance_tracker.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    try {
-                        const response = JSON.parse(xhr.responseText);
-                        if (response.status === 'success') {
-                            document.getElementById('statusOutput').innerText = `Timed in: ${response.time}`;
-                            timeInButton.disabled = true;
-                        } else {
-                            alert('Failed to record time-in: ' + response.message);
+            // Listen for form submission to fetch employee details
+            if (employeeForm) {
+                employeeForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const employeeId = document.querySelector('input[name="employee_id"]').value;
+                    
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'attendance_tracker.php', true);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                try {
+                                    const response = JSON.parse(xhr.responseText);
+                                    if (response.status === 'error') {
+                                        alert(response.message);
+                                        detailsContent.style.display = 'none';
+                                    } else {
+                                        displayEmployeeDetails(response);
+                                    }
+                                } catch (e) {
+                                    console.error('Error parsing JSON:', e);
+                                    alert('An error occurred while processing the response.');
+                                }
+                            } else {
+                                alert('An error occurred while fetching employee details.');
+                            }
                         }
-                    } catch (error) {
-                        console.error('Error parsing response:', xhr.responseText);
-                        alert('An error occurred while processing the response');
-                    }
-                } else {
-                    alert('Failed to record time-in. Server returned status: ' + xhr.status);
+                    };
+                    xhr.send(`check_id=1&employee_id=${employeeId}`);
+                });
+            }
+
+            // Display employee details dynamically
+            function displayEmployeeDetails(employee) {
+                detailsContent.innerHTML = ` 
+                    <p><strong>Name:</strong> ${employee.name}</p>
+                    <p><strong>Employee ID:</strong> <span id="displayedEmployeeId">${employee.employee_id}</span></p>
+                    <p><strong>Email:</strong> ${employee.email}</p>
+                    <p><strong>Status:</strong></p>
+                    <p><strong>Time in:</strong> <span id="timeInStatus"></span></p>
+                    <p><strong>Time out:</strong> <span id="timeOutStatus"></span></p>
+                    <button type="button" id="timeInButton" class="time-in-button">Time In</button>
+                    <button type="button" id="timeOutButton" class="time-out-button">Time Out</button>
+                `;
+                addTimeInOutListeners(); // Add listeners after updating content
+            }
+
+            function addTimeInOutListeners() {
+                const timeInButton = document.getElementById('timeInButton');
+                const timeOutButton = document.getElementById('timeOutButton');
+                const timeInStatus = document.getElementById('timeInStatus');
+                const timeOutStatus = document.getElementById('timeOutStatus');
+
+                if (timeInButton) {
+                    timeInButton.addEventListener('click', function(e) {
+                        handleTimeInOut(e, 'time_in', timeInStatus);
+                    });
                 }
-            };
-            xhr.onerror = function() {
-                alert('An error occurred while sending the request');
-            };
-            xhr.send(`time_in=true&employee_id=${employeeId}`);
+
+                if (timeOutButton) {
+                    timeOutButton.addEventListener('click', function(e) {
+                        handleTimeInOut(e, 'time_out', timeOutStatus);
+                    });
+                }
+            }
+
+            function handleTimeInOut(e, action, statusElement) {
+                e.preventDefault();
+                const employeeId = document.getElementById('displayedEmployeeId').textContent;
+                if (!employeeId) {
+                    alert('Employee ID is missing. Please check in again.');
+                    return;
+                }
+
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'attendance_tracker.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            try {
+                                const response = JSON.parse(xhr.responseText);
+                                if (response.status === 'success') {
+                                    statusElement.textContent = `${action === 'time_in' ? 'Time In' : 'Time Out'}: ${response.time}`;
+                                } else {
+                                    alert(response.message || 'An error occurred');
+                                }
+                            } catch (e) {
+                                console.error('Error parsing JSON:', e);
+                                alert('An error occurred while processing the request.');
+                            }
+                        } else {
+                            alert('An error occurred while processing the request.');
+                        }
+                    }
+                };
+                xhr.send(`employee_id=${employeeId}&${action}=1`);
+            }
         });
-    } else {
-        console.error('Time In button not found');
-    }
-});
-</script>
+    </script>
 </body>
 </html>
