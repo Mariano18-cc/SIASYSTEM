@@ -118,8 +118,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['employee_id']) && isse
     $time_out = $_POST['time_out'];
     $workday = $_POST['workday'];
 
-    // Insert the schedule data into the attendance_emp table
-    $insert_stmt = $conn->prepare("INSERT INTO attendance_emp (employee_id, employee_name, time_in, time_out, workday) VALUES (?, ?, ?, ?, ?)");
+    // Insert the schedule data into the attendance_sched table
+    $insert_stmt = $conn->prepare("INSERT INTO attendance_sched (employee_id, employee_name, time_in, time_out, workday) VALUES (?, ?, ?, ?, ?)");
     $insert_stmt->bind_param("sssss", $employee_id, $employee_name, $time_in, $time_out, $workday);
     if ($insert_stmt->execute())
 
