@@ -665,7 +665,16 @@ td select {
     min-width: 90px; /* Set minimum width */
 }
 
+
+
 /* Action Cell Styles */
+
+.employee-info-table td:first-child {
+    color: #082C66;
+    font-weight: bold;
+}
+
+
 .employee-info-table td:last-child {
     white-space: nowrap;
     display: flex;

@@ -359,17 +359,20 @@ padding: 0 15px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     overflow-y: auto;
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 50px auto;
-    padding: 30px;
+    background-color: #1a4d8f;
     border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
+    padding: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 90%;
+    width: 400px;
+    margin: auto;
 }
 
 .close {
@@ -514,4 +517,99 @@ padding: 0 15px;
 .avatar-overlay,
 .avatar-upload-btn {
     display: none;
+}
+
+/* Update this for the attendance container styling */
+.attendance-container {
+    width: 400px; /* Set the width to 400px */
+    background-color: #082C66;
+    border-radius: 10px;
+    padding: 10px; /* Adjust padding */
+    box-sizing: border-box;
+    color: white;
+    margin: 20px auto; /* Center the container horizontally and add space above and below */
+    position: relative; /* Allow for positioning below the header */
+    text-align: center; /* Center text */
+}
+
+.attendance-container h2 {
+    margin: 0; /* Remove margin for better fit */
+    font-size: 16px; /* Adjust font size */
+}
+
+.stat-card {
+    background-color: #1a4d8f; /* Background color for the stat card */
+    border-radius: 10px;
+    padding: 15px; /* Padding for the card */
+    margin-top: 10px; /* Space between header and card */
+    text-align: center; /* Center text in the card */
+}
+
+.stat-card i {
+    font-size: 40px;
+    margin-bottom: 10px; /* Space below the icon */
+}
+
+.stat-card p {
+    margin: 5px 0; /* Space above and below the text */
+    font-size: 14px; /* Font size for the text */
+}
+
+.stat-card h3 {
+    font-size: 20px; /* Font size for the status */
+    margin: 5px 0; /* Space above and below the status */
+}
+
+.stat-card button {
+    margin-top: 10px; /* Space above the button */
+    padding: 8px 12px; /* Padding for the button */
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; /* Button color */
+    color: white; /* Button text color */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.stat-card button:hover {
+    opacity: 0.9; /* Slightly transparent on hover */
+}
+
+/* Add this for the attendance details modal styling */
+.attendance-details-modal {
+    display: flex; /* Use flexbox for centering */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    position: fixed; /* Fixed position */
+    top: 50%; /* Move it down 50% of the viewport height */
+    left: 50%; /* Move it right 50% of the viewport width */
+    transform: translate(-50%, -50%); /* Adjust position to center */
+    background-color: #1a4d8f; /* Modal background color */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Padding for modal content */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    max-width: 90%; /* Responsive width */
+    width: 500px; /* Increased width for better alignment */
+    color: white; /* Text color */
+}
+
+.attendance-details-modal table {
+    width: 100%; /* Full width */
+    border-collapse: collapse; /* Collapse borders */
+    margin-top: 15px; /* Space above the table */
+}
+
+.attendance-details-modal th, .attendance-details-modal td {
+    padding: 10px; /* Padding for table cells */
+    text-align: center; /* Center align text */
+    color: white; /* Text color */
+}
+
+.attendance-details-modal th {
+    background-color: #082C66; /* Header background color */
+    color: white; /* Header text color */
+}
+
+.attendance-details-modal tr:hover {
+    background-color: #2e3c44; /* Row hover effect */
 }

@@ -10,13 +10,13 @@ if (!isset($_SESSION['user'])) {
 
 // Get user info from session
 $user = $_SESSION['user'];
-
-// Query the hradmin table to get the user's info
 $stmt = $conn->prepare("SELECT user, email FROM hradmin WHERE user = ? OR email = ?");
 $stmt->bind_param("ss", $user, $user);
 $stmt->execute();
 $userData = $stmt->get_result()->fetch_assoc();
 $stmt->close();
+
+$loggedInUser = isset($userData['user']) ? $userData['user'] : 'Unknown User';
 
 // Handle AJAX request for employee details
 if (isset($_GET['action']) && $_GET['action'] === 'get_employee_details') {
@@ -130,7 +130,7 @@ if (!$result) {
             <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
             <li><a href="jobp.php"><i class="fas fa-briefcase"></i> Job Process</a></li>
             <li><a href="employee.php"><i class="fas fa-users"></i> Employee</a></li>
-            <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
+            <li><a href="payroll.php" class="active"><i class="fas fa-wallet"></i> Payroll</a></li>
             <li><a href="attendance.php"><i class="fas fa-clock"></i> Attendance</a></li>
             <li><a href="leave_m.php"><i class="fas fa-envelope-open-text"></i> Leave Management</a></li>
         </ul>

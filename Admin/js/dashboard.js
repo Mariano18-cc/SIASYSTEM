@@ -88,3 +88,39 @@ window.onclick = function(event) {
     }
 }
 
+// Function to count attendance statuses
+function countAttendanceStatuses() {
+    const attendanceRecords = document.querySelectorAll('#attendanceRecords tr');
+    let presentCount = 0;
+    let absentCount = 0;
+    let lateCount = 0;
+    let leaveCount = 0;
+
+    attendanceRecords.forEach(row => {
+        const status = row.querySelector('td:nth-child(7)').textContent.trim(); // Assuming status is in the 7th column
+        switch (status) {
+            case 'ON TIME':
+                presentCount++;
+                break;
+            case 'LATE':
+                lateCount++;
+                break;
+            case 'ABSENT':
+                absentCount++;
+                break;
+            case 'ON LEAVE':
+                leaveCount++;
+                break;
+        }
+    });
+
+    // Update the counts in the attendance overview
+    document.getElementById('presentCount').textContent = presentCount;
+    document.getElementById('absentCount').textContent = absentCount;
+    document.getElementById('lateCount').textContent = lateCount;
+    document.getElementById('leaveCount').textContent = leaveCount;
+}
+
+// Call the function to count attendance statuses on page load
+countAttendanceStatuses();
+

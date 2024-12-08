@@ -24,6 +24,21 @@ if ($userData) {
     echo "User not found!";
     exit();
 }
+
+// Fetch attendance records from the database
+$attendanceQuery = $conn->prepare("
+    SELECT al.employee_id, e.fname, e.lname, e.position, al.date, al.time_in, al.time_out, 
+           CASE 
+               WHEN lr.request_id IS NOT NULL THEN 'ON LEAVE' 
+               WHEN al.time_out IS NULL THEN 'LATE' 
+               ELSE 'ON TIME' 
+           END AS status
+    FROM attendance_log al
+    JOIN employee e ON al.employee_id = e.employee_id
+    LEFT JOIN leave_requests lr ON al.employee_id = lr.employee_id AND al.date BETWEEN lr.start_date AND lr.end_date
+");
+$attendanceQuery->execute();
+$attendanceRecords = $attendanceQuery->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -95,30 +110,6 @@ if ($userData) {
                 </div>
             </div>
 
-            <!-- Attendance Table Panel -->
-            <div class="panel">
-                <!-- Add Table Controls -->
-                <div class="table-controls">
-                    <div class="filter-section">
-                        <input type="date" id="dateFilter" class="date-input" title="Filter by date">
-                        <input type="text" id="searchInput" placeholder="Search employee..." class="search-input">
-                        <select id="statusFilter" class="status-filter">
-                            <option value="">All Status</option>
-                            <option value="ontime">On Time</option>
-                            <option value="late">Late</option>
-                            <option value="absent">Absent</option>
-                            <option value="leave">On Leave</option>
-                        </select>
-                        <select id="departmentFilter" class="department-filter">
-                            <option value="">All Departments</option>
-                            <option value="IT">IT Department</option>
-                            <option value="HR">HR Department</option>
-                            <option value="Finance">Finance Department</option>
-                            <option value="Marketing">Marketing Department</option>
-                        </select>
-                    </div>
-                </div>
-
                 <!-- Existing Table -->
                 <div class="attendance-table-container">
                     <table class="attendance-table">
@@ -135,58 +126,27 @@ if ($userData) {
                             </tr>
                         </thead>
                         <tbody id="attendanceRecords">
-                            <!-- Static attendance records -->
-                            <tr>
-                                <td>EMP001</td>
-                                <td>John Smith</td>
-                                <td>IT Department</td>
-                                <td>2024-03-20</td>
-                                <td>08:00:00</td>
-                                <td>17:00:00</td>
-                                <td><span class="status-badge present">Present</span></td>
-                                <td>
-                                    <button class="view-btn" title="View Details">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="edit-btn" title="Edit Record">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>EMP002</td>
-                                <td>Jane Doe</td>
-                                <td>HR Department</td>
-                                <td>2024-03-20</td>
-                                <td>08:30:00</td>
-                                <td>17:00:00</td>
-                                <td><span class="status-badge late">Late</span></td>
-                                <td>
-                                    <button class="view-btn" title="View Details">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="edit-btn" title="Edit Record">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>EMP003</td>
-                                <td>Mike Johnson</td>
-                                <td>Finance Department</td>
-                                <td>2024-03-20</td>
-                                <td>00:00:00</td>
-                                <td>Not yet</td>
-                                <td><span class="status-badge absent">Absent</span></td>
-                                <td>
-                                    <button class="view-btn" title="View Details">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="edit-btn" title="Edit Record">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                            <?php while ($row = $attendanceRecords->fetch_assoc()): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($row['employee_id']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['fname']) . ' ' . htmlspecialchars($row['lname']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['position']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['date']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['time_in']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['time_out']); ?></td>
+                                    <td class="<?php echo htmlspecialchars(strtolower(str_replace(' ', '-', $row['status']))); ?>">
+                                        <?php echo htmlspecialchars($row['status']); ?>
+                                    </td>
+                                    <td>
+                                        <button class="view-btn" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="edit-btn" title="Edit Record">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
                         </tbody>
                     </table>
                 </div>

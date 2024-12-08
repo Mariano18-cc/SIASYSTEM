@@ -16,6 +16,25 @@ $stmt->execute();
 $result = $stmt->get_result();
 $employee = $result->fetch_assoc();
 $stmt->close();
+
+// Get attendance remarks for the logged-in employee
+$stmtAttendance = $conn->prepare("SELECT remarks FROM attendance_log WHERE employee_id = ? ORDER BY date DESC LIMIT 1");
+$stmtAttendance->bind_param("s", $_SESSION['employee_id']);
+$stmtAttendance->execute();
+$resultAttendance = $stmtAttendance->get_result();
+$attendanceRemarks = $resultAttendance->fetch_assoc();
+$stmtAttendance->close();
+
+// Get attendance details for the logged-in employee
+$stmtAttendanceDetails = $conn->prepare("SELECT date, time_in, time_out FROM attendance_log WHERE employee_id = ? ORDER BY date DESC");
+$stmtAttendanceDetails->bind_param("s", $_SESSION['employee_id']);
+$stmtAttendanceDetails->execute();
+$resultAttendanceDetails = $stmtAttendanceDetails->get_result();
+$attendanceDetails = $resultAttendanceDetails->fetch_all(MYSQLI_ASSOC);
+$stmtAttendanceDetails->close();
+
+// Update attendance status display
+$attendanceStatusText = isset($attendanceRemarks['remarks']) ? htmlspecialchars($attendanceRemarks['remarks']) : 'No remarks available';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,8 +74,47 @@ $stmt->close();
         </div>   
     </div>
 
-    <!-- Content -->
+    <!-- Add this attendance status container below the header -->
+    <div class="attendance-container">
+        <h2>Attendance Status</h2> <!-- Header for attendance status -->
+        <div class="stat-card">
+            <i class="fas fa-user-tie"></i> <!-- Icon for attendance status -->
+            <p>Current Status</p>
+            <h3 id="attendanceStatus"><?php echo $attendanceStatusText; ?></h3> <!-- Updated status -->
+            <button id="view-details-btn" onclick="openAttendanceDetailsModal()">View Details</button> <!-- Updated View Details button -->
+        </div>
+    </div>
+
+    <!-- Add this modal for attendance details -->
+    <div id="attendanceDetailsModal" class="modal" style="display: none;">
+        <div class="attendance-details-modal">
+            <span class="close" onclick="closeAttendanceDetailsModal()">&times;</span>
+            
+            <h2>Attendance Details</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time In</th>
+                        <th>Time Out</th>
+                    </tr>
+                </thead>
+                <tbody id="attendanceDetailsBody">
+                    <?php foreach ($attendanceDetails as $detail): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($detail['date']); ?></td>
+                            <td><?php echo htmlspecialchars($detail['time_in']); ?></td>
+                            <td><?php echo htmlspecialchars($detail['time_out']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- End of attendance details modal -->
+
     <div class="content">
+
       <!-- Calendar section -->
       <div class="calendar-container">
         <div class="calendar-header">
@@ -83,7 +141,6 @@ $stmt->close();
     </div>
 
 <!-- Schedule section -->
-<!-- Add this where you want the schedule to appear -->
 <div class="schedule-container">
   <table class="schedule-table">
     <thead>
@@ -106,9 +163,8 @@ $stmt->close();
     <p>All employees are requested to complete their end-of-month reports by Friday. Please check your email for further instructions.</p>
   </div>
 
-  <div id="profileModal" class="modal">
+  <div id="profileModal" class="modal" style="display: none;">
     <div class="modal-content">
-        <span class="close">&times;</span>
         <div class="profile-header">
             <h2><?php echo htmlspecialchars($employee['fname'] . ' ' . $employee['lname']); ?></h2>
         </div>

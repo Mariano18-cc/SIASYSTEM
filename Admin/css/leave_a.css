@@ -211,7 +211,7 @@ html, body {
     border: 1px solid #ddd;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 25px;
     transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;

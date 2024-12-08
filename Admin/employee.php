@@ -294,12 +294,17 @@ if (isset($_GET['get_employee_details'])) {
                 <tbody id="employee-tbody">
                     <?php foreach ($results as $employee): ?>
                         <tr class="employee-row" data-employee-id="<?php echo $employee['employee_id']; ?>">
-                            <td><?php echo $employee['employee_id']; ?></td>
+                            <td style="position: relative;">
+                                <span 
+                                    class="employee-id" 
+                                    onclick="showEmployeeDetails('<?php echo $employee['employee_id']; ?>')" 
+                                    style="cursor: pointer; color: #082C66; font-weight: bold;"
+                                >
+                                    <?php echo $employee['employee_id']; ?>
+                                </span>
+                            </td>
                             <td>
                                 <?php echo $employee['fname'] . " " . $employee['lname']; ?>
-                                <button class="info-button" onclick="showEmployeeDetails('<?php echo $employee['employee_id']; ?>')">
-                                    <i class="fas fa-info-circle"></i>
-                                </button>
                             </td>
                             <td><?php echo $employee['position']; ?></td>
                             <td><?php echo $employee['hired_date']; ?></td>
