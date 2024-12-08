@@ -162,7 +162,16 @@ document.addEventListener("DOMContentLoaded", function () {
         row.dataset.employeeId = employee.employee_id;
 
         row.innerHTML = `
-            <td onclick="showEmployeeDetails('${employee.employee_id}')" style="cursor: pointer; color: #082C66; font-weight: bold;">${employee.employee_id}</td>
+            <td style="position: relative;">
+                <span 
+                    class="employee-id" 
+                    onclick="showEmployeeDetails('${employee.employee_id}')" 
+                    style="cursor: pointer; color: #082C66; font-weight: bold;"
+                    data-tooltip="View Details"
+                >
+                    ${employee.employee_id}
+                </span>
+            </td>
             <td>
                 ${employee.fname} ${employee.lname}
             </td>

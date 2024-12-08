@@ -324,7 +324,10 @@
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
-
+td:first-child {
+    color: #082C66;
+    font-weight: bold;
+}
 .attendance-table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
