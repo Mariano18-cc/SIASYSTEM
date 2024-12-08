@@ -345,13 +345,5 @@
         <p>Address: 181 Sitio 3 Bayanihan St, Quezon City</p>
         <p>School Hours: 7:00 AM - 4:00 PM</p>
         <p>Phone: (02)8932 5197 | 0962 353 8182</p>
-        <div class="email-form" style="margin-top: 20px;">  
-        </  div>
-        <div class="social-media" style="margin-top: 20px;">
-            <p>Follow Us On:</p>
-            <a href="#" style="margin-right: 10px;">Facebook</a>
-            <a href="#">TikTok</a>
-        </div>
-    </div>
 </body>
 </html>
