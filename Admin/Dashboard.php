@@ -8,6 +8,10 @@ $inProgressCount = 0;
 $teacherCount = 0;
 $excellentCount = 0;
 $guardCount = 0;
+$presentCount = 0; // Initialize present count
+$absentCount = 0;  // Initialize absent count
+$lateCount = 0;    // Initialize late count
+$leaveCount = 0;   // Initialize leave count
 
 // Check if the user is logged in
 if (!isset($_SESSION['user'])) {
@@ -27,7 +31,6 @@ $userData = $stmt->get_result()->fetch_assoc();
 // Check if user exists
 if ($userData) {
     $loggedInUser = $userData['user']; // Get the username or email
-    // You can also get the user's email or other data if needed
 } else {
     echo "User not found!";
     exit();
@@ -59,6 +62,27 @@ $stmt = $conn->prepare("SELECT COUNT(*) AS total FROM employee WHERE position = 
 $stmt->execute();
 $result = $stmt->get_result();
 $guardCount = $result->fetch_assoc()['total'];
+
+// Query for attendance statistics from attendance_log table using remarks
+$stmt = $conn->prepare("SELECT COUNT(*) AS total FROM attendance_log WHERE remarks = 'PRESENT'");
+$stmt->execute();
+$result = $stmt->get_result();
+$presentCount = $result->fetch_assoc()['total'];
+
+$stmt = $conn->prepare("SELECT COUNT(*) AS total FROM attendance_log WHERE remarks = 'ABSENT'");
+$stmt->execute();
+$result = $stmt->get_result();
+$absentCount = $result->fetch_assoc()['total'];
+
+$stmt = $conn->prepare("SELECT COUNT(*) AS total FROM attendance_log WHERE remarks = 'LATE'");
+$stmt->execute();
+$result = $stmt->get_result();
+$lateCount = $result->fetch_assoc()['total'];
+
+$stmt = $conn->prepare("SELECT COUNT(*) AS total FROM attendance_log WHERE remarks = 'ON LEAVE'");
+$stmt->execute();
+$result = $stmt->get_result();
+$leaveCount = $result->fetch_assoc()['total'];
 
 $stmt->close();
 ?>
@@ -150,7 +174,7 @@ $stmt->close();
                     </div>
                 </a>
 
-                <!-- Add Attendance Overview Panel -->
+                <!-- Attendance Overview Panel -->
                 <a href="attendance.php" style="text-decoration: none;">
                     <div class="panel">
                         <h2>Attendance Overview</h2>
@@ -158,22 +182,22 @@ $stmt->close();
                             <div class="stat-card">
                                 <i class="fas fa-user-check"></i>
                                 <p>PRESENT</p>
-                                <h3 id="presentCount">0</h3>
+                                <h3 id="presentCount"><?php echo $presentCount; ?></h3>
                             </div>
                             <div class="stat-card">
                                 <i class="fas fa-user-times"></i>
                                 <p>ABSENT</p>
-                                <h3 id="absentCount">0</h3>
+                                <h3 id="absentCount"><?php echo $absentCount; ?></h3>
                             </div>
                             <div class="stat-card">
                                 <i class="fas fa-clock"></i>
                                 <p>LATE</p>
-                                <h3 id="lateCount">0</h3>
+                                <h3 id="lateCount"><?php echo $lateCount; ?></h3>
                             </div>
                             <div class="stat-card">
                                 <i class="fas fa-business-time"></i>
                                 <p>ON LEAVE</p>
-                                <h3 id="leaveCount">0</h3>
+                                <h3 id="leaveCount"><?php echo $leaveCount; ?></h3>
                             </div>
                         </div>
                     </div>

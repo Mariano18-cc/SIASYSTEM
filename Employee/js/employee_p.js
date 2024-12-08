@@ -90,7 +90,9 @@ function renderSchedule() {
 }
 
 // Call this when the page loads
-document.addEventListener('DOMContentLoaded', renderSchedule);
+document.addEventListener('DOMContentLoaded', function() {
+    renderSchedule();
+});
 
 // Add this to your calendar cell creation code
 document.querySelectorAll('.calendar td').forEach(td => {
@@ -112,17 +114,41 @@ function openProfileModal() {
     }
 }
 
-// Close modal when clicking the X
-document.querySelector('.close').addEventListener('click', function() {
+// Function to close the profile modal
+function closeProfileModal() {
     document.getElementById('profileModal').style.display = 'none';
-});
+}
 
-// Close modal when clicking outside
-window.addEventListener('click', function(event) {
-    const modal = document.getElementById('profileModal');
-    if (event.target === modal) {
-        modal.style.display = 'none';
+// Attendance Details Modal Functions
+function openAttendanceDetailsModal() {
+    const modal = document.getElementById('attendanceDetailsModal');
+    if (modal) {
+        modal.style.display = 'block';
     }
+}
+
+// Function to close the attendance details modal
+function closeAttendanceDetailsModal() {
+    document.getElementById('attendanceDetailsModal').style.display = 'none';
+}
+
+// Close modal when clicking the X or outside the modal
+document.addEventListener('DOMContentLoaded', function() {
+    // Use event delegation for the close button
+    document.body.addEventListener('click', function(event) {
+        const profileModal = document.getElementById('profileModal');
+        const attendanceModal = document.getElementById('attendanceDetailsModal');
+
+        // Close profile modal
+        if (event.target.classList.contains('close') || event.target === profileModal) {
+            closeProfileModal();
+        }
+
+        // Close attendance details modal
+        if (event.target.classList.contains('close') || event.target === attendanceModal) {
+            closeAttendanceDetailsModal();
+        }
+    });
 });
 
 let isEditing = false;
@@ -150,18 +176,6 @@ function cancelEdit() {
     form.reset();
     toggleEdit();
 }
-
-// Avatar preview
-document.getElementById('avatarInput').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('avatarPreview').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-});
 
 // Form submission
 document.getElementById('profileForm').addEventListener('submit', function(e) {

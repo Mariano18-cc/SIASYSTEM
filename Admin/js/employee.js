@@ -162,12 +162,9 @@ document.addEventListener("DOMContentLoaded", function () {
         row.dataset.employeeId = employee.employee_id;
 
         row.innerHTML = `
-            <td>${employee.employee_id}</td>
+            <td onclick="showEmployeeDetails('${employee.employee_id}')" style="cursor: pointer; color: #082C66; font-weight: bold;">${employee.employee_id}</td>
             <td>
                 ${employee.fname} ${employee.lname}
-                <button class="info-button" onclick="showEmployeeDetails('${employee.employee_id}')">
-                    <i class="fas fa-info-circle"></i>
-                </button>
             </td>
             <td>${employee.position}</td>
             <td>${employee.hired_date}</td>

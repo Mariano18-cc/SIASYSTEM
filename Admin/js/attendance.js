@@ -1,37 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Get filter elements
-    const dateFilter = document.getElementById('dateFilter');
-    const searchInput = document.getElementById('searchInput');
-    const statusFilter = document.getElementById('statusFilter');
-    const departmentFilter = document.getElementById('departmentFilter');
-    const rowsPerPage = document.getElementById('rowsPerPage');
+    // Get pagination elements
     const prevPageBtn = document.getElementById('prevPage');
     const nextPageBtn = document.getElementById('nextPage');
-    
-    // Set today's date as default for date filter
-    dateFilter.valueAsDate = new Date();
 
-    // Add event listeners for filters
-    dateFilter.addEventListener('change', filterRecords);
-    searchInput.addEventListener('input', filterRecords);
-    statusFilter.addEventListener('change', filterRecords);
-    departmentFilter.addEventListener('change', filterRecords);
-    rowsPerPage.addEventListener('change', updatePageSize);
+    // Add event listeners for pagination
     prevPageBtn.addEventListener('click', previousPage);
     nextPageBtn.addEventListener('click', nextPage);
 
-    // Filter function
-    function filterRecords() {
-        // Add your filtering logic here
-        console.log('Filtering records...');
-    }
+    // Add event listener to count attendance statuses
+    countAttendanceStatuses();
 
     // Pagination functions
-    function updatePageSize() {
-        // Add your page size update logic here
-        console.log('Updating page size...');
-    }
-
     function previousPage() {
         // Add your previous page logic here
         console.log('Going to previous page...');
@@ -40,5 +19,38 @@ document.addEventListener('DOMContentLoaded', function() {
     function nextPage() {
         // Add your next page logic here
         console.log('Going to next page...');
+    }
+
+    // Function to count attendance statuses
+    function countAttendanceStatuses() {
+        const attendanceRecords = document.querySelectorAll('#attendanceRecords tr');
+        let presentCount = 0;
+        let absentCount = 0;
+        let lateCount = 0;
+        let leaveCount = 0;
+
+        attendanceRecords.forEach(row => {
+            const status = row.querySelector('td:nth-child(7)').textContent.trim(); // Assuming status is in the 7th column
+            switch (status) {
+                case 'ON TIME':
+                    presentCount++;
+                    break;
+                case 'LATE':
+                    lateCount++;
+                    break;
+                case 'ABSENT':
+                    absentCount++;
+                    break;
+                case 'ON LEAVE':
+                    leaveCount++;
+                    break;
+            }
+        });
+
+        // Update the counts in the attendance overview
+        document.getElementById('presentCount').textContent = presentCount;
+        document.getElementById('absentCount').textContent = absentCount;
+        document.getElementById('lateCount').textContent = lateCount;
+        document.getElementById('leaveCount').textContent = leaveCount;
     }
 }); 

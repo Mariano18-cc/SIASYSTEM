@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('payrollModal');
-    const buttons = document.querySelectorAll('.view-button');
     const closeBtn = document.querySelector('.close');
+    const modalBackground = document.querySelector('.modal');
     
+    const buttons = document.querySelectorAll('.view-button');
+
     function showModal() {
         if (!modal) return;
         modal.style.display = 'block';
@@ -12,13 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function hideModal() {
-        if (!modal) return;
-        const modalContent = modal.querySelector('.modal-content');
-        if (modalContent) modalContent.classList.remove('show');
-        setTimeout(() => {
-            modal.classList.remove('show');
-            modal.style.display = 'none';
-        }, 300);
+        modal.classList.remove('show');
+        setTimeout(() => (modal.style.display = 'none'), 300);
     }
 
     buttons.forEach(button => {
@@ -102,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     closeBtn.onclick = hideModal;
-    window.onclick = (event) => event.target === modal && hideModal();
-    document.addEventListener('keydown', (event) => event.key === 'Escape' && modal.style.display === 'block' && hideModal());
-    document.querySelector('.send-btn').onclick = () => alert('Payslip sent successfully!');
+    window.onclick = (event) => {
+        if (event.target === modalBackground) hideModal();
+    };
 });
