@@ -335,5 +335,15 @@
             </div>
         </div>
     </div>
+
+    <!-- Contact Us Section -->
+    <div class="contact-us" style="background-color: #E0F7FA; padding: 40px 20px; text-align: center;">
+        <img src="../picture/logo (4).jpg" alt="KJCSI Logo" style="width: 150px; margin-bottom: 20px;">
+        <h1 style="color: #002B5B;">Contact Us</h1>
+        <p>Kumdan Jungang Christian School Inc.</p>
+        <p>(Formerly: Batasan Chunan Christian School Inc.)</p>
+        <p>Address: 181 Sitio 3 Bayanihan St, Quezon City</p>
+        <p>School Hours: 7:00 AM - 4:00 PM</p>
+        <p>Phone: (02)8932 5197 | 0962 353 8182</p>
 </body>
 </html>

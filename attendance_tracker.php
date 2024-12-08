@@ -101,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         <div class="form-group">
             <form method="POST" action="attendance_tracker.php">
                 <input type="text" id="employee_id" name="employee_id" required placeholder="Enter Employee ID" class="input-field">
-                <button type="submit" class="submit-button">Check ID</button>
+                <button type="submit" class="submit-button" style="background-color: #28a745; color: white;">Check ID</button>
             </form>
         </div>
     </div>
