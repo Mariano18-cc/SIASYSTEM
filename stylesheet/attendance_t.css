@@ -1,6 +1,7 @@
+/* Enhanced Body */
 body {
-    font-family: 'Roboto', Arial, sans-serif;
-    background-color: #f8f9fa;
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #f8f9fa, #dfe9f3);
     margin: 0;
     padding: 20px;
     display: flex;
@@ -9,12 +10,35 @@ body {
     min-height: 100vh;
 }
 
+/* Header */
 header {
     text-align: center;
-    padding-bottom: 10px;
+    padding: 15px;
+    background-color: transparent; /* Changed from #007bff to transparent */
+    color: #343a40; /* Adjusted to a darker color for visibility */
+    border-radius: 10px;
+    box-shadow: none; /* Removed shadow */
     max-width: 100%;
 }
 
+header h1 {
+    margin: 0;
+    font-size: 36px;
+    color: #343a40; /* Ensures text is still legible */
+}
+
+.date-time {
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-top: 10px;
+    color: #495057;
+    display: inline-block;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* Horizontal Line */
 hr {
     width: 100%;
     border: none;
@@ -22,47 +46,40 @@ hr {
     margin: 20px auto;
 }
 
-h1 {
-    font-size: 32px;
-    color: #343a40;
-    padding: 10px 0;
-}
-
-.date-time {
-    font-size: 18px;
-    color: #495057;
-    font-weight: bold;
-    background-color: #e9ecef;
-    padding: 10px 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 10px;
-}
-
+/* Container */
 .container {
     background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    padding: 25px;
     max-width: 600px;
     width: 100%;
     margin: 20px auto;
     text-align: center;
+    transition: transform 0.3s ease;
 }
 
-h2 {
-    margin: 0 0 15px;
-    color: #495057;
+.container:hover {
+    transform: translateY(-5px);
 }
 
+/* Titles */
+h2, .section-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #343a40;
+    margin-bottom: 20px;
+}
+
+/* Input Fields */
 input[type="text"] {
     width: 90%;
-    padding: 10px;
-    border: 2px solid #dee2e6;
+    padding: 12px;
+    border: 2px solid #ced4da;
     border-radius: 5px;
     font-size: 16px;
     margin-bottom: 15px;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s ease;
 }
 
 input[type="text"]:focus {
@@ -70,29 +87,27 @@ input[type="text"]:focus {
     outline: none;
 }
 
+/* Buttons */
 button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    padding: 12px 20px;
     font-size: 16px;
-    margin: 5px;
-    transition: background-color 0.3s ease;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 button:hover {
-    background-color: #0056b3;
+    transform: scale(1.05);
 }
 
-.details {
-    background-color: #f1f3f5;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    margin-top: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.submit-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
 }
 
 .time-buttons-container {
@@ -101,27 +116,42 @@ button:hover {
 
 .time-button {
     padding: 12px 25px;
-    background-color: #28a745;
-    color: white;
-    border: none;
+    margin: 10px;
+    font-size: 16px;
+    font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
 }
 
-.time-button:hover {
+.time-button:first-child {
+    background-color: #28a745;
+    color: white;
+}
+
+.time-button:first-child:hover {
     background-color: #218838;
 }
 
-.section-title {
-    font-size: 28px;
-    font-weight: bold;
-    color: #495057;
-    margin-bottom: 20px;
-    text-align: center;
+.time-button:last-child {
+    background-color: #dc3545;
+    color: white;
 }
 
+.time-button:last-child:hover {
+    background-color: #c82333;
+}
+
+/* Details Section */
+.details {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
 footer {
     text-align: center;
     font-size: 14px;
