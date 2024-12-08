@@ -299,6 +299,7 @@ if (isset($_GET['get_employee_details'])) {
                                     class="employee-id" 
                                     onclick="showEmployeeDetails('<?php echo $employee['employee_id']; ?>')" 
                                     style="cursor: pointer; color: #082C66; font-weight: bold;"
+                                    data-tooltip="Employee Details"
                                 >
                                     <?php echo $employee['employee_id']; ?>
                                 </span>

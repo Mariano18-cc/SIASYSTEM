@@ -169,6 +169,7 @@ html, body {
     border: 1px solid #eee;
 }
 
+
 .leave-requests tr:nth-child(even) {
     background-color: #f5f5f5;
 }
