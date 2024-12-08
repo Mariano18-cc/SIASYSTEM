@@ -88,57 +88,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Tracker</title>
     <link rel="stylesheet" href="stylesheet/attendance_t.css">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-        header, section {
-            padding: 50px;
-            text-align: center;
-        }
-
-        header {
-            background-color: #002B5B;
-            color: white;
-        }
-
-        section {
-            background-color: #E0F7FA;
-            min-height: 100vh;
-        }
-
-        /* Fade-in animation for scroll */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .apply-btn {
-            padding: 12px 30px;
-            background-color: #FF8C00;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
     <header>
-        <h1 class="fade-in">Welcome to Our School</h1>
-        <p class="fade-in">Applications are now open for SY 2024-2025</p>
-        <button class="apply-btn fade-in">APPLY NOW</button>
+        <h1>Attendance Tracker</h1>
+        <div id="date-time" class="date-time"></div>
     </header>
     <hr>
 
@@ -197,6 +154,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             }, 2000); // Delay to show message
         }
     </script>
-    <script src="home.js"></script>
 </body>
 </html>
