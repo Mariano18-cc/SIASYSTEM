@@ -193,7 +193,7 @@ if (isset($_GET['get_employee_details'])) {
             <li><a href="leave_m.php"><i class="fas fa-envelope-open-text"></i> Leave Management</a></li>
         </ul>
         <div class="bottom-content">
-            <a href="../index.php"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+        <a href="../dashboard.php"><i class="fas fa-sign-out-alt"></i>Log Out</a>
         </div>
     </div>
 
@@ -209,9 +209,6 @@ if (isset($_GET['get_employee_details'])) {
 
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Search Employee...">
-            <button class="add-button" id="add-button">
-                <i class="fas fa-plus"></i> Add
-            </button>
         </div>
 
         <h1 style="font-size: 24px; font-weight: bold; color: #082C66; margin-bottom: 10px; text-align: left;">Employee</h1>

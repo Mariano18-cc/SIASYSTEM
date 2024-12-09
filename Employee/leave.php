@@ -119,7 +119,7 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <li><a href="payroll.php"><i class="fas fa-wallet"></i> Payroll</a></li>
         </ul>
         <div class="bottom-content">
-            <a href="../index.php"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+        <a href="../dashboard.php"><i class="fas fa-sign-out-alt"></i>Log Out</a>
         </div>
     </div>
 
