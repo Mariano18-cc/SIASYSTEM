@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function openModal(modal) {
         if (modal) {
             modal.style.display = "block";
-            mainContent.classList.add('blur');
+            mainContent.classList.remove('blur');
             document.body.classList.add('modal-open');
         }
     }
@@ -129,9 +129,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Global click handler for all modals
     window.addEventListener('click', (event) => {
+        console.log("Clicked:", event.target);
         const modals = [addEmployeeModal, scheduleModal, employeeDetailsModal];
         modals.forEach(modal => {
             if (event.target === modal) {
+                console.log("Closing modal:", modal);
                 closeModalHandler(modal);
             }
         });
@@ -162,18 +164,12 @@ document.addEventListener("DOMContentLoaded", function () {
         row.dataset.employeeId = employee.employee_id;
 
         row.innerHTML = `
-            <td style="position: relative;">
-                <span 
-                    class="employee-id" 
-                    onclick="showEmployeeDetails('${employee.employee_id}')" 
-                    style="cursor: pointer; color: #082C66; font-weight: bold;"
-                    data-tooltip="View Details"
-                >
-                    ${employee.employee_id}
-                </span>
-            </td>
+            <td>${employee.employee_id}</td>
             <td>
                 ${employee.fname} ${employee.lname}
+                <button class="info-button" onclick="showEmployeeDetails('${employee.employee_id}')">
+                    <i class="fas fa-info-circle"></i>
+                </button>
             </td>
             <td>${employee.position}</td>
             <td>${employee.hired_date}</td>

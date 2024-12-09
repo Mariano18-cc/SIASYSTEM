@@ -665,16 +665,7 @@ td select {
     min-width: 90px; /* Set minimum width */
 }
 
-
-
 /* Action Cell Styles */
-
-.employee-info-table td:first-child {
-    color: #082C66;
-    font-weight: bold;
-}
-
-
 .employee-info-table td:last-child {
     white-space: nowrap;
     display: flex;
@@ -700,34 +691,6 @@ td select {
         width: 100%;
         margin: 4px 0;
     }
-}
-
-/* Tooltip Styles */
-.employee-id {
-    position: relative; /* Required for tooltip positioning */
-}
-
-.employee-id::after {
-    content: attr(data-tooltip); /* Use the data-tooltip attribute */
-    position: absolute;
-    bottom: 100%; /* Position above the element */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.7); /* Default background color (semi-transparent black) */
-    color: white;
-    padding: 3px 6px; /* Reduced padding for smaller size */
-    border-radius: 4px;
-    white-space: nowrap;
-    font-size: 12px; /* Smaller font size */
-    opacity: 0; /* Initially hidden */
-    visibility: hidden; /* Initially hidden */
-    transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition */
-    z-index: 10; /* Ensure it appears above other elements */
-}
-
-.employee-id:hover::after {
-    opacity: 1; /* Show on hover */
-    visibility: visible; /* Show on hover */
 }
 
 

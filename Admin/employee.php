@@ -207,9 +207,12 @@ if (isset($_GET['get_employee_details'])) {
       </header>
 
 
-        <div class="search-container">
+      <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="Search Employee...">
-        </div>
+            <button class="add-button" id="add-button">
+                <i class="fas fa-plus"></i> Add
+            </button>
+        </div>  
 
         <h1 style="font-size: 24px; font-weight: bold; color: #082C66; margin-bottom: 10px; text-align: left;">Employee</h1>
 
