@@ -66,34 +66,6 @@ document.getElementById("next-month").addEventListener("click", function() {
 // Initial calendar generation
 generateCalendar(currentMonth, currentYear);
 
-// Sample schedule data - you can replace this with data from your backend
-const scheduleData = [
-    { day: 'Mon', time: '9:00 AM - 10:30 AM' },
-    { day: 'Tue', time: '11:00 AM - 12:30 PM' },
-    { day: 'Wed', time: '2:00 PM - 3:30 PM' },
-    { day: 'Thu', time: '1:00 PM - 2:30 PM' },
-    { day: 'Fri', time: '10:00 AM - 11:30 AM' }
-];
-
-function renderSchedule() {
-    const scheduleBody = document.getElementById('scheduleBody');
-    scheduleBody.innerHTML = ''; // Clear existing content
-
-    scheduleData.forEach(slot => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td class="day">${slot.day}</td>
-            <td class="time">${slot.time}</td>
-        `;
-        scheduleBody.appendChild(row);
-    });
-}
-
-// Call this when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-    renderSchedule();
-});
-
 // Add this to your calendar cell creation code
 document.querySelectorAll('.calendar td').forEach(td => {
     td.addEventListener('click', function() {
@@ -148,55 +120,5 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target.classList.contains('close') || event.target === attendanceModal) {
             closeAttendanceDetailsModal();
         }
-    });
-});
-
-let isEditing = false;
-
-function toggleEdit() {
-    isEditing = !isEditing;
-    const inputs = document.querySelectorAll('.profile-details input, .profile-details textarea');
-    const editBtn = document.querySelector('.edit-profile-btn');
-    const saveBtn = document.querySelector('.save-profile-btn');
-    const cancelBtn = document.querySelector('.cancel-edit-btn');
-
-    inputs.forEach(input => {
-        if (input.name !== 'employee_id') {
-            input.disabled = !isEditing;
-        }
-    });
-
-    editBtn.style.display = isEditing ? 'none' : 'block';
-    saveBtn.style.display = isEditing ? 'block' : 'none';
-    cancelBtn.style.display = isEditing ? 'block' : 'none';
-}
-
-function cancelEdit() {
-    const form = document.getElementById('profileForm');
-    form.reset();
-    toggleEdit();
-}
-
-// Form submission
-document.getElementById('profileForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    
-    fetch('update_profile.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Profile updated successfully!');
-            toggleEdit();
-        } else {
-            alert('Error updating profile: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while updating the profile');
     });
 });

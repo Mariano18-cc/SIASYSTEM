@@ -140,21 +140,6 @@ $attendanceStatusText = isset($attendanceRemarks['remarks']) ? htmlspecialchars(
         </table>
     </div>
 
-<!-- Schedule section -->
-<div class="schedule-container">
-  <table class="schedule-table">
-    <thead>
-      <tr>
-        <th>Day</th>
-        <th>Time</th>
-      </tr>
-    </thead>
-    <tbody id="scheduleBody">
-      <!-- JavaScript will populate this -->
-    </tbody>
-  </table>
-</div>
-
 </div>
 
 
